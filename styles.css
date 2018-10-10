@@ -1,0 +1,145 @@
+.box {
+    color: #545F7C;
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;    
+    background-repeat: no-repeat;
+    background-position: top center;
+    font-family: 'Tahoma', 'Verdana', 'Calibri';
+    font-size: 16px;
+    padding: 55px;
+    padding-top: 10px;
+    margin-top: 50px;
+    /*box-shadow: 10px 10px 10px grey;*/
+    border-radius: 0px;
+    /*opacity: 0.7;*/
+    border: solid 10px whitesmoke;
+}
+form {
+    position: relative;
+    color: #545F7C;
+    font-family: 'Tahoma', 'Verdana', 'Calibri';
+    font-size: 16px;
+    padding-top: 10px;
+}
+.feld {
+    width: 242px;
+    height: 32px;
+    border: none; 
+    font-family: 'Tahoma', 'Verdana', 'Calibri';
+    font-size: 16px;
+    border-radius: 0px;
+    /*box-shadow: 5px 5px 5px grey;*/
+    background-color: #F0F0F0;
+    color: #545F7C;
+
+}
+#antwort {
+    position: relative;
+    height: 30px;
+    border: none;
+    text-align: center;
+    width: 270px;
+}
+body {
+    background-color: #ddd;  
+    /*    background-repeat: no-repeat;  
+        background-position: top center;  */
+    margin: 0;
+    padding: 0;  
+}
+#bg_img {
+    /*Verschwommen*/
+    /*    -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);*/
+
+}
+.glyphi{
+    float: left;
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
+    background-position: right;
+    margin-right: 2px;
+}
+.glyph_pw{
+    background-image: url("images/login/pw.png");
+}
+#glyph_usr{
+    background-image: url("images/login/user.png");
+}
+#glyph_email{
+    background-image: url("images/login/email.png");
+}
+
+#title {
+    display: block;
+    /*    background-image: url("bilder/wappen/wappen_12.jpg");
+        background-repeat: no-repeat;
+        background-size: 90px 90px;*/
+    width: 100%;
+    text-align: center;
+    height: 50px;
+    margin-top: 5px;
+    padding: 0;    
+    color: #545F7C;
+    font-size: 30px;
+    font-family: 'Tahoma', 'Verdana', 'Calibri';
+}
+.center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /*width: 50%;*/  
+}
+.button {
+    -moz-box-shadow: inset 0px -3px 7px 0px #29bbff;
+    -webkit-box-shadow: inset 0px -3px 7px 0px #29bbff;
+    box-shadow: inset 0px -3px 7px 0px #29bbff;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #2dabf9), color-stop(1, #0688fa));
+    background: -moz-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+    background: -webkit-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+    background: -o-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+    background: -ms-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+    background: linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@buttonBaseColor2', endColorstr='@buttonBaseColor1', GradientType=0);
+    background-color: #2dabf9;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 5px;
+    /*border:1px solid #0b0e07;*/
+    border: none;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: 'Tahoma', 'Verdana', 'Calibri';
+    font-size: 18px;
+    padding: 8px 39px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #263666;
+    width: 135px;
+}
+.button:hover {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0688fa), color-stop(1, #2dabf9));
+    background: -moz-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+    background: -webkit-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+    background: -o-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+    background: -ms-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+    background: linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@buttonBaseColor1', endColorstr='@buttonBaseColor2', GradientType=0);
+    background-color: #0688fa;
+}
+.button:active {
+    position: relative;
+    top: 1px;
+}
+label {
+    display: block;
+}
+/*# sourceMappingURL=styles.css.map */

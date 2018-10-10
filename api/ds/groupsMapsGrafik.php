@@ -1,0 +1,117 @@
+<?php
+
+date_default_timezone_set('europe/berlin');
+session_start();
+
+require_once('adodb5/adodb.inc.php');
+require_once('db_psw.php');
+header("Cache-Control: no-cache, must-revalidate");
+$host = (htmlspecialchars($_SERVER["HTTP_HOST"]));
+$uri = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), "/\\");
+
+if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin"] == admin) {
+
+
+
+
+    
+
+
+
+    $ADODB_CACHE_DIR = 'C:/php/cache';
+
+
+    $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; // Liefert ein assoziatives Array, das der geholten Zeile entspricht 
+
+    $ADODB_COUNTRECS = true;
+
+    $dbSyb = ADONewConnection("mysqli");
+
+// DB-Abfragen NICHT cachen
+    $dbSyb->memCache = false;
+    $dbSyb->memCacheHost = array('localhost'); /// $db->memCacheHost = $ip1; will work too
+    $dbSyb->memCacheCompress = false; /// Use 'true' arbeitet unter Windows nicht
+//$dsn = "'localhost','root',psw,'vitaldb'";
+    $dbSyb->Connect('localhost', user, psw, db); //=>>> Verbindungsaufbau mit der DB
+
+
+    if (!$dbSyb->IsConnected()) {
+
+
+        print ("Anmeldung: " . $dbSyb->ErrorMsg());
+
+        $data = array();
+
+        return ($data);
+    }
+
+    $dbSyb->debug = false;
+
+    if (isset($_REQUEST["jahr"])) {
+        $jahr = $_REQUEST["jahr"];
+    } else {
+
+        $jahr = date('Y');
+    }
+
+    if (isset($_REQUEST["auswahl"])) {
+        $auswahl = $_REQUEST["auswahl"];
+        if ($auswahl == "M") {
+            $where = " where year(sp_datum) = " . $dbSyb->Quote($jahr);
+        } else {
+            $where = "";
+        }
+    } else {
+
+        $where = "";
+    }
+
+
+
+    $sqlQuery = "SELECT de as land, case when land = 'nn' then 'GB' when land = 'SS'  then 'GB' When land = 'WW' then 'GB' else land end as code, count(*) as anzahl FROM sp_besuche left join laender on land = code " . $where . "group by land";
+
+// file_put_contents("laenderDS.txt", $sqlQuery);
+
+    $rs = $dbSyb->Execute($sqlQuery);
+
+
+    if (!$rs) {
+        print $dbSyb->ErrorMsg() . "\n";
+        return;
+    }
+    $i = 0;
+
+    $value = array();
+
+
+
+    while (!$rs->EOF) {
+
+
+        $value{$i}{"title"} = ($rs->fields{'land'});
+        if ($rs->fields{'anzahl'} > 1) {
+            $value{$i}{"customData"} = $rs->fields{'anzahl'} . " Spiele besucht";
+        } else {
+            $value{$i}{"customData"} = $rs->fields{'anzahl'} . " Spiel besucht";
+        }
+        $value{$i}{"groupId"} = $jahr;
+        $value{$i}{"id"} = $rs->fields{'code'};
+
+        $i++;
+
+// den n�chsten Datensatz lesen
+        $rs->MoveNext();
+    }
+
+    $rs->Close();
+
+    $out{'response'}{'status'} = 0;
+    $out{'response'}{'errors'} = array();
+    $out{'response'}{'data'} = $value;
+
+    $output = json_encode($out);
+
+    print($output);
+} else {
+    header("Location: http://$host$uri/noadmin.php");
+}

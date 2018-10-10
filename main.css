@@ -1,0 +1,91 @@
+.testStyle {
+    background-color:#FA8772;
+    border: 1px solid #004D99;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 0px;
+}
+
+.testStyleHeader {
+    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size: 11px;
+    color: white;
+    background-color:#B22222;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    padding: 0px;
+}
+
+.testStyleBody {
+    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size: 11px;
+    color:black;
+    background-color: #FA8072;
+    padding: 3px;
+}
+
+.testStyleResizer {
+    border-top:1px solid white;
+    border-bottom: 1px solid white;
+}
+.commonName {
+    font:red;
+    color: red;
+    margin-bottom: 40px;
+}
+.simpleCell,
+.simpleCellSelected,
+.simpleCellOver,
+.simpleCellSelectedOver {
+    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px;
+    color:black;
+}
+
+.simpleCellDisabled {
+    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px;
+    color:#808080;
+}
+
+#drop_zone_spiele, 
+#drop_zone_verein, 
+#drop_zone_spieler,
+#drop_zone_schiri, 
+#drop_zone_begleiter, 
+#drop_zone_stadion{
+    background-color: #fff;
+    border: #000 2px dashed;
+    width: 201px; 
+    height: 70px;
+    margin: auto;
+    padding-top: 33px;
+    text-align: center;
+}
+#uploadList, 
+#uploadListStadion, 
+#uploadListVerein, 
+#uploadListSpieler, 
+#uploadListSchiri, 
+#uploadListBegleiter{
+    font-family:Verdana,Bitstream Vera Sans,sans-serif;
+    font-size: 11px;
+}
+#main,
+#mainStadion,
+#mainVerein
+{
+    font-family:Verdana,Bitstream Vera Sans,sans-serif;
+    background: linear-gradient(#C4DDFD, #fff);                     
+    width: 100%; 
+    height: 100%;                    
+    font-size: 14px;
+}
+#status, 
+#statusVerein,
+#statusSpieler,
+#statusSchiri,
+#statusBegleiter,
+#statusStadion
+{                    
+    width: 100%;
+    text-align: center;
+}
