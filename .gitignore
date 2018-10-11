@@ -3,6 +3,7 @@ update/
 update_manuell/
 *.xlsx
 *.bak
+*.txt
 backup/
 api/Backups/
 api/images/
