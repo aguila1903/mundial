@@ -52,7 +52,7 @@ function updateCheck() {
     if (domainAvailable('https://github.com/')) {
         chdir("../");
         $git = shell_exec("git pull");
-        $date = date('d-m-Y H:i:s') . ":\n";
+        $date = date('d-m-Y H:i:s') . "\n";
         file_put_contents("updates.txt", $date . $git . "\n", FILE_APPEND);
     }
 }
