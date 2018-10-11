@@ -29,6 +29,33 @@ function errorMsg($errorMsg, $ergebnis) {
     die;
 }
 
+function domainAvailable($strDomain) {
+    $rCurlHandle = curl_init($strDomain);
+
+    curl_setopt($rCurlHandle, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($rCurlHandle, CURLOPT_HEADER, TRUE);
+    curl_setopt($rCurlHandle, CURLOPT_NOBODY, TRUE);
+    curl_setopt($rCurlHandle, CURLOPT_RETURNTRANSFER, TRUE);
+
+    $strResponse = curl_exec($rCurlHandle);
+
+    curl_close($rCurlHandle);
+
+    if (!$strResponse) {
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+function updateCheck() {
+    if (domainAvailable('https://github.com/')) {
+        $git = shell_exec("git pull");
+        $date = date('d-m-Y H:i:s') . "\n";
+        file_put_contents("..\\update.txt", $date . $git . "\n\n", FILE_APPEND);
+    }
+}
+
 $data = array();
 $meldung = "";
 $info = "";
@@ -85,10 +112,10 @@ if (isset($_POST["passwort"])) {
 //        $passwort = sha1($_POST["passwort"]);
         $passwort = htmlspecialchars($_POST["passwort"]);
     } else {
-        errorMsg("Passwort fehlt",5);
+        errorMsg("Passwort fehlt", 5);
     }
 } else {
-    errorMsg("Passwort fehlt",5);
+    errorMsg("Passwort fehlt", 5);
 }
 
 
@@ -101,13 +128,14 @@ $rs = $dbSyb->Execute($querySQL);
 
 
 if (!$rs) {
-    errorMsg("Query: " . $dbSyb->ErrorMsg(),0);
+    errorMsg("Query: " . $dbSyb->ErrorMsg(), 0);
 }
 $ergebnis = $rs->fields{'Ergebnis'};
 $status = $rs->fields{'status'};
 $admin = $rs->fields{'admin'};
 
 if ($ergebnis == 1 && $status == 'B') { // Passwort OK und User ist freigeschaltet - Başarıyla giriş yaptınız
+    updateCheck();
     login("Login erfolgreich", $ergebnis, $benutzer, 1, $admin, $status);
     createLog("[INFO]", $ip, $benutzer, "Login erfolgreich", $browser, $os);
 } elseif ($ergebnis == 1 && $status == 'O') { // Passwort ist OK aber der User ist nicht freigeschaltet - Anmeldung nicht möglich
