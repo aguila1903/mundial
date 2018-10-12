@@ -780,7 +780,7 @@
           icon: "pieces/16/piece_blue.png",
           largeIcon: "pieces/48/piece_blue.png",
           click: "isc.say(this.title + ' button clicked');"
-          }, props)
+  }, props)
           );
   }
 
@@ -836,7 +836,37 @@
                           tsbLoadDB.click();
                           }}),
                           getIconButton("Update starten", {icon: "famfam/page_refresh.png", click: function () {
-                          wdUpdate.show();
+//                          wdUpdate.show();
+                          RPCManager.send("", function (rpcResponse, data, rpcRequest) {
+                          var _data = isc.JSON.decode(data);
+                                  if(_data.response.status === 0) {
+
+                          isc.say(_data.response.data);
+                          } else { // Wenn die Validierungen Fehler aufweisen dann:
+
+                          dfEditUser.setErrors(_data.response.errors, true);
+                                  var _errors = dfEditUser.getErrors();
+                                  for(var i in _errors)
+                          {
+                          isc.say("<b>Fehler! </br>" + (_errors [i]) + "</b>", function (value) {
+                          if(value) {
+
+                          }
+                          });
+                          }
+                          }
+                          }, {// Übergabe der Parameter
+                          actionURL: "update.php",
+                                  httpMethod: "POST",
+                                  contentType: "application/x-www-form-urlencoded",
+                                  useSimpleHttp: true
+//                                params: {
+//                                UserID: dfEditUser.getField("UserID").getValue(),
+//                                        admin: dfEditUser.getField("admin").getValue(),
+//                                        email: dfEditUser.getField("email").getValue(),
+//                                        status: dfEditUser.getField("status").getValue()}
+
+                          }); //Ende RPC
                           }})
                   ],
                   autoDraw: false
@@ -29686,49 +29716,7 @@
            * -------------------------------------------------------------
            */
 
-          isc.IButton.create({
-          ID: "btnUpdateUpdate",
-                  type: "button",
-                  showDisabledIcon: false,
-                  icon: "famfam/door_in.png",
-                  disabled: false,
-                  name: "btnUpdateClose",
-                  title: "Update", width: 100,
-                  click: function () {
-                  RPCManager.send("", function (rpcResponse, data, rpcRequest) {
-                  var _data = isc.JSON.decode(data); 
-                          if(_data.response.status === 0) {  
-                 
-                          isc.say(_data.response.data);
-                          
-                         
-                  } else { // Wenn die Validierungen Fehler aufweisen dann:
 
-                  dfEditUser.setErrors(_data.response.errors, true);
-                          var _errors = dfEditUser.getErrors();
-                          for(var i in _errors)
-                  {
-                  isc.say("<b>Fehler! </br>" + (_errors [i]) + "</b>", function (value) {
-                  if(value) {
-
-                  }
-                  });
-                  }
-                  }
-                  }, {// Übergabe der Parameter
-                  actionURL: "update.php",
-                          httpMethod: "POST",
-                          contentType: "application/x-www-form-urlencoded",
-                          useSimpleHttp: true
-//                                params: {
-//                                UserID: dfEditUser.getField("UserID").getValue(),
-//                                        admin: dfEditUser.getField("admin").getValue(),
-//                                        email: dfEditUser.getField("email").getValue(),
-//                                        status: dfEditUser.getField("status").getValue()}
-
-                  }); //Ende RPC
-
-                  }});
           isc.IButton.create({
           ID: "btnUpdateClose",
                   type: "button",
@@ -29753,7 +29741,7 @@
                   height: "100%",
                   width: "100%",
                   align: "center",
-                  members: [btnUpdateUpdate, HLayoutBtnUpdateClose]});
+                  members: [HLayoutBtnUpdateClose]});
           isc.Window.create({
           ID: "wdUpdate",
                   title: "Updates einspielen",
