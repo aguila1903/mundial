@@ -52,6 +52,7 @@ function updateCheck() {
 
     chdir("../");
     $update = shell_exec("git pull -f");
+    echo $update;
     $date = date("Y-m-d H:i:s") . ": \n";
     if (trim($update) != "Already up to date." && $update !== false) {
 
