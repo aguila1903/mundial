@@ -139,9 +139,9 @@ $status = $rs->fields{'status'};
 $admin = $rs->fields{'admin'};
 
 if ($ergebnis == 1 && $status == 'B') { // Passwort OK und User ist freigeschaltet - Başarıyla giriş yaptınız
-    if (domainAvailable('https://github.com/')) {
-        updateCheck();
-    }
+//    if (domainAvailable('https://github.com/')) {
+//        updateCheck();
+//    }
 
     login("Login erfolgreich", $ergebnis, $benutzer, 1, $admin, $status);
     createLog("[INFO]", $ip, $benutzer, "Login erfolgreich", $browser, $os);

@@ -51,7 +51,7 @@ function domainAvailable($strDomain) {
 
 function updateCheck() {
 
-    chdir("../");
+    
     $update = shell_exec("git pull -f");
     $date = date("Y-m-d H:i:s") . ": \n";
     if (trim($update) != "Already up to date." && $update !== false) {
@@ -62,10 +62,11 @@ function updateCheck() {
     return $update;
 //    exec('update.cmd');
 }
+$update = updateCheck();
 
 $out{'response'}{'status'} = 0;
 $out{'response'}{'errors'} = array();
-$out{'response'}{'data'} = updateCheck();
+$out{'response'}{'data'} = $update;
 
 
 print json_encode($out);

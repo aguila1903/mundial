@@ -29696,12 +29696,12 @@
                   title: "Update", width: 100,
                   click: function () {
                   RPCManager.send("", function (rpcResponse, data, rpcRequest) {
-                  var _data = isc.JSON.decode(data); // Daten aus dem PHP (rpcResponse)
-                          if(_data.response.status === 0) {  // Status 0 bedeutet Keine Fehler
-                  User_ID = userListe.getSelectedRecord().UserID;
-                          onRefresh("userListe");
-                          isc.Timer.setTimeout("btnSpeichernEditUser.findUser()", 500);
-                          btnSpeichernEditUser.pgbEditUserFunction();
+                  var _data = isc.JSON.decode(data); 
+                          if(_data.response.status === 0) {  
+                 
+                          isc.say(_data.response.data);
+                          
+                         
                   } else { // Wenn die Validierungen Fehler aufweisen dann:
 
                   dfEditUser.setErrors(_data.response.errors, true);
