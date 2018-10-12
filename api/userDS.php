@@ -60,7 +60,7 @@ function updateCheck() {
     exec('update.cmd');
 }
 
-//exec('update.cmd');
+
 $data = array();
 $meldung = "";
 $info = "";
