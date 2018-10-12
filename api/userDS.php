@@ -55,7 +55,7 @@ function updateCheck() {
 //        $date = date('d-m-Y H:i:s') . "\n";
 //        file_put_contents("updates.txt", $date . $git . "\n", FILE_APPEND);
         
-        shell_exec('git pull -f >> update.txt');
+        exec('update.cmd');
         
     }
 }
