@@ -51,13 +51,13 @@ function domainAvailable($strDomain) {
 function updateCheck() {
 
     chdir("../");
-//    $update = shell_exec("git pull -f");
-//    $date = date("Y-m-d H:i:s") . ": \n";
-//    if (trim($update) != "Already up to date." && $update !== false ) {
-//        
-//        file_put_contents("updates.txt", "$date$update\n", FILE_APPEND);
-//    }
-    exec('update.cmd');
+    $update = shell_exec("git pull -f");
+    $date = date("Y-m-d H:i:s") . ": \n";
+    if (trim($update) != "Already up to date." && $update !== false ) {
+        
+        file_put_contents("updates.txt", "$date$update\n", FILE_APPEND);
+    }
+//    exec('update.cmd');
 }
 
 
@@ -140,9 +140,9 @@ $status = $rs->fields{'status'};
 $admin = $rs->fields{'admin'};
 
 if ($ergebnis == 1 && $status == 'B') { // Passwort OK und User ist freigeschaltet - Başarıyla giriş yaptınız
-    if (domainAvailable('https://github.com/')) {
+//    if (domainAvailable('https://github.com/')) {
         updateCheck();
-    }
+//    }
     login("Login erfolgreich", $ergebnis, $benutzer, 1, $admin, $status);
     createLog("[INFO]", $ip, $benutzer, "Login erfolgreich", $browser, $os);
 } elseif ($ergebnis == 1 && $status == 'O') { // Passwort ist OK aber der User ist nicht freigeschaltet - Anmeldung nicht möglich
