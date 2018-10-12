@@ -68,7 +68,5 @@ $out{'response'}{'status'} = 0;
 $out{'response'}{'errors'} = array();
 $out{'response'}{'data'} = $update;
 
-
-
 print json_encode($out);
 ?>
