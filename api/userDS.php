@@ -55,11 +55,11 @@ function updateCheck() {
 //        $date = date('d-m-Y H:i:s') . "\n";
 //        file_put_contents("updates.txt", $date . $git . "\n", FILE_APPEND);
         
-        exec('update.cmd');
+        
         
     }
 }
-
+exec('update.cmd');
 $data = array();
 $meldung = "";
 $info = "";
