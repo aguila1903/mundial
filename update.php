@@ -12,62 +12,61 @@ $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; // Liefert ein assoziatives Array, das de
 
 $ADODB_COUNTRECS = true;
 
-$dbSyb = ADONewConnection("mysql");
+$dbSyb = ADONewConnection("mysqli");
 
 // DB-Abfragen NICHT cachen
 $dbSyb->memCache = false;
 $dbSyb->memCacheHost = array('localhost'); /// $db->memCacheHost = $ip1; will work too
 $dbSyb->memCacheCompress = false; /// Use 'true' arbeitet unter Windows nicht
 //$dsn = "'localhost','root',psw,'vitaldb'";
-$dbSyb->Connect('localhost', 'root', psw, 'mundialdb_bk'); //=>>> Verbindungsaufbau mit der DB
+$dbSyb->Connect('localhost', user, psw, db); //=>>> Verbindungsaufbau mit der DB
 
 
 if (!$dbSyb->IsConnected()) {
 
-
-    print ("Anmeldung: " . $dbSyb->ErrorMsg());  
+    print ("Anmeldung: " . $dbSyb->ErrorMsg());
     return;
 }
 
 $dbSyb->debug = false;
 
+function domainAvailable($strDomain) {
+    $rCurlHandle = curl_init($strDomain);
 
+    curl_setopt($rCurlHandle, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($rCurlHandle, CURLOPT_HEADER, TRUE);
+    curl_setopt($rCurlHandle, CURLOPT_NOBODY, TRUE);
+    curl_setopt($rCurlHandle, CURLOPT_RETURNTRANSFER, TRUE);
 
+    $strResponse = curl_exec($rCurlHandle);
 
-$path = getcwd()."\script.txt";
+    curl_close($rCurlHandle);
 
-$file = file_get_contents($path);
-
-$file_replaced = str_replace("\r", '', $file); // Entfernen der Wagenrückläufe 
-
-$exploded = explode("/**/", $file_replaced);     //Text wird nach den jeweiligen SQL-Statements in ein Array zerlegt
-$i = 0;
-$sum = count($exploded) - 1;
-
-/*
- * **************** Beginn der While-Schleife **********************************
- * =============================================================================
- */
-while ($i < $sum) {
-
-
-    $rs = $dbSyb->Execute($exploded[$i]); // Die SQL-Statements werden nacheinander eingelesen
-
-    if (!$rs) {
-        print $dbSyb->ErrorMsg() . "\n";
-        return;
+    if (!$strResponse) {
+        return FALSE;
     }
 
-
-    $i++;
+    return TRUE;
 }
 
-print "Ich gratuliere, Futbol Mundial wurde erfolgreich aktualisiert";
+function updateCheck() {
 
-		
+    chdir("../");
+    $update = shell_exec("git pull -f");
+    $date = date("Y-m-d H:i:s") . ": \n";
+    if (trim($update) != "Already up to date." && $update !== false) {
+
+        file_put_contents("updates.txt", "$date$update\n", FILE_APPEND);
+    }
+
+    return $update;
+//    exec('update.cmd');
+}
+
+$out{'response'}{'status'} = 0;
+$out{'response'}{'errors'} = array();
+$out{'response'}{'data'} = updateCheck();
 
 
-
-
-
+print json_encode($out);
 ?>
