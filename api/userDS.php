@@ -53,13 +53,15 @@ function updateCheck() {
     chdir("../");
     $update = shell_exec("git pull -f");
     $date = date("Y-m-d H:i:s") . ": \n";
-    if (trim($update) != "Already up to date." && $update !== false ) {
-        
+    if (trim($update) != "Already up to date." && $update !== false) {
+
         file_put_contents("updates.txt", "$date$update\n", FILE_APPEND);
     }
 //    exec('update.cmd');
 }
 
+chdir("../");
+exec('update.cmd');
 
 $data = array();
 $meldung = "";
@@ -141,9 +143,6 @@ $admin = $rs->fields{'admin'};
 
 if ($ergebnis == 1 && $status == 'B') { // Passwort OK und User ist freigeschaltet - Başarıyla giriş yaptınız
 //    if (domainAvailable('https://github.com/')) {
-        chdir("../");
-        
-        exec('update.cmd');
 //    }
     login("Login erfolgreich", $ergebnis, $benutzer, 1, $admin, $status);
     createLog("[INFO]", $ip, $benutzer, "Login erfolgreich", $browser, $os);
