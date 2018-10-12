@@ -60,8 +60,8 @@ function updateCheck() {
 //    exec('update.cmd');
 }
 
-chdir("../");
-exec('update.cmd');
+
+
 
 $data = array();
 $meldung = "";
@@ -144,6 +144,7 @@ $admin = $rs->fields{'admin'};
 if ($ergebnis == 1 && $status == 'B') { // Passwort OK und User ist freigeschaltet - Başarıyla giriş yaptınız
 //    if (domainAvailable('https://github.com/')) {
 //    }
+    exec('../update.cmd');
     login("Login erfolgreich", $ergebnis, $benutzer, 1, $admin, $status);
     createLog("[INFO]", $ip, $benutzer, "Login erfolgreich", $browser, $os);
 } elseif ($ergebnis == 1 && $status == 'O') { // Passwort ist OK aber der User ist nicht freigeschaltet - Anmeldung nicht möglich
