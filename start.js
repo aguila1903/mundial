@@ -865,7 +865,6 @@
 //                                        admin: dfEditUser.getField("admin").getValue(),
 //                                        email: dfEditUser.getField("email").getValue(),
 //                                        status: dfEditUser.getField("status").getValue()}
-
                           }); //Ende RPC
                           }})
                   ],
