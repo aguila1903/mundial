@@ -52,7 +52,7 @@
           icon4 = "famfam/bayern_vogel_add.png";
           icon5 = "famfam/bayern_vogel_edit.png";
           icon6 = "famfam/bayern_vogel_multi_add.png";
-          /*
+/*
            * *********************** ANFANG LAYOUT ***************************************
            * =============================================================================
            */
@@ -91,15 +91,13 @@
                                   parentId: "1",
                                   Name: "Spiele",
                                   isFolder: true
-                          }
-                          , {
+                          }, {
                           Id: "1111",
                                   parentId: "11",
                                   icon: "web/32/score.png",
                                   Name: "Übersicht der Spiele",
                                   isFolder: false
-                          },
-                          {
+                          }, {
                           Id: "10",
                                   parentId: "1",
                                   Name: "Stammdaten",
@@ -5245,14 +5243,14 @@
                           RPCManager.send("", function (rpcResponse, data, rpcRequest) {
                           var _data = isc.JSON.decode(data); // Daten aus dem PHP (rpcResponse)
                                   if(_data.response.status === 0) {  // Status 0 bedeutet Keine Fehler
-                          Ort_ID = _data.response.data[0]["ort_id"];
+                          ort_ID = _data.response.data[0]["ort_id"];
                                   // onRefresh("OrtListe");
                                   // btnSpeichernOrtNeu.count++;
                                   // OrtListe.fetchData({land: _land, count: btnSpeichernOrtNeu.count});                                
                                   OrtListe.invalidateCache();
                                   btnSpeichernOrtNeu.pgbAddOrtFunction();
                                   isc.Timer.setTimeout("btnSpeichernOrtNeu.isLoadingOrtNeuTimer()", 150);
-                                  //                                isc.say(Ort_ID);
+                                  //                                isc.say(ort_ID);
 
 
                           } else { // Wenn die Validierungen Fehler aufweisen dann:
@@ -5283,7 +5281,7 @@
                           }); //Ende RPC
                   }, // Ende Click
                   findOrt: function () {
-                  var newOrt = OrtListe.data.find("ort_id", Ort_ID);
+                  var newOrt = OrtListe.data.find("ort_id", ort_ID);
                           var index = OrtListe.getRecordIndex(newOrt);
                           OrtListe.deselectAllRecords();
                           OrtListe.selectRecord(index);
@@ -5562,7 +5560,7 @@
                   title: "Speichern",
                   width: 100, //Neuen Film anlegen
                   click: function () {
-                  Ort_ID = dfEditOrt.getField("ort_id").getValue();
+                  ort_ID = dfEditOrt.getField("ort_id").getValue();
                           var _land = dfEditOrt.getField("code").getValue();
                           var _percent = pgbEditOrt.percentDone + parseInt(10 + (50 * Math.random()));
                           pgbEditOrt.setPercentDone(_percent);
@@ -5578,7 +5576,7 @@
                                   btnSpeichernOrtEdit.pgbEditOrtFunction();
                                   // isc.Timer.setTimeout("btnSpeichernOrtEdit.isLoadingOrtEditTimer()", 150);
 
-                                  //                                isc.say(Ort_ID);
+                                  //                                isc.say(ort_ID);
 
 
                           } else { // Wenn die Validierungen Fehler aufweisen dann:
@@ -5610,7 +5608,7 @@
                           }); //Ende RPC
                   }, // Ende Click
                   findOrt: function () {
-                  var newOrt = OrtListe.data.find("ort_id", Ort_ID);
+                  var newOrt = OrtListe.data.find("ort_id", ort_ID);
                           var index = OrtListe.getRecordIndex(newOrt);
                           OrtListe.deselectAllRecords();
                           OrtListe.selectRecord(index);
@@ -6063,14 +6061,14 @@
                           RPCManager.send("", function (rpcResponse, data, rpcRequest) {
                           var _data = isc.JSON.decode(data); // Daten aus dem PHP (rpcResponse)
                                   if(_data.response.status === 0) {  // Status 0 bedeutet Keine Fehler
-                          Stadtteil_ID = _data.response.data[0]["stadtteil_id"];
+                          stadtteil_ID = _data.response.data[0]["stadtteil_id"];
                                   // onRefresh("StadtteilListe");
                                   // btnSpeichernStadtteilNeu.count++;
                                   // StadtteilListe.fetchData({land: _land, count: btnSpeichernStadtteilNeu.count});                                
                                   StadtteilListe.invalidateCache();
                                   btnSpeichernStadtteilNeu.pgbAddStadtteilFunction();
                                   isc.Timer.setTimeout("btnSpeichernStadtteilNeu.isLoadingStadtteilNeuTimer()", 150);
-                                  //                                isc.say(Ort_ID);
+                                  //                                isc.say(ort_ID);
 
 
                           } else { // Wenn die Validierungen Fehler aufweisen dann:
@@ -6100,7 +6098,7 @@
                           }); //Ende RPC
                   }, // Ende Click
                   findStadtteil: function () {
-                  var newStadtteil = StadtteilListe.data.find("stadtteil_id", Stadtteil_ID);
+                  var newStadtteil = StadtteilListe.data.find("stadtteil_id", stadtteil_ID);
                           var index = StadtteilListe.getRecordIndex(newStadtteil);
                           StadtteilListe.deselectAllRecords();
                           StadtteilListe.selectRecord(index);
@@ -6375,7 +6373,7 @@
                   title: "Speichern",
                   width: 100, //Neuen Film anlegen
                   click: function () {
-                  Stadtteil_ID = dfEditStadtteil.getField("stadtteil_id").getValue();
+                  stadtteil_ID = dfEditStadtteil.getField("stadtteil_id").getValue();
                           // var _land = dfEditStadtteil.getField("code").getValue();
                           var _percent = pgbEditStadtteil.percentDone + parseInt(10 + (50 * Math.random()));
                           pgbEditStadtteil.setPercentDone(_percent);
@@ -6391,7 +6389,7 @@
                                   btnSpeichernStadtteilEdit.pgbEditStadtteilFunction();
                                   // isc.Timer.setTimeout("btnSpeichernStadtteilEdit.isLoadingOrtEditTimer()", 150);
 
-                                  //                                isc.say(Ort_ID);
+                                  //                                isc.say(ort_ID);
 
 
                           } else { // Wenn die Validierungen Fehler aufweisen dann:
@@ -6422,7 +6420,7 @@
                           }); //Ende RPC
                   }, // Ende Click
                   findStadtteil: function () {
-                  var newOrt = StadtteilListe.data.find("stadtteil_id", Stadtteil_ID);
+                  var newOrt = StadtteilListe.data.find("stadtteil_id", stadtteil_ID);
                           var index = StadtteilListe.getRecordIndex(newOrt);
                           StadtteilListe.deselectAllRecords();
                           StadtteilListe.selectRecord(index);
@@ -6839,14 +6837,14 @@
                           RPCManager.send("", function (rpcResponse, data, rpcRequest) {
                           var _data = isc.JSON.decode(data); // Daten aus dem PHP (rpcResponse)
                                   if(_data.response.status === 0) {  // Status 0 bedeutet Keine Fehler
-                          Liga_ID = _data.response.data[0]["liga_id"];
+                          liga_ID = _data.response.data[0]["liga_id"];
                                   onRefresh("LigaListe");
                                   // btnSpeichernLigalNeu.count++;
                                   // LigaListe.fetchData({land: _land, count: btnSpeichernLigalNeu.count});                                
                                   // LigaListe.invalidateCache();
                                   btnSpeichernLigalNeu.pgbAddLigaFunction();
                                   isc.Timer.setTimeout("btnSpeichernLigalNeu.isLoadingLigaNeuTimer()", 150);
-                                  //                                isc.say(Ort_ID);
+                                  //                                isc.say(ort_ID);
 
 
                           } else { // Wenn die Validierungen Fehler aufweisen dann:
@@ -6876,7 +6874,7 @@
                           }); //Ende RPC
                   }, // Ende Click
                   findLiga: function () {
-                  var newLiga = LigaListe.data.find("liga_id", Liga_ID);
+                  var newLiga = LigaListe.data.find("liga_id", liga_ID);
                           var index = LigaListe.getRecordIndex(newLiga);
                           LigaListe.deselectAllRecords();
                           LigaListe.selectRecord(index);
@@ -7137,7 +7135,7 @@
                   title: "Speichern",
                   width: 100, //Neuen Film anlegen
                   click: function () {
-                  Liga_ID = dfEditLiga.getField("liga_id").getValue();
+                  liga_ID = dfEditLiga.getField("liga_id").getValue();
                           // var _land = dfEditLiga.getField("code").getValue();
                           var _percent = pgbEditLiga.percentDone + parseInt(10 + (50 * Math.random()));
                           pgbEditLiga.setPercentDone(_percent);
@@ -7153,7 +7151,7 @@
                                   btnSpeichernLigaEdit.pgbEditLigaFunction();
                                   // isc.Timer.setTimeout("btnSpeichernLigaEdit.isLoadingOrtEditTimer()", 150);
 
-                                  //                                isc.say(Ort_ID);
+                                  //                                isc.say(ort_ID);
 
 
                           } else { // Wenn die Validierungen Fehler aufweisen dann:
@@ -7186,7 +7184,7 @@
                   }, // Ende Click
                   findLiga: function () {
 
-                  var newLiga = LigaListe.data.find("liga_id", Liga_ID);
+                  var newLiga = LigaListe.data.find("liga_id", liga_ID);
                           var index = LigaListe.getRecordIndex(newLiga);
                           LigaListe.deselectAllRecords();
                           LigaListe.selectRecord(index);
@@ -9602,8 +9600,21 @@
            * ************* Anfang Stadion-Bild-Upload ********************
            * -------------------------------------------------------------
            */
-
-
+          isc.HTMLPane.create({
+          width: "100%",
+                  height: "100%",
+                  padding: 1,
+                  ID: "htmlPaneDragNDropStadion",
+                  backgroundColor: "grey",
+                  styleName: "exampleTextBlock",
+                  contents: '<div id="mainStadion">' +
+                  '<div id="drop_zone_stadion">Bilder hier hinein ziehen</div>' +
+                  '<form><input type="hidden" name="uplFrmStadion"></form>' +
+                  //   '<progress id="progressBar" value=0 max="100"</progress>'+
+                  '<h3 id="statusStadion"></h3>' +
+                  '<p id="loaded_n_total"></p>' +
+                  '<div id="uploadListStadion"></div></div>'
+          });
           UploadForm.create({
           ID: "stadionBildUpload",
                   width: "100%",
@@ -9623,15 +9634,15 @@
                   }, {type: "hidden",
                           name: "id",
                           title: ""
-                  }, {
-                  name: "datei[]",
-                          type: "Upload",
-                          title: "Bild",
-                          showTitle: "false",
-                          colSpan: 2,
-                          align: "left",
-                          width: 400
-                  }, {
+                  }, /*{
+                   name: "datei[]",
+                   type: "Upload",
+                   title: "Bild",
+                   showTitle: "false",
+                   colSpan: 2,
+                   align: "left",
+                   width: 400
+                   }, */{
                   name: "bild_art",
                           title: "Art des Bildes",
                           width: 150,
@@ -9648,13 +9659,13 @@
                   }, {
                   type: "RowSpacer",
                           height: 10
-                  }, {
-                  name: "upload",
-                          title: "Hochladen",
-                          type: "submit",
-                          colSpan: 2,
-                          align: "center"
-                  }
+                  }/*, {
+                   name: "upload",
+                   title: "Hochladen",
+                   type: "submit",
+                   colSpan: 2,
+                   align: "center"
+                   }*/
                   ],
                   submitDone: function (result, _status, bild) {
                   // den Erfolg überprüfen!
@@ -9871,12 +9882,77 @@
 
           }
           });
+          isc.IButton.create({
+          ID: "btnStadionBilderAddClose",
+                  type: "button",
+                  count: 0,
+                  showDisabledIcon: false,
+                  icon: "famfam/door_in.png",
+                  disabled: false,
+                  name: "btnStadionBilderAddClose",
+                  title: "Beenden", width: 100,
+                  click: function () {
+                  btnStadionBilderAddClose.count++;
+                          stadionTileGrid.fetchData({id: dfEditStadion.getField("lfd_nr").getValue(), count: btnStadionBilderAddClose.count});
+                          wdStadionBilderAdd.hide();
+                  }});
+          isc.HLayout.create({
+          ID: "HLayoutBtnAddStadionBild",
+                  height: 35,
+                  width: "100%",
+                  clickCnt: 0,
+                  align: "center",
+                  margin: 10,
+                  members: [isc.ImgButton.create({
+                  width: 32, height: 32, layoutAlign: "center",
+                          src: "web/32/picture_add.png",
+                          prompt: "Dem Stadion Bilder hinzufügen.",
+                          ID: "btnAddStadionBild",
+                          click: function () {
+                          HLayoutBtnAddStadionBild.clickCnt++;
+                                  wdStadionBilderAdd.show();
+                                  if(HLayoutBtnAddStadionBild.clickCnt == 1){
+                          drop('drop_zone_stadion', stadionBildUpload, 'statusStadion', 'uploadListStadion');
+                          }
+                          stadionBildUpload.getField("id").setValue(stadionListe.getSelectedRecord().lfd_nr);
+                          }
+                  })
+                  ]});
           isc.VLayout.create({
           ID: "VLayoutStadionBildUpload",
                   height: "100%",
                   width: "100%",
                   align: "center",
-                  members: [stadionBildUpload, stadionTileGrid]});
+                  members: [HLayoutBtnAddStadionBild, stadionTileGrid]});
+          isc.HLayout.create({
+          ID: "HLayoutStadionBildUploadBtn",
+                  height: 32,
+                  width: "100%",
+                  align: "center",
+                  members: [btnStadionBilderAddClose]});
+          isc.Window.create({
+          ID: "wdStadionBilderAdd",
+                  title: "Bilder vom Stadion hochladen",
+                  autoSize: false,
+                  autoCenter: true,
+                  showFooter: false,
+                  showMinimizeButton: false,
+                  showCloseButton: true,
+                  width: 600,
+                  height: 600,
+                  headerIconDefaults: {
+                  width: 16,
+                          height: 16,
+                          src: "famfam/picture_add.png",
+                  },
+                  canDragReposition: true,
+                  canDragResize: false,
+                  showShadow: true,
+                  showModalMask: true,
+                  modalMaskOpacity: 10,
+                  isModal: true,
+                  items: [stadionBildUpload, htmlPaneDragNDropStadion, HLayoutStadionBildUploadBtn]
+          });
           /*
            * ****************** ENDE TILEGRID ****************************                 
            * -------------------------------------------------------------
@@ -12778,13 +12854,27 @@
            * -------------------------------------------------------------
            */
 
-
+          isc.HTMLPane.create({
+          width: "100%",
+                  height: "100%",
+                  padding: 1,
+                  ID: "htmlPaneDragNDropVerein",
+                  backgroundColor: "grey",
+                  styleName: "exampleTextBlock",
+                  contents: '<div id="mainVerein">' +
+                  '<div id="drop_zone_verein">Bilder hier hinein ziehen</div>' +
+                  '<form><input type="hidden" name="uplFrmVerein"></form>' +
+                  //   '<progress id="progressBar" value=0 max="100"</progress>'+
+                  '<h3 id="statusVerein"></h3>' +
+//            '<p id="loaded_n_total"></p>' +
+                  '<div id="uploadListVerein"></div></div>'
+          });
           UploadForm.create({
           ID: "vereinsWappenUpload",
                   width: "100%",
                   count: 0,
                   count2: 0,
-                  height: 148,
+                  height: 30,
                   numCols: 2,
                   // location of our backend
                   action: 'api/media_upload.php',
@@ -12799,15 +12889,15 @@
                   }, {type: "hidden",
                           name: "id",
                           title: ""
-                  }, {
-                  name: "datei[]",
-                          type: "Upload",
-                          title: "Bild",
-                          showTitle: "false",
-                          colSpan: 2,
-                          align: "left",
-                          width: 350
-                  }, {
+                  }, /* {
+                   name: "datei[]",
+                   type: "Upload",
+                   title: "Bild",
+                   showTitle: "false",
+                   colSpan: 2,
+                   align: "left",
+                   width: 350
+                   }, */{
                   name: "bild_art",
                           title: "Art des Bildes",
                           width: 150,
@@ -12824,14 +12914,14 @@
                   }, {
                   type: "RowSpacer",
                           height: 10
-                  }, {
-                  name: "upload",
-                          title: "Hochladen",
-                          type: "submit",
-                          icon: "famfam/image_add.png",
-                          colSpan: 2,
-                          align: "center"
-                  }
+                  }/*, {
+                   name: "upload",
+                   title: "Hochladen",
+                   type: "submit",
+                   icon: "famfam/image_add.png",
+                   colSpan: 2,
+                   align: "center"
+                   }*/
                   ],
                   submitDone: function (result, _status, bild) {
                   // den Erfolg überprüfen!
@@ -12888,21 +12978,21 @@
                   height: "100%",
                   width: "100%",
                   align: "center",
-                  members: [vereinsWappenUpload, HLayoutbtnVereinsWappenUploadClose]});
+                  members: [vereinsWappenUpload, htmlPaneDragNDropVerein, HLayoutbtnVereinsWappenUploadClose]});
           isc.Window.create({
           ID: "wdVereinsWappenAdd",
                   title: "Vereinswappen hochladen",
-                  autoSize: true,
+                  autoSize: false,
                   autoCenter: true,
                   showFooter: false,
                   showMinimizeButton: false,
                   showCloseButton: true,
                   width: 550,
-                  height: 150,
+                  height: 550,
                   headerIconDefaults: {
                   width: 16,
                           height: 16,
-                          src: "famfam/picture_add.png",
+                          src: "famfam/picture_add.png"
                   },
                   canDragReposition: true,
                   canDragResize: false,
@@ -13315,9 +13405,14 @@
                   src: "web/32/picture_add.png",
                   prompt: "Vereinswappen hochladen",
                   ID: "btnAddWappen",
+                  clickCnt: 0,
                   click: function () {
-                  wdVereinsWappenAdd.show();
-                          vereinsWappenUpload.getField("id").setValue(dfEditVerein.getField("verein_id").getValue());
+                  btnAddWappen.clickCnt++;
+                          wdVereinsWappenAdd.show();
+                          if(btnAddWappen.clickCnt == 1){
+                  drop('drop_zone_verein', vereinsWappenUpload, 'statusVerein', 'uploadListVerein');
+                  }
+                  vereinsWappenUpload.getField("id").setValue(dfEditVerein.getField("verein_id").getValue());
                   }
           });
           isc.ImgButton.create({
@@ -27576,13 +27671,27 @@
            * -------------------------------------------------------------
            */
 
-
+          isc.HTMLPane.create({
+          width: "100%",
+                  height: "100%",
+                  padding: 1,
+                  ID: "htmlPaneDragNDropSpiele",
+                  backgroundColor: "grey",
+                  styleName: "exampleTextBlock",
+                  contents: '<div id="main">' +
+                  '<div id="drop_zone_spiele">Bilder hier hinein ziehen</div>' +
+                  '<form><input type="hidden" name="uplFrmSpiele"></form>' +
+                  //   '<progress id="progressBar" value=0 max="100"</progress>'+
+                  '<h3 id="status"></h3>' +
+                  '<p id="loaded_n_total"></p>' +
+                  '<div id="uploadList"></div></div>'
+          });
           UploadForm.create({
           ID: "spieleBilderUpload",
                   width: "100%",
                   count: 0,
                   count2: 0,
-                  height: "100%",
+                  height: 30,
                   numCols: 2,
                   // location of our backend
                   action: 'api/media_upload.php',
@@ -27597,15 +27706,15 @@
                   }, {type: "hidden",
                           name: "id",
                           title: ""
-                  }, {
-                  name: "datei[]",
-                          type: "Upload",
-                          title: "Bild",
-                          width: 450,
-                          showTitle: "false",
-                          colSpan: 2,
-                          align: "left"
-                  }, {
+                  }, /* {
+                   name: "datei[]",
+                   type: "Upload",
+                   title: "Bild",
+                   width: 450,
+                   showTitle: "false",
+                   colSpan: 2,
+                   align: "left"
+                   }, */{
                   name: "bild_art",
                           title: "Art des Bildes",
                           width: 150,
@@ -27622,14 +27731,14 @@
                   }, {
                   type: "RowSpacer",
                           height: 10
-                  }, {
-                  name: "upload",
-                          title: "Hochladen",
-                          type: "submit",
-                          icon: "famfam/image_add.png",
-                          colSpan: 2,
-                          align: "center"
-                  }
+                  }/*, {
+                   name: "upload",
+                   title: "Hochladen",
+                   type: "submit",
+                   icon: "famfam/image_add.png",
+                   colSpan: 2,
+                   align: "center"
+                   }*/
                   ],
                   submitDone: function (result, _status, bild) {
                   // den Erfolg überprüfen!
@@ -27675,7 +27784,7 @@
                   height: "100%",
                   width: "100%",
                   align: "center",
-                  members: [spieleBilderUpload, HLayoutbtnSpieleBilderAddClose]});
+                  members: [spieleBilderUpload, htmlPaneDragNDropSpiele, HLayoutbtnSpieleBilderAddClose]});
           isc.Window.create({
           ID: "wdSpieleBilderAdd",
                   title: "Bilder vom Spiel hochladen",
@@ -27685,7 +27794,7 @@
                   showMinimizeButton: false,
                   showCloseButton: true,
                   width: 600,
-                  height: 200,
+                  height: 600,
                   headerIconDefaults: {
                   width: 16,
                           height: 16,
@@ -27929,14 +28038,19 @@
                   width: "100%",
                   align: "center",
                   margin: 10,
+                  clickCnt: 0,
                   members: [isc.ImgButton.create({
                   width: 32, height: 32, layoutAlign: "center",
                           src: "web/32/picture_add.png",
                           prompt: "Dem Spiel Bilder hinzufügen.",
                           ID: "btnAddSpielBild",
                           click: function () {
-                          wdSpieleBilderAdd.show();
-                                  spieleBilderUpload.getField("id").setValue(spieleListe.getSelectedRecord().spiel_id);
+                          HLayoutBtnAddSpielBild.clickCnt++
+                                  wdSpieleBilderAdd.show();
+                                  if(HLayoutBtnAddSpielBild.clickCnt == 1){
+                          drop('drop_zone_spiele', spieleBilderUpload, 'status', 'uploadList');
+                          }
+                          spieleBilderUpload.getField("id").setValue(spieleListe.getSelectedRecord().spiel_id);
                           }
                   })
                   ]});
@@ -29705,6 +29819,55 @@
            */
 
 
+          UploadForm.create({
+          ID: "ufUpdate",
+                  width: "100%",
+                  count: 0,
+                  count2: 0,
+                  height: 148,
+                  numCols: 2,
+                  // location of our backend
+                  action: 'api/update.php',
+                  fields: [{
+                  type: "RowSpacer",
+                          height: 10
+                  }, {
+                  name: "datei",
+                          type: "Upload",
+                          title: "Update-Datei",
+                          showTitle: "false",
+                          colSpan: 2,
+                          align: "left",
+                          width: 350
+                  }, {
+                  type: "RowSpacer",
+                          height: 10
+                  }, {
+                  name: "upload",
+                          title: "Update",
+                          type: "submit",
+                          icon: "famfam/image_add.png",
+                          colSpan: 2,
+                          align: "center"
+                  }
+                  ],
+                  submitDone: function (result, _status, bild) {
+                  // den Erfolg überprüfen!
+                  //   RecordIndexLB.getField("result").setValue(result);
+                  ergebnis = result;
+                          status = _status;
+                          ufUpdate.count++;
+                          isc.say(ergebnis, function (value) {
+                          // if (value) {
+                          // if (status == "ok") {                      
+
+
+                          // }// if status
+                          // }// if value
+                          }); //isc.say
+                  }//submit
+
+          });
           isc.IButton.create({
           ID: "btnUpdateClose",
                   type: "button",
@@ -29729,7 +29892,7 @@
                   height: "100%",
                   width: "100%",
                   align: "center",
-                  members: [HLayoutBtnUpdateClose]});
+                  members: [ufUpdate, HLayoutBtnUpdateClose]});
           isc.Window.create({
           ID: "wdUpdate",
                   title: "Updates einspielen",
@@ -32321,7 +32484,7 @@
                   width: 100,
                   height: "100%",
                   align: "center",
-                  contents: '<text style="color:' + titleLableColor + '; font-size:' + titleLableFontSize + '; font-family:' + titleLableFontFamily + '; text-decoration:none;">User-Verwaltung</text>'
+                  contents: '<text style="color:' + titleLableColor  + '; font-size:' + titleLableFontSize + '; font-family:' + titleLableFontFamily + '; text-decoration:none;">User-Verwaltung</text>'
           });
           isc.ToolStrip.create({
           ID: "tsUser",
@@ -33000,5 +33163,3 @@
           VLayoutMapsGroups.hide();
           wdGesamtUebersicht.show();
 //countryMap();
-
-
