@@ -29,7 +29,8 @@ if (!$dbSyb->IsConnected()) {
 }
 
 $dbSyb->debug = false;
-
+$out = array();
+$update = "";
 function domainAvailable($strDomain) {
     $rCurlHandle = curl_init($strDomain);
 
@@ -51,10 +52,10 @@ function domainAvailable($strDomain) {
 
 function updateCheck() {
 
-    
+
     $update = shell_exec("git pull -f");
     $date = date("Y-m-d H:i:s") . ": \n";
-    if (trim($update) != "Already up to date." && $update !== false) {
+    if (trim($update) != "Already up to date." && $update !== null) {
 
         file_put_contents("updates.txt", "$date$update\n", FILE_APPEND);
     }
@@ -62,7 +63,18 @@ function updateCheck() {
     return $update;
 //    exec('update.cmd');
 }
-$update = updateCheck();
+
+if (domainAvailable('https://github.com/')) {
+    $update = updateCheck();
+} else {
+    $out{'response'}{'status'} = 4;
+    $out{'response'}{'errors'} = array('Update konnte nicht durchgeführt werden da keine Internetverbindung besteht.');
+
+    print json_encode($out);
+
+    return;
+}
+
 
 $out{'response'}{'status'} = 0;
 $out{'response'}{'errors'} = array();

@@ -836,7 +836,7 @@
                           tsbLoadDB.click();
                           }}),
                           getIconButton("Update starten", {icon: "famfam/page_refresh.png", click: function () {
-//                          wdUpdate.show();
+//                       
                           RPCManager.send("", function (rpcResponse, data, rpcRequest) {
                           var _data = isc.JSON.decode(data);
                                   if(_data.response.status === 0) {
@@ -844,27 +844,16 @@
                           isc.say(_data.response.data);
                           } else { // Wenn die Validierungen Fehler aufweisen dann:
 
-                          dfEditUser.setErrors(_data.response.errors, true);
-                                  var _errors = dfEditUser.getErrors();
-                                  for(var i in _errors)
-                          {
-                          isc.say("<b>Fehler! </br>" + (_errors [i]) + "</b>", function (value) {
-                          if(value) {
 
-                          }
-                          });
-                          }
+                          var _errors = _data.response.errors;
+                                  isc.say(_errors);
                           }
                           }, {// Übergabe der Parameter
                           actionURL: "update.php",
-                                  httpMethod: "POST",
-                                  contentType: "application/x-www-form-urlencoded",
-                                  useSimpleHttp: true
-//                                params: {
-//                                UserID: dfEditUser.getField("UserID").getValue(),
-//                                        admin: dfEditUser.getField("admin").getValue(),
-//                                        email: dfEditUser.getField("email").getValue(),
-//                                        status: dfEditUser.getField("status").getValue()}
+                          httpMethod: "POST",
+                          contentType: "application/x-www-form-urlencoded",
+                          useSimpleHttp: true
+//                                params: {}
                           }); //Ende RPC
                           }})
                   ],
