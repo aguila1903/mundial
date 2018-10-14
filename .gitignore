@@ -1,5 +1,6 @@
 nbproject/
 update_manuell/
+update/log/*.*
 *.xlsx
 *.bak
 *.txt
