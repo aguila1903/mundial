@@ -20717,6 +20717,13 @@
                           title: "Datum",
                           showIf: "true"
                   }, {
+                  name: "code",
+                          title: "",
+                          width: 20,
+                          type: "image",
+                          imageURLPrefix: "flags/16/",
+                          imageURLSuffix: ".png"
+                  }, {
                   name: "zeit",
                           type: "text",
                           width: 60,
@@ -20803,13 +20810,6 @@
                           title: "Austragungsland",
                           showIf: "true",
                           width: 180
-                  }, {
-                  name: "code",
-                          title: "",
-                          width: 20,
-                          type: "image",
-                          imageURLPrefix: "flags/16/",
-                          imageURLSuffix: ".png"
                   },
                   {
                   name: "liga_id",
