@@ -10,6 +10,23 @@
   }
   var _Time = jetzt.getTime();
 
+  function doUpdate(){
+      RPCManager.send("", function(rpcResponse, data, rpcRequest){
+          var _data = isc.JSON.decode(data);
+          if(_data.response.status === 0){
+              isc.say(_data.response.data);
+          } else if(_data.response.status === 4){ 
+              var _errors = _data.response.errors;
+              isc.say(_errors);
+          }
+      }, {// Übergabe der Parameter
+          actionURL: "update/update.php",
+          httpMethod: "POST",
+          contentType: "application/x-www-form-urlencoded",
+          useSimpleHttp: true
+//                                params: {}
+      }); //Ende RPC
+  };
 
   /*
    * ******************** Upload-Function ************************
@@ -78,7 +95,7 @@
 
           // files is a FileList of File objects. List some properties.
           var output = [];
-          
+
           for(var i = 0, f; f = files[i]; i++){
               output.push('<li><strong>', f.name, '</strong> - ', f.size, ' bytes </li>');
               //  uploadFile(f, event);

@@ -39,6 +39,8 @@ function updateCheck($update_logs) {
     if (trim($update) != "Already up to date." && $update !== null) {
 
         logUpdate($update_logs, "$date$update\n");
+    } else {
+        $update = "nope";
     }
 
     return $update;
@@ -91,8 +93,11 @@ if (is_file($update_sql_new)) {//Es befindet sich eine Datei im sql-update Ordne
     }
 }
 
-
-$out{'response'}{'status'} = 0;
+if ($update == "nope") {
+    $out{'response'}{'status'} = 1;
+} else {
+    $out{'response'}{'status'} = 0;
+}
 $out{'response'}{'errors'} = array();
 $out{'response'}{'data'} = $update;
 
