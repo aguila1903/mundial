@@ -10,10 +10,17 @@ $uri = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), "/\\");
 
 if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
 
+    /*     * *****************************************************************************
+      System: infotool - SVK-Versaende
+      Funktion: Versandfehler anzeigen
+      Autor: jra
+      Datum: 04.12.2012
 
+      Zusatzhinweise:
 
+      �nderungen:
 
-    
+     * ***************************************************************************** */
 
 
 

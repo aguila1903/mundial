@@ -32106,9 +32106,17 @@
                           var _zusch_anzahl = record.zusch_anzahl;
                           var _gaestefans = record.gaestefans;
                           var _stadionName = record.stadionname;
-                          var _stadionAnschrift = record.anschrift.asHTML();
+                          if(record.anschrift !== null){
+                             var _stadionAnschrift = record.anschrift.asHTML(); 
+                          }else{
+                              var _stadionAnschrift = record.anschrift;
+                          }                          
                           var _stadionNameAlt = record.stadionname_alt;
-                          var _bes_vork = record.bes_vork.asHTML();
+                          if(record.bes_vork !== null){
+                              var _bes_vork = record.bes_vork.asHTML();
+                          }else{                             
+                              var _bes_vork = record.bes_vork; 
+                          }
                           var _schiri = record.schiri;
                           var _schiri_verein = record.schiri_verein;
                           var _trainerA = record.trainer_a;

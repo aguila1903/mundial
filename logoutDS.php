@@ -5,6 +5,9 @@ header("Cache-Control: no-cache, must-revalidate");
 $host = (htmlspecialchars($_SERVER["HTTP_HOST"]));
 $uri = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), "/\\");
 
+$session = session_id();
+// Löschen der erzeugten datei
+//unlink ($session.".php");
 
 require_once('adodb5/adodb.inc.php');
 require_once('db_psw.php');

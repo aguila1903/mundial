@@ -14,9 +14,6 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin
 
 
 
-
-
-
 $ADODB_CACHE_DIR = 'C:/php/cache';
 
 
@@ -295,6 +292,6 @@ if (isset($_FILES['datei']) && (($_FILES["datei"]["type"] != "image/gif"
         echo "<script type=\"text/javascript\">if(window && window.parent && window.parent['{$_POST['uploadFormID']}'] && window.parent['{$_POST['uploadFormID']}'].submitDone) { window.parent['{$_POST['uploadFormID']}'].submitDone($result, $status, $bild); } </script>";
     }
 } else {
-    header("Location: http://$host/mundial/noadmin.php");
+    header("Location: http://$host/kartal/noadmin.php");
 }
 ?>

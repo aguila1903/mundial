@@ -13,9 +13,6 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin
 
 
 
-
-
-
 $ADODB_CACHE_DIR = 'C:/php/cache';
 
 
@@ -113,9 +110,9 @@ else {
         // den n�chsten Datensatz lesen
         $rs->MoveNext();
     }
-
+       
     $rs->Close();
-     
+    
     $out{'response'}{'status'} = 0;
     $out{'response'}{'errors'} = array();
     $out{'response'}{'data'} = $data;

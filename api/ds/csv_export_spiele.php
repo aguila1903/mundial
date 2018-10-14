@@ -450,6 +450,6 @@ $export = "Nr.; Datum; Begegnung; Ergebnis; Wettbewerb; Runde / Spieltag; Spiels
    header("Location: SpieleListe.csv");
 }
 } else {
-    header("Location: http://$host/kartal/noadmin.php");
+    header("Location: http://$host/mundial/noadmin.php");
 }
 ?>

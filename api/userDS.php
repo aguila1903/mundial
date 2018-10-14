@@ -29,7 +29,6 @@ function errorMsg($errorMsg, $ergebnis) {
     die;
 }
 
-
 $data = array();
 $meldung = "";
 $info = "";

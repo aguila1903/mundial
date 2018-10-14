@@ -10,10 +10,17 @@ $uri = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), "/\\");
 
 if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin"] == admin) {
 
+    /*     * *****************************************************************************
+      System: infotool - SVK-Versaende
+      Funktion: Versandfehler anzeigen
+      Autor: jra
+      Datum: 04.12.2012
 
+      Zusatzhinweise:
 
+      �nderungen:
 
-    
+     * ***************************************************************************** */
 
 
 
@@ -47,7 +54,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin
     $dbSyb->debug = false;
 
 
-    $sqlQuery = "select code, de as land, count(*) as anzahl, latitude, longitude from stadionliste s join laender l on land = code where code != 'DE'
+    $sqlQuery = "select code, de as land, count(*) as anzahl, latitude, longitude from stadionliste s join laender l on land = code
 group by code, de order by anzahl desc ";
 
 // file_put_contents("laenderDS.txt", $sqlQuery);

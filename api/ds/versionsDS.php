@@ -6,10 +6,17 @@ require_once('db_psw.php');
 header("Cache-Control: no-cache, must-revalidate");
 
 
+    /*     * *****************************************************************************
+      System: infotool - SVK-Versaende
+      Funktion: Versandfehler anzeigen
+      Autor: jra
+      Datum: 04.12.2012
 
+      Zusatzhinweise:
 
+      �nderungen:
 
-    
+     * ***************************************************************************** */
 
     $ADODB_CACHE_DIR = 'C:/php/cache';
 

@@ -10,10 +10,17 @@ $uri = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), "/\\");
 
 if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin"] == admin) {
 
+    /*     * *****************************************************************************
+      System: infotool - SVK-Versaende
+      Funktion: Versandfehler anzeigen
+      Autor: jra
+      Datum: 04.12.2012
 
+      Zusatzhinweise:
 
+      �nderungen:
 
-    
+     * ***************************************************************************** */
 
 
 
@@ -49,33 +56,75 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin
 
 
     $querySQL = "SELECT 
-    ifnull(spieler_id_a, spieler_id_h) AS spieler_id,
+    IFNULL(spieler_id_a, spieler_id_h) AS spieler_id,
     CONCAT(RTRIM(s.vorname), ' ', RTRIM(s.name)) AS spielername,
-    count(*) as tore,
-  --  p.pos_bez as position,
-    DATE_FORMAT(s.geb_datum,GET_FORMAT(DATE,'EUR')) as geb_datum,
-    Ifnull(de, s.land) as land, l.code,
-    
-    IFNULL((SELECT  count(*)  FROM sp_tore_spiel_tabelle  
-    where (spieler_id_a Is not NULL) and (besonderheit = 'FE' or besonderheit = 'HE') 
-    and (spieler_id_a = s.spieler_id) group by spieler_id_a),0) as elfer_a,
-    
-        IFNULL((SELECT  count(*)  FROM sp_tore_spiel_tabelle  
-    where (spieler_id_h Is not NULL) and (besonderheit = 'FE' or besonderheit = 'HE') 
-    and (spieler_id_h = s.spieler_id) group by spieler_id_a),0) as elfer_h,
-    
-    IFNULL((SELECT  count(*)  FROM sp_tore_spiel_tabelle  where (spieler_id_a Is not NULL or spieler_id_h Is not NULL) 
-    and team = 'h' and (spieler_id_a = s.spieler_id or spieler_id_h = s.spieler_id) group by spieler_id_a),0) as heim,
-  
-   IFNULL((SELECT  count(*)  FROM sp_tore_spiel_tabelle  where (spieler_id_a Is not NULL or spieler_id_h Is not NULL) 
-   and team = 'a' and (spieler_id_a = s.spieler_id or spieler_id_h = s.spieler_id) group by spieler_id_a),0) as gast 
-FROM sp_tore_spiel_tabelle JOIN spieler s ON s.spieler_id = Ifnull(spieler_id_a, spieler_id_h)
-
-    LEFT JOIN laender l ON s.land = l.code
+    COUNT(*) AS tore,
+    DATE_FORMAT(s.geb_datum, GET_FORMAT(DATE, 'EUR')) AS geb_datum,
+    IFNULL(de, s.land) AS land,
+    l.code,
+    IFNULL((SELECT 
+                    COUNT(*)
+                FROM
+                    sp_tore_spiel_tabelle
+                WHERE
+                    (spieler_id_a IS NOT NULL)
+                        AND (besonderheit = 'FE'
+                        OR besonderheit = 'HE')
+                        AND ifnull(besonderheit,'') not in ('ET')
+                        AND (spieler_id_a = s.spieler_id)
+                GROUP BY spieler_id_a),
+            0) AS elfer_a,
+    IFNULL((SELECT 
+                    COUNT(*)
+                FROM
+                    sp_tore_spiel_tabelle
+                WHERE
+                    (spieler_id_h IS NOT NULL)
+                        AND (besonderheit = 'FE'
+                        OR besonderheit = 'HE')
+					    AND ifnull(besonderheit,'') not in ('ET')
+                        AND (spieler_id_h = s.spieler_id)
+                GROUP BY spieler_id_a),
+            0) AS elfer_h,
+    IFNULL((SELECT 
+                    COUNT(*)
+                FROM
+                    sp_tore_spiel_tabelle
+                WHERE
+                    (spieler_id_a IS NOT NULL
+                        OR spieler_id_h IS NOT NULL)
+                        AND team = 'h'
+                        AND (spieler_id_a = s.spieler_id
+                        OR spieler_id_h = s.spieler_id)
+                        AND ifnull(besonderheit,'') not in ('ET')
+                GROUP BY spieler_id_a),
+            0) AS heim,
+    IFNULL((SELECT 
+                    COUNT(*)
+                FROM
+                    sp_tore_spiel_tabelle
+                WHERE
+                    (spieler_id_a IS NOT NULL
+                        OR spieler_id_h IS NOT NULL)
+                        AND team = 'a'
+                        AND (spieler_id_a = s.spieler_id
+                        OR spieler_id_h = s.spieler_id)
+                        AND ifnull(besonderheit,'') not in ('ET')
+                GROUP BY spieler_id_a),
+            0) AS gast
+FROM
+    sp_tore_spiel_tabelle
+        JOIN
+    spieler s ON s.spieler_id = IFNULL(spieler_id_a, spieler_id_h)
+        LEFT JOIN
+    laender l ON s.land = l.code
 WHERE
     s.spieler_id > - 1
-	AND (spieler_id_a Is not NULL or spieler_id_h Is not NULL)
-GROUP BY spielername  order by tore desc"
+        AND (spieler_id_a IS NOT NULL
+        OR spieler_id_h IS NOT NULL)
+        AND ifnull(besonderheit,'') not in ('ET')
+GROUP BY spielername
+ORDER BY tore DESC"
     ;
 
 

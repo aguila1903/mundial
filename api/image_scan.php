@@ -72,7 +72,6 @@ function get_image($url, $name, $ref, $bild_art, $id) {
 
     $ADODB_CACHE_DIR = 'C:/php/cache';
 
-
     $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; // Liefert ein assoziatives Array, das der geholten Zeile entspricht 
 
     $ADODB_COUNTRECS = true;
@@ -206,7 +205,7 @@ function get_image($url, $name, $ref, $bild_art, $id) {
         }
 
         $targetGIF = $path1 . $savenameGIF;
-        
+
 //    file_put_contents("image_scan.txt", $path1);
         $savefile = fopen($targetGIF, "w");
         fwrite($savefile, $contents);
@@ -239,8 +238,6 @@ function get_image($url, $name, $ref, $bild_art, $id) {
         /*
          * ************** Front-Cover Upload ********************************
          */
-
-
 
         if ($bild_art == 'fr') {
             list($wo, $ho) = getimagesize($target);

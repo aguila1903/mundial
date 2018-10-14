@@ -82,6 +82,6 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin
 
     print json_encode($out);
 } else {
-    header("Location: http://$host/kartal/noadmin.php");
+    header("Location: http://$host/mundial/noadmin.php");
 }
 ?>

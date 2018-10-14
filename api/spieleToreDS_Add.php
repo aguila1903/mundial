@@ -8,16 +8,6 @@ header("Cache-Control: no-cache, must-revalidate");
 
 
 
-  System: infotool - SVK-Versaende
-  Funktion: Versandfehler anzeigen
-  Autor: jra
-  Datum: 04.12.2012
-
-  Zusatzhinweise:
-
-  ?nderungen:
-
-
 
 
 

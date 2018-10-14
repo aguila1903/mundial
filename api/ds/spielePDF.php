@@ -53,7 +53,7 @@ if (isset($_REQUEST["spiel_id"])) {
         if ((preg_match("/^[0-9]{1,11}?$/", trim($spiel_id))) == 0) {
 
             $out{'response'}{'status'} = -4;
-            $out{'response'}{'errors'} = array('spiel_id' => "Bitte die Spiel-ID prüfen! " . $spiel_id);
+            $out{'response'}{'errors'} = array('spiel_id' => "Bitte die Spiel-ID prÃ¼fen! " . $spiel_id);
 
             print json_encode($out);
             return;
@@ -169,37 +169,37 @@ if (!$rs) {
     while (!$rs->EOF) {
         $data{"spiel_id"} = trim($rs->fields{'spiel_id'});
         $data{"stadion_id_alt"} = trim($rs->fields{'stadion_id_alt'});
-        $data{"stadionname_alt"} = mb_convert_encoding($rs->fields{'stadionname_alt'}, 'UTF-8', 'CP1252');
+        $data{"stadionname_alt"} = $rs->fields{'stadionname_alt'};
         $data{"stadion_id"} = trim($rs->fields{'stadion_id'});
         $data{"zeit"} = trim($rs->fields{'zeit'});
         $data{"trainer_id_a"} = trim($rs->fields{'trainer_id_a'});
         $data{"trainer_id_h"} = trim($rs->fields{'trainer_id_h'});
-        $data{"schiri_verein"} = mb_convert_encoding($rs->fields{'schiri_verein'}, 'UTF-8', 'CP1252');
-        $data{"wochentag"} = mb_convert_encoding($rs->fields{'wochentag'}, 'UTF-8', 'CP1252');
-        $data{"wettbewerb_zusatz"} = mb_convert_encoding($rs->fields{'wettbewerb_zusatz'}, 'UTF-8', 'CP1252');
-        $data{"anschrift"} = mb_convert_encoding($rs->fields{'anschrift'}, 'UTF-8', 'CP1252');
-        $data{"trainer_a"} = mb_convert_encoding($rs->fields{'trainer_a'}, 'UTF-8', 'CP1252');
-        $data{"trainer_h"} = mb_convert_encoding($rs->fields{'trainer_h'}, 'UTF-8', 'CP1252');
+        $data{"schiri_verein"} = ($rs->fields{'schiri_verein'});
+        $data{"wochentag"} = ($rs->fields{'wochentag'});
+        $data{"wettbewerb_zusatz"} = ($rs->fields{'wettbewerb_zusatz'});
+        $data{"anschrift"} = ($rs->fields{'anschrift'});
+        $data{"trainer_a"} = ($rs->fields{'trainer_a'});
+        $data{"trainer_h"} = ($rs->fields{'trainer_h'});
         $data{"zusch_anzahl"} = number_format(trim($rs->fields{'zusch_anzahl'}), 0, ',', '.');
         $data{"gaestefans"} = number_format(trim($rs->fields{'gaestefans'}), 0, ',', '.');
         // $data{"erg_a"} = trim($rs->fields{'erg_a'});
         // $data{"erg_h"} = trim($rs->fields{'erg_h'});
         $data{"verein_id_a"} = trim($rs->fields{'verein_id_a'});
         $data{"verein_id_h"} = trim($rs->fields{'verein_id_h'});
-        $data{"paarung"} = mb_convert_encoding($rs->fields{'verein_h'}, 'UTF-8', 'CP1252') . ' - ' . mb_convert_encoding($rs->fields{'verein_a'}, 'UTF-8', 'CP1252');
+        $data{"paarung"} = ($rs->fields{'verein_h'}) . ' - ' . ($rs->fields{'verein_a'});
         $data{"sp_datum"} = trim($rs->fields{'sp_datum'});
         $data{"schiri_id"} = trim($rs->fields{'schiri_id'});
-        $data{"schiri"} = mb_convert_encoding($rs->fields{'schiri'}, 'UTF-8', 'CP1252');
-        $data{"name"} = mb_convert_encoding($rs->fields{'name'}, 'UTF-8', 'CP1252');
+        $data{"schiri"} = ($rs->fields{'schiri'});
+        $data{"name"} = ($rs->fields{'name'});
         $data{"liga_id"} = trim($rs->fields{'liga_id'});
         $data{"ort_id"} = trim($rs->fields{'ort_id'});
-        $data{"ort"} = mb_convert_encoding($rs->fields{'ort'}, 'UTF-8', 'CP1252');
-        $data{"sp_bericht"} = mb_convert_encoding($rs->fields{'sp_bericht'}, 'UTF-8', 'CP1252');
-        $data{"bes_vork"} = mb_convert_encoding($rs->fields{'bes_vork'}, 'UTF-8', 'CP1252');
-        $data{"land"} = mb_convert_encoding($rs->fields{'land'}, 'UTF-8', 'CP1252');
-        $data{"code"} = mb_convert_encoding($rs->fields{'code'}, 'UTF-8', 'CP1252');
-        $data{"verein_a"} = mb_convert_encoding($rs->fields{'verein_a'}, 'UTF-8', 'CP1252');
-        $data{"verein_h"} = mb_convert_encoding($rs->fields{'verein_h'}, 'UTF-8', 'CP1252');
+        $data{"ort"} = ($rs->fields{'ort'});
+        $data{"sp_bericht"} = ($rs->fields{'sp_bericht'});
+        $data{"bes_vork"} = ($rs->fields{'bes_vork'});
+        $data{"land"} = ($rs->fields{'land'});
+        $data{"code"} = ($rs->fields{'code'});
+        $data{"verein_a"} = ($rs->fields{'verein_a'});
+        $data{"verein_h"} = ($rs->fields{'verein_h'});
         $data{"erg"} = trim($rs->fields{'ergebnis'});
         $data{"erg_elfer"} = trim($rs->fields{'erg_elfer'});
         $data{"erg_halb"} = trim($rs->fields{'erg_halb'});
@@ -221,24 +221,24 @@ if (!$rs) {
 
 
         if (strlen(trim($rs->fields{'zusatz'})) > 0) {
-            $data{"wettbewerb"} = mb_convert_encoding($rs->fields{'wettbewerb'}, 'UTF-8', 'CP1252') . " (" . mb_convert_encoding($rs->fields{'zusatz'}, 'UTF-8', 'CP1252') . ")";
+            $data{"wettbewerb"} = ($rs->fields{'wettbewerb'}) . " (" . ($rs->fields{'zusatz'}) . ")";
         } else {
-            $data{"wettbewerb"} = mb_convert_encoding($rs->fields{'wettbewerb'}, 'UTF-8', 'CP1252');
+            $data{"wettbewerb"} = ($rs->fields{'wettbewerb'});
         }
 
 
         if (strlen(trim($rs->fields{'kapazitaet'})) == 0 || trim($rs->fields{'kapazitaet'}) == '' || trim($rs->fields{'kapazitaet'}) == 'NULL' || trim($rs->fields{'kapazitaet'}) == null) {
 
             if (strlen(trim($rs->fields{'stadionname_alt'})) == 0 || trim($rs->fields{'stadionname_alt'}) == '' || trim($rs->fields{'stadionname_alt'}) == 'NULL' || trim($rs->fields{'stadionname_alt'}) == null) {
-                $data{"stadionname"} = mb_convert_encoding($rs->fields{'stadionname'}, 'UTF-8', 'CP1252');
+                $data{"stadionname"} = ($rs->fields{'stadionname'});
             } else {
-                $data{"stadionname"} = mb_convert_encoding($rs->fields{'stadionname'}, 'UTF-8', 'CP1252') . ' (' . mb_convert_encoding($rs->fields{'stadionname_alt'}, 'UTF-8', 'CP1252') . ")";
+                $data{"stadionname"} = ($rs->fields{'stadionname'}) . ' (' . ($rs->fields{'stadionname_alt'}) . ")";
             }
         } else {
             if (strlen(trim($rs->fields{'stadionname_alt'})) == 0 || trim($rs->fields{'stadionname_alt'}) == '' || trim($rs->fields{'stadionname_alt'}) == 'NULL' || trim($rs->fields{'stadionname_alt'}) == null) {
-                $data{"stadionname"} = mb_convert_encoding($rs->fields{'stadionname'}, 'UTF-8', 'CP1252') . ' (' . number_format(trim($rs->fields{'kapazitaet'}), 0, ',', '.') . ')';
+                $data{"stadionname"} = ($rs->fields{'stadionname'}) . ' (' . number_format(trim($rs->fields{'kapazitaet'}), 0, ',', '.') . ')';
             } else {
-                $data{"stadionname"} = mb_convert_encoding($rs->fields{'stadionname'}, 'UTF-8', 'CP1252') . ' (' . number_format(trim($rs->fields{'kapazitaet'}), 0, ',', '.') . ') (' . mb_convert_encoding($rs->fields{'stadionname_alt'}, 'UTF-8', 'CP1252') . ")";
+                $data{"stadionname"} = ($rs->fields{'stadionname'}) . ' (' . number_format(trim($rs->fields{'kapazitaet'}), 0, ',', '.') . ') (' . ($rs->fields{'stadionname_alt'}) . ")";
             }
         }
 
@@ -302,7 +302,7 @@ if (!$rs_wp) {
 
         
 
-        // den n�chsten Datensatz lesen
+        // den nï¿½chsten Datensatz lesen
         $rs_wp->MoveNext();
     }
 
@@ -337,7 +337,7 @@ if (!$rs_wp) {
 
        
 
-        // den n�chsten Datensatz lesen
+        // den nï¿½chsten Datensatz lesen
         $rs_wp->MoveNext();
     }
 
@@ -362,7 +362,7 @@ if ($data_wp_h{"dateiname"} != "no_image.jpg") {
     $pdf->Image($mediaDir . "thumbnails\\" . $data_wp_h{"dateiname"}, 5, 5); // Wappen Heim-Mannschaft
 }
 if ($data_wp_a{"dateiname"} != "no_image.jpg") {
-    $pdf->Image($mediaDir . "thumbnails\\" . $data_wp_a{"dateiname"}, 175, 5); // Wappen Auswürts-Mannschaft
+    $pdf->Image($mediaDir . "thumbnails\\" . $data_wp_a{"dateiname"}, 175, 5); // Wappen AuswÃ¼rts-Mannschaft
 }
 $ih = 25;
 $iw = 35;
@@ -370,7 +370,7 @@ $iw = 35;
  * **************************** ERGEBNIS ********************************************
  */
 $ergebnis = ($data{"verein_h"}) . "  " . $data{"ergebnis"} . "  " . ($data{"verein_a"});
-//Anpassung der Schriftgrößen
+//Anpassung der SchriftgrÃ¶ÃŸen
 if (strlen($ergebnis) >= 40) {
     $pdf->SetFont('Arial', 'B', 15);
 }
@@ -396,7 +396,7 @@ $uhrzeit = $data{"zeit"} . " Uhr";
 $wochentag = $data{"wochentag"};
 $wettbewerb = ($data{"wettbewerb"} . " (" . $data{"wettbewerb_zusatz"} . ")");
 $zuschauer = $data{"zusch_anzahl"} . " (" . $data{"gaestefans"} . ")";
-$stadion = "Spielstätte: " . $data{"stadionname"};
+$stadion = "SpielstÃ¤tte: " . $data{"stadionname"};
 $schiri = "Schiedsrichter: " . $data{"schiri"};
 
 $spielZeit = $wochentag . ", " . $datum . " " . $uhrzeit;
@@ -416,7 +416,7 @@ $pdf->Cell($w, 0, $wettbewerb, 0, 0, 'C', false);
 $pdf->SetFont('Arial', '', 13);
 $w1 = 21;
 $pdf->Text($w1, $ih + 20, "Zuschauer: " . $data{"zusch_anzahl"});
-//Gäste
+//GÃ¤ste
 $pdf->Text($w1, $ih + 25, ("Gäste: " . $data{"gaestefans"}));
 //Stadion
 $pdf->Text($w1, $ih + 33, ($stadion));
@@ -466,11 +466,12 @@ $pdf->SetFont('Arial', '', $fontSize - 2);
 while (!$rs->EOF) {
 
     if (trim($rs->fields{'aw_minute'}) > 0) {
-        $data{$i}{"name"} = mb_convert_encoding($rs->fields{'name'}, 'UTF-8', 'CP1252') . " (" . trim($rs->fields{'aw_minute'}) . ".)";
+        $data{$i}{"name"} = $rs->fields{'name'} . " (" . trim($rs->fields{'aw_minute'}) . ".)";
         $pdf->Text($w1, $ih + $ii, ($data{$i}{"name"}));
         $pdf->Image($imagesDir."ic_wechsel_rot.png", $w1 - 5, $ih + $ii - 2.5);
     } else {
-        $data{$i}{"name"} = mb_convert_encoding($rs->fields{'name'}, 'UTF-8', 'CP1252');
+		
+        $data{$i}{"name"} = iconv('UTF-8', 'windows-1252', $rs->fields{'name'});
         $pdf->Text($w1, $ih + $ii, ($data{$i}{"name"}));
     }
 
@@ -593,7 +594,7 @@ if ($data{"ges_kosten"} !== '0,00') {
     }
     if ($data{"uebernachtung"} !== '0,00') {
         $ii += 5;
-        $pdf->Text($w1, $ih + $ii, ('Übernachtung:'));
+        $pdf->Text($w1, $ih + $ii, ('Ãœbernachtung:'));
 //        $pdf->Text($w1 + $plus, $ih + $ii, ($data{"uebernachtung"}));
         $pdf->SetXY($w1 + $plus, $ih + $ii - 1);
         $pdf->Cell(13, 0, ($data{"uebernachtung"}), 0, 0, 'R', false);
@@ -742,7 +743,7 @@ $pdf->SetFont('Arial', '', $fontSize - 2);
 while (!$rs->EOF) {
 
     if (trim($rs->fields{'aw_minute'}) > 0) {
-        $data{$i}{"name"} = mb_convert_encoding($rs->fields{'name'}, 'UTF-8', 'CP1252') . " (" . trim($rs->fields{'aw_minute'}) . ".)";
+        $data{$i}{"name"} = $rs->fields{'name'} . " (" . trim($rs->fields{'aw_minute'}) . ".)";
         $pdf->Text($w, $ih + $ii, ($data{$i}{"name"}));
         $pdf->Image($imagesDir."ic_wechsel_rot.png", $w - 5, $ih + $ii - 2.5);
     } else {
@@ -873,7 +874,7 @@ $rs->Close();
 
 
 /*
- * **************************** TORSCHÜTZEN **********************************************
+ * **************************** TORSCHÃœTZEN **********************************************
  */
 
 $querySQL = "SELECT Distinct "
@@ -982,7 +983,7 @@ if (trim($data{"erg_zusatz"}) == "i. E." || trim($data{"erg_zusatz"}) == "nvUiE"
     $pdf->SetFont('Arial', 'B', $fontSize);
     $i = 0;
     $ii += 10;
-    $pdf->Text($w, $ih + $ii - 5, ('Elfmeterschießen'));
+    $pdf->Text($w, $ih + $ii - 5, ('ElfmeterschieÃŸen'));
     $pdf->SetFont('Arial', '', $fontSize - 2);
 
     while (!$rs->EOF) {

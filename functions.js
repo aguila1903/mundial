@@ -78,6 +78,7 @@
 
           // files is a FileList of File objects. List some properties.
           var output = [];
+          
           for(var i = 0, f; f = files[i]; i++){
               output.push('<li><strong>', f.name, '</strong> - ', f.size, ' bytes </li>');
               //  uploadFile(f, event);

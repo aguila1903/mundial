@@ -13,9 +13,6 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin
 
 
 
-
-
-
 $ADODB_CACHE_DIR = 'C:/php/cache';
 
 
@@ -82,7 +79,7 @@ if (isset($_REQUEST["spiel_id"])) {
 		. ", s.name "	
 		. ", s.spitzname "
 		. ", case when (select count(*) from media where id = v.begleiter_id) > 0 then  
-        (select ifnull(replace(lower(dateiname),'.jpg',''), 'nopic') from mundialdb.media  Where v.begleiter_id = id and ref = 'bg' and art = 'fr') else 'nopic' end as bild  "
+        (select ifnull(replace(lower(dateiname),'.jpg',''), 'nopic') from media  Where v.begleiter_id = id and ref = 'bg' and art = 'fr') else 'nopic' end as bild  "
         . "  From sp_begleiter_spiel_tabelle v Left join begleiter s on v.begleiter_id = s.begleiter_id	"  
 			 . $Where
         . "     order by s.name";

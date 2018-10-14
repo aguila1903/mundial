@@ -2,9 +2,6 @@
 
 
 
-
-
-
 session_start();
 
 require_once('adodb5/adodb.inc.php');

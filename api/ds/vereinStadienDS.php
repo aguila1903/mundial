@@ -10,6 +10,9 @@ $uri = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), "/\\");
 if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin"] == admin) {
 
 
+
+
+
 $ADODB_CACHE_DIR = 'C:/php/cache';
 
 

@@ -13,9 +13,6 @@ require_once('db_psw.php');
 
 
 
-
-
-
 $ADODB_CACHE_DIR = 'C:/php/cache';
 
 

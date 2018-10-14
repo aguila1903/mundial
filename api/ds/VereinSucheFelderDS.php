@@ -12,9 +12,6 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
 
 
 
-    
-
-
 
     $ADODB_CACHE_DIR = 'C:/php/cache';
 

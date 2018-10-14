@@ -12,9 +12,6 @@ $uri = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), "/\\");
 
 
 
-
-
-
 $ADODB_CACHE_DIR = 'C:/php/cache';
 
 

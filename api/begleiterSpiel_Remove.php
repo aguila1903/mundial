@@ -9,21 +9,6 @@ $host = (htmlspecialchars($_SERVER["HTTP_HOST"]));
 $uri = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), "/\\");
 
 
-
-
-  System: infotool - SVK-Versaende
-  Funktion: Versandfehler anzeigen
-  Autor: jra
-  Datum: 04.12.2012
-
-  Zusatzhinweise:
-
-  ?nderungen:
-
-
-
-
-
 $ADODB_CACHE_DIR = 'C:/php/cache';
 
 

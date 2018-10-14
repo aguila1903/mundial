@@ -10,9 +10,6 @@ header("Cache-Control: no-cache, must-revalidate");
 
 
 
-
-
-
 $ADODB_CACHE_DIR = 'C:/php/cache';
 
 

@@ -11,9 +11,6 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin
 
 
 
-
-
-
 $out = array();
 
 
