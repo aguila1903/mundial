@@ -1161,14 +1161,14 @@
                           RPCManager.send("", function (rpcResponse, data, rpcRequest) {
                           var _data = isc.JSON.decode(data);
                                   if(_data.response.status === 0) {
-                          var stadien_gesamt = _data.response.data["stadien_gesamt"] + " Grounds";
+                          var stadien_gesamt = "insgesamt "+_data.response.data["stadien_gesamt"] + " Grounds";
                                   var laender_gesamt = _data.response.data["laender_gesamt"] + " Ländern";   
                                   var proz_inl = (_data.response.data["stadien_ger"]/_data.response.data["stadien_gesamt"])*100;
                                   var proz_aus = (_data.response.data["stadien_aus"]/_data.response.data["stadien_gesamt"])*100;                               
-                                  var stadien_ger = _data.response.data["stadien_ger"] + " (Deutschland "+proz_inl.toFixed(2)+"%)";
-                                  var stadien_aus = _data.response.data["stadien_aus"] + " (Ausland) "+proz_aus.toFixed(2)+"%)";
+                                  var stadien_ger = "davon</br>"+_data.response.data["stadien_ger"] + " in Deutschland ("+proz_inl.toFixed(2)+"%)</br>und";
+                                  var stadien_aus = _data.response.data["stadien_aus"] + " im Ausland ("+proz_aus.toFixed(2)+"%)";
 //								var stadien_aus = _data.response.data["stadien_aus"]+ " (Ausland)";
-                                  var spiele = _data.response.data["spiele"] + " Spiele</br>in";
+                                  var spiele = _data.response.data["spiele"] + " Spiele</br>";
                                   lblGesamtUebersichtErgebnisse.setContents('<text style="color:#FDFDFF; font-size:25px; font-family:arial,brandisch,Script MT Bold,Monotype Corsiva; text-decoration:none;">\n\
 <b><center>Diese Auflistung entählt</br>'+ spiele + '</br>' + stadien_gesamt + '</br>in</br>' + laender_gesamt + '</br></br>' + stadien_ger + '</br>' + stadien_aus + '</center></b></text>');
                           }
