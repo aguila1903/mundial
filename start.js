@@ -1152,7 +1152,7 @@
 //								var stadien_aus = _data.response.data["stadien_aus"]+ " (Ausland)";
                                   var spiele = _data.response.data["spiele"] + " Spiele</br>";
                                   lblGesamtUebersichtErgebnisse.setContents('<text style="color:#FDFDFF; font-size:25px; font-family:arial,brandisch,Script MT Bold,Monotype Corsiva; text-decoration:none;">\n\
-<b><center>Diese Auflistung entählt</br>'+ spiele + '</br>' + stadien_gesamt + '</br>in</br>' + laender_gesamt + '</br></br>' + stadien_ger + '</br>' + stadien_aus + '</center></b></text>');
+<b><center>Diese Auflistung enthält</br>'+ spiele + '</br>' + stadien_gesamt + '</br>in</br>' + laender_gesamt + '</br></br>' + stadien_ger + '</br>' + stadien_aus + '</center></b></text>');
                           }
                           }, {// Übergabe der Parameter
                           actionURL: "api/ds/gesamtUebersichtDS.php",
