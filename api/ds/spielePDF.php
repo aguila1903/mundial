@@ -32,6 +32,10 @@ $dbSyb->memCacheCompress = false; /// Use 'true' arbeitet unter Windows nicht
 $dbSyb->Connect('localhost', user, psw, db); //=>>> Verbindungsaufbau mit der DB
 
 
+
+
+
+
 if (!$dbSyb->IsConnected()) {
 
 
@@ -148,13 +152,13 @@ $querySQL = "SELECT Distinct "
 ;
 
 
-//$fp = fopen("spielePDF_Daten.txt", "w");
-//fputs($fp, $querySQL);
-//fclose($fp);
+// $fp = fopen("spielePDF_Daten.txt", "w");
+// fputs($fp, $querySQL);
+// fclose($fp);
 
 
+$dbSyb->setCharset('windows-1252');
 $rs = $dbSyb->Execute($querySQL);
-
 
 if (!$rs) {
 
@@ -184,8 +188,8 @@ if (!$rs) {
         $data{"gaestefans"} = number_format(trim($rs->fields{'gaestefans'}), 0, ',', '.');
         // $data{"erg_a"} = trim($rs->fields{'erg_a'});
         // $data{"erg_h"} = trim($rs->fields{'erg_h'});
-        $data{"verein_id_a"} = trim($rs->fields{'verein_id_a'});
-        $data{"verein_id_h"} = trim($rs->fields{'verein_id_h'});
+        $data{"verein_id_a"} = iconv('windows-1252', 'windows-1252',trim($rs->fields{'verein_id_a'}));
+        $data{"verein_id_h"} = iconv('windows-1252', 'windows-1252',trim($rs->fields{'verein_id_h'}));
         $data{"paarung"} = ($rs->fields{'verein_h'}) . ' - ' . ($rs->fields{'verein_a'});
         $data{"sp_datum"} = trim($rs->fields{'sp_datum'});
         $data{"schiri_id"} = trim($rs->fields{'schiri_id'});
@@ -370,7 +374,7 @@ $iw = 35;
  * **************************** ERGEBNIS ********************************************
  */
 $ergebnis = ($data{"verein_h"}) . "  " . $data{"ergebnis"} . "  " . ($data{"verein_a"});
-//Anpassung der SchriftgrÃƒÂ¶ÃƒÅ¸en
+//Anpassung der Schriftgrääen
 if (strlen($ergebnis) >= 40) {
     $pdf->SetFont('Arial', 'B', 15);
 }
@@ -396,7 +400,7 @@ $uhrzeit = $data{"zeit"} . " Uhr";
 $wochentag = $data{"wochentag"};
 $wettbewerb = ($data{"wettbewerb"} . " (" . $data{"wettbewerb_zusatz"} . ")");
 $zuschauer = $data{"zusch_anzahl"} . " (" . $data{"gaestefans"} . ")";
-$stadion = "SpielstÃƒÂ¤tte: " . $data{"stadionname"};
+$stadion = "Spielstätte: " . $data{"stadionname"};
 $schiri = "Schiedsrichter: " . $data{"schiri"};
 
 $spielZeit = $wochentag . ", " . $datum . " " . $uhrzeit;
@@ -416,8 +420,8 @@ $pdf->Cell($w, 0, $wettbewerb, 0, 0, 'C', false);
 $pdf->SetFont('Arial', '', 13);
 $w1 = 21;
 $pdf->Text($w1, $ih + 20, "Zuschauer: " . $data{"zusch_anzahl"});
-//GÃƒÂ¤ste
-$pdf->Text($w1, $ih + 25, ("GÃ¤ste: " . $data{"gaestefans"}));
+//Gäste
+$pdf->Text($w1, $ih + 25, ("Gäste: " . $data{"gaestefans"}));
 //Stadion
 $pdf->Text($w1, $ih + 33, ($stadion));
 //Schiri
