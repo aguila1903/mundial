@@ -847,7 +847,7 @@
                                   isc.say(_errors);
                           }
                           }, {// Übergabe der Parameter
-                          actionURL: "update.php",
+                          actionURL: "update/update.php",
                           httpMethod: "POST",
                           contentType: "application/x-www-form-urlencoded",
                           useSimpleHttp: true
@@ -29830,7 +29830,7 @@
                   height: 148,
                   numCols: 2,
                   // location of our backend
-                  action: 'api/update/update.php',
+                  action: 'api/update.php',
                   fields: [{
                   type: "RowSpacer",
                           height: 10
