@@ -1,5 +1,7 @@
 nbproject/
-update/
+update/log/*.*
+update/sql_new/*.*
+update/sql_old/*.*
 update_manuell/
 *.xlsx
 *.bak
