@@ -59,6 +59,20 @@ if (!is_dir($update_logs_dir)) {
     mkdir($update_logs_dir, 0777, true);
 }
 
+
+//Git
+if (domainAvailable('https://github.com/')) {
+    $update = updateCheck($update_logs);
+} else {
+    $out{'response'}{'status'} = 4;
+    $out{'response'}{'errors'} = array('Update konnte nicht durchgeführt werden da keine Internetverbindung besteht.');
+
+    print json_encode($out);
+
+    return;
+}
+
+
 if (is_file($update_sql_new)) {//Es befindet sich eine Datei im sql-update Ordner
     if (is_file($sql_mysql) && is_file($sql_dump)) { // die mysql-Tools konnten gefunden werden
         //Vor dem Update: Sichern der Datenbank
@@ -75,19 +89,6 @@ if (is_file($update_sql_new)) {//Es befindet sich eine Datei im sql-update Ordne
         }
         rename($update_sql_new, $update_sql_old);
     }
-}
-
-
-//Git
-if (domainAvailable('https://github.com/')) {
-    $update = updateCheck($update_logs);
-} else {
-    $out{'response'}{'status'} = 4;
-    $out{'response'}{'errors'} = array('Update konnte nicht durchgeführt werden da keine Internetverbindung besteht.');
-
-    print json_encode($out);
-
-    return;
 }
 
 
