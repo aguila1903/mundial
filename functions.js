@@ -10,6 +10,7 @@
   }
   var _Time = jetzt.getTime();
 
+
   function doUpdate(){
       RPCManager.send("", function(rpcResponse, data, rpcRequest){
           var _data = isc.JSON.decode(data);
