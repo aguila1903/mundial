@@ -47,6 +47,15 @@ function updateCheck($update_logs) {
 //    exec('update.cmd');
 }
 
+if (isset($_POST["type"])) {
+    $type = $_POST["type"];
+    if (preg_match("/[automen]{4}/", $type) !== 1) {
+        $type = "auto";
+    }
+} else {
+    $type = "auto";
+}
+
 //Verzeichnisse und Pfade
 $backup_file = __DIR__ . "\\..\\api\\Backups\\$date.sql"; //Datei in dem die Backups geschrieben werden
 $update_sql_new = __DIR__ . "\\sql_new\\sql.sql"; //Ordner in dem die aktualisierten sql Daten sind
@@ -68,9 +77,7 @@ if (domainAvailable('https://github.com/')) {
 } else {
     $out{'response'}{'status'} = 4;
     $out{'response'}{'errors'} = array('Update konnte nicht durchgeführt werden da keine Internetverbindung besteht.');
-
     print json_encode($out);
-
     return;
 }
 
@@ -93,8 +100,11 @@ if (is_file($update_sql_new)) {//Es befindet sich eine Datei im sql-update Ordne
     }
 }
 
-if ($update == "nope") {
+if ($update == "nope" && $type == "auto") {
     $out{'response'}{'status'} = 1;
+} elseif ($update == "nope" && $type == "menu") {
+    $out{'response'}{'status'} = 0;
+    $update = "Keine neuen Updates vorhanden!";
 } else {
     $out{'response'}{'status'} = 0;
 }

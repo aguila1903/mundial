@@ -45,7 +45,7 @@ function openNode(_admin, _id)
 }
 
 
-function doUpdate()
+function doUpdate(type_)
 {
     RPCManager.send("", function (rpcResponse, data, rpcRequest)
     {
@@ -62,8 +62,8 @@ function doUpdate()
         actionURL: "update/update.php",
         httpMethod: "POST",
         contentType: "application/x-www-form-urlencoded",
-        useSimpleHttp: true
-//                                params: {}
+        useSimpleHttp: true,
+        params: {type: type_}
     }); //Ende RPC
 }
 ;
