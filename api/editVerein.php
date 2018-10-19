@@ -259,8 +259,8 @@ if (isset($_REQUEST["stadtteil"])) {
 
 $sqlQuery = "call editVerein("
         . $dbSyb->Quote(($verein_id)) .
-        ", " . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE",$vereinsname)) .
-		", " . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE",$gaengiger_name)) .
+        ", " . $dbSyb->quote($vereinsname) .
+		", " . $dbSyb->quote($gaengiger_name) .
         ", " . $dbSyb->quote(($ort)) .
         ", " . $dbSyb->quote(($land));
 if ($gr_datum == null) {
@@ -276,12 +276,12 @@ if ($gr_datum == null) {
 if ($historie == null) {
     $sqlQuery .= " ,NULL ";
 } else {
-    $sqlQuery .= ", " . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE", $historie));
+    $sqlQuery .= ", " . $dbSyb->quote($historie);
 }
 if ($spitzname == null) {
     $sqlQuery .= " ,NULL ";
 } else {
-    $sqlQuery .= ", " . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE", $spitzname));
+    $sqlQuery .= ", " . $dbSyb->quote($spitzname);
 }
 if ($stadtteil == null) {
     $sqlQuery .= " ,NULL );";

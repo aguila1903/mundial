@@ -384,7 +384,7 @@ $sqlQuery .= ", " . $kapazitaet .
 if ($historie == null) {
     $sqlQuery .= " ,NULL ";
 } else {
-    $sqlQuery .= ", " . $dbSyb->Quote(iconv("UTF-8", "CP1252//IGNORE", $historie));
+    $sqlQuery .= ", " . $dbSyb->Quote($historie);
 }
 if ($er_jahr == null) {
     $sqlQuery .= " ,NULL ";

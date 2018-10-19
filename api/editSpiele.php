@@ -795,12 +795,12 @@ $sqlQuery .= ", " . $zusch_anzahl .
 if ($sp_bericht == null) {
     $sqlQuery .= " ,NULL ";
 } else {
-    $sqlQuery .= ", " . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE", $sp_bericht));
+    $sqlQuery .= ", " . $dbSyb->quote($sp_bericht);
 }
 if ($bes_vork == null) {
     $sqlQuery .= " ,NULL ";
 } else {
-    $sqlQuery .= ", " . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE", $bes_vork));
+    $sqlQuery .= ", " . $dbSyb->quote($bes_vork);
 }
 $sqlQuery .= ", " . $wettbewerb
         . ", " . str_replace(",", ".", $sprit)
@@ -819,7 +819,7 @@ $sqlQuery .= ", " . $wettbewerb
 if ($wettbewerb_zusatz == null) {
     $sqlQuery .= " ,NULL";
 } else {
-    $sqlQuery .= ", " . $dbSyb->Quote(iconv("UTF-8", "CP1252//IGNORE", $wettbewerb_zusatz));
+    $sqlQuery .= ", " . $dbSyb->Quote($wettbewerb_zusatz);
 }
 if ($erg_elfer == null) {
     $sqlQuery .= " ,NULL ";

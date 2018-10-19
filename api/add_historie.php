@@ -94,11 +94,11 @@ if (isset($_REQUEST["from"])) {
 }
 
 if($from == "stadion") {
-	$sqlQuery = " update stadionliste set historie = ". $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE", $historie))
+	$sqlQuery = " update stadionliste set historie = ". $dbSyb->quote($historie)
 			. " Where stadion_id = ". $id;
 }
 else{
-	$sqlQuery = " update vereine set historie = ". $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE", $historie))
+	$sqlQuery = " update vereine set historie = ". $dbSyb->quote($historie)
 			. " Where verein_id = ". $id;
 }
 

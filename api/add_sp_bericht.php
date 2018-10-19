@@ -86,7 +86,7 @@ if (isset($_REQUEST["sp_bericht"])) {
     return;
 }
 
-$sqlQuery = " update sp_besuche set sp_bericht = ". $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE", $sp_bericht))
+$sqlQuery = " update sp_besuche set sp_bericht = ". $dbSyb->quote($sp_bericht)
 			. " Where spiel_id = ". $spiel_id;
 
 

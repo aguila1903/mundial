@@ -62,7 +62,7 @@ $i = 0;
 while( $i < count($split)){
 	$zeile = str_replace(",", "','", $split[$i]);
 	
-$sqlQuery = " Insert into spieler (vorname, name, land, geb_datum) values('".iconv("UTF-8", "CP1252//IGNORE", $zeile)."', 'nb', '1900-01-01');";
+$sqlQuery = " Insert into spieler (vorname, name, land, geb_datum) values('".$zeile."', 'nb', '1900-01-01');";
 
 $rs = $dbSyb->Execute($sqlQuery);
 
