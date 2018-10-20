@@ -155,9 +155,9 @@ if (isset($_REQUEST["land"])) {
 
 
 $sqlQuery = "call addSpieler("
-        . $dbSyb->Quote(iconv("UTF-8", "CP1252//IGNORE",$name)) .
-        ", " . $dbSyb->Quote(iconv("UTF-8", "CP1252//IGNORE",$vorname)) .
-        ", " . $dbSyb->Quote(($land)).");";
+        . $dbSyb->Quote($name) .
+        ", " . $dbSyb->Quote($vorname) .
+        ", " . $dbSyb->Quote($land).");";
 
 
 // file_put_contents("addStadion.txt", $sqlQuery);
