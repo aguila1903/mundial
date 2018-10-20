@@ -6,6 +6,7 @@ session_start();
 require_once('adodb5/adodb.inc.php');
 require_once('fpdf/fpdf.php');
 require_once('db_psw.php');
+include("..\\resizer.php");
 header("Cache-Control: no-cache, must-revalidate");
 $host = (htmlspecialchars($_SERVER["HTTP_HOST"]));
 $uri = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), "/\\");
@@ -48,13 +49,13 @@ $dbSyb->debug = false;
 $out = array();
 $data = array();
 
-function cs($string){
-	if(!iconv('UTF-8','ISO-8859-1//IGNORE',$string)){
-		$output = iconv('UTF-8','ISO-8859-1//IGNORE',$string);
-	}else{
-		$output = iconv('UTF-8','ISO-8859-1//TRANSLIT',$string);
-	}
-	return $output;
+function cs($string) {
+    if (!iconv('UTF-8', 'ISO-8859-1//IGNORE', $string)) {
+        $output = iconv('UTF-8', 'ISO-8859-1//IGNORE', $string);
+    } else {
+        $output = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $string);
+    }
+    return $output;
 }
 
 // $Where = " Where land != 'nb' ";
@@ -65,7 +66,7 @@ if (isset($_REQUEST["spiel_id"])) {
         if ((preg_match("/^[0-9]{1,11}?$/", trim($spiel_id))) == 0) {
 
             $out{'response'}{'status'} = -4;
-            $out{'response'}{'errors'} = array('spiel_id' => "Bitte die Spiel-ID prüfen! " . $spiel_id);
+            $out{'response'}{'errors'} = array('spiel_id' => "Bitte die Spiel-ID prï¿½fen! " . $spiel_id);
 
             print json_encode($out);
             return;
@@ -163,8 +164,6 @@ $querySQL = "SELECT Distinct "
 // $fp = fopen("spielePDF_Daten.txt", "w");
 // fputs($fp, $querySQL);
 // fclose($fp);
-
-
 // $dbSyb->setCharset('windows-1252');
 $rs = $dbSyb->Execute($querySQL);
 
@@ -292,10 +291,6 @@ if (!$rs) {
 
 $querySQL_wappen = "select ifnull(dateiname,'no_image.jpg') as dateiname from media where id = " . $data{"verein_id_h"} . " and ref = 'vn' and art = 'fr'";
 
-// $fp = fopen("spielePDF_Wappen.txt", "w"); 
-// fputs($fp, $querySQL_wappen);             
-// fclose($fp);
-
 $rs_wp = $dbSyb->Execute($querySQL_wappen);
 $data_wp = array();
 $data_wp_h{"dateiname"} = 'no_image.jpg';
@@ -307,14 +302,10 @@ if (!$rs_wp) {
     print json_encode($out);
     return;
 } else {
-    
+
 
     while (!$rs_wp->EOF) {
         $data_wp_h{"dateiname"} = ($rs_wp->fields{'dateiname'});
-
-        
-
-        // den n?chsten Datensatz lesen
         $rs_wp->MoveNext();
     }
 
@@ -327,10 +318,6 @@ if (!$rs_wp) {
 
 $querySQL_wappen = "select ifnull(dateiname,'no_image.jpg') as dateiname from media where id = " . $data{"verein_id_a"} . " and ref = 'vn' and art = 'fr';";
 
-// $fp = fopen("spielePDF_Wappen.txt", "w"); 
-// fputs($fp, $querySQL_wappen);             
-// fclose($fp);
-
 $rs_wp = $dbSyb->Execute($querySQL_wappen);
 $data_wp_a = array();
 $data_wp_a{"dateiname"} = 'no_image.jpg';
@@ -342,17 +329,10 @@ if (!$rs_wp) {
     print json_encode($out);
     return;
 } else {
-   
-
     while (!$rs_wp->EOF) {
         $data_wp_a{"dateiname"} = ($rs_wp->fields{'dateiname'});
-
-       
-
-        // den n?chsten Datensatz lesen
         $rs_wp->MoveNext();
     }
-
     $rs_wp->Close();
 }
 
@@ -364,25 +344,126 @@ if (!$rs_wp) {
 $pdf = new FPDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
+$ih = 5;
+$imagesDir = __DIR__ . "\\..\\..\\images\\famfam\\";
+$mediaDir = __DIR__ . "\\..\\images\\media\\";
+
+/*
+ * **************************** EINTRITTSKARTE **********************************************
+ */
+
+
+$querySQL = "select dateiname, art, "
+        . " (select count(*) from media where id = " . $spiel_id . " and ref = 'sb') as anzahl  "
+        . "from media where id = " . $spiel_id . " and ref = 'sb' AND art = 'fr' order by art -- and art = 'fr'"
+        . ";";
+
+$rs = $dbSyb->Execute($querySQL);
+
+if (!$rs) {
+    $out{'response'}{'status'} = -4;
+    $out{'response'}{'errors'} = array('lfd_nr' => ($dbSyb->ErrorMsg()));
+
+    print json_encode($out);
+    return;
+}
+$i = 0;
+$anzahl = $rs->fields{'anzahl'};
+if ($anzahl > 0) {
+    $h = 2;
+    $seitenHoehe = $pdf->GetPageHeight();
+    $seitenBreite = $pdf->GetPageWidth();
+
+    while (!$rs->EOF) {
+        if ($rs->fields{'art'} == "ga") {
+            $images = $mediaDir . "pdf\\";
+        } else {
+            $images = $mediaDir . "thumbnails\\";
+        }
+
+        if (isset($rs->fields{'dateiname'})) {
+            $data{$i}{"dateiname"} = ($rs->fields{'dateiname'});
+        } else {
+            $data{$i}{"dateiname"} = "no_image.jpg";
+        }
+        list($width, $height, $type, $attr) = getimagesize($images . $data{$i}{"dateiname"});
+
+        if ($width < $height) {
+            $wr = ($width / $height) * 203;
+            $hr = 203;
+        } else {
+            $wr = 400;
+            $hr = ($height / $width) * 400;
+        }
+        $picHeight = $hr / 3.779528; // Umrechnung von pixel in mm
+        $target = $images . $data{$i}{"dateiname"};
+        $new = $images . "_" . $data{$i}{"dateiname"};
+        resize($target, $new, $wr, $hr, 'jpg'); // Funktion in der reseizer.php wird ausgefï¿½hrt  
+
+        $pdf->Image($new, 50, $h, 'jpg');
+
+        $i++;
+        $rs->MoveNext();
+    }
+}
+
+$rs->Close();
+
+// globale HÃ¶heneinstellungen
+if ($anzahl > 0) {
+    $ih = $picHeight + 5;
+}
+$iw = 35;
+$h_start = 60;
+$w_rechts = 140;
+$w_mitte = 76;
 
 /*
  * **************************** WAPPEN **********************************************
  */
-$imagesDir = __DIR__."\\..\\..\\images\\famfam\\";
-$mediaDir = __DIR__. "\\..\\images\\media\\";
 if ($data_wp_h{"dateiname"} != "no_image.jpg") {
-    $pdf->Image($mediaDir . "thumbnails\\" . $data_wp_h{"dateiname"}, 5, 5); // Wappen Heim-Mannschaft
+    $pdf->Image($mediaDir . "thumbnails\\" . $data_wp_h{"dateiname"}, 5, $ih); // Wappen Heim-Mannschaft
 }
 if ($data_wp_a{"dateiname"} != "no_image.jpg") {
-    $pdf->Image($mediaDir . "thumbnails\\" . $data_wp_a{"dateiname"}, 175, 5); // Wappen Auswürts-Mannschaft
+    $pdf->Image($mediaDir . "thumbnails\\" . $data_wp_a{"dateiname"}, 175, $ih); // Wappen Auswï¿½rts-Mannschaft
 }
-$ih = 25;
-$iw = 35;
+
+/*
+ * **************************** HEADER INFOS ********************************************
+ */
+
+$datum = $data{"sp_datum"};
+$uhrzeit = $data{"zeit"} . " Uhr";
+$wochentag = $data{"wochentag"};
+$wettbewerb = ($data{"wettbewerb"}) . " (" . ($data{"wettbewerb_zusatz"}) . ")";
+$spielNr = $data{"nummer"};
+$spielZeit = $wochentag . ", " . $datum . " " . $uhrzeit;
+
+$pdf->SetFont('Arial', 'B', 12);
+$pdf->SetTextColor(0, 50, 50);
+
+$w = $pdf->GetStringWidth($spielNr);
+$pdf->SetXY((210 - $w) / 2, $ih);
+$pdf->Cell($w, 0, $spielNr, 0, 0, 'C', false);
+
+$pdf->SetFont('Arial', '', 11);
+$w = $pdf->GetStringWidth($spielZeit);
+$pdf->SetXY((210 - $w) / 2, $ih + 5);
+$pdf->Cell($w, 0, $spielZeit, 0, 0, 'C', false);
+
+
+// Wettbewerb
+$w = $pdf->GetStringWidth($wettbewerb);
+$pdf->SetXY((210 - $w) / 2, $ih + 10);
+$pdf->Cell($w, 0, $wettbewerb, 0, 0, 'C', false);
+
+
 /*
  * **************************** ERGEBNIS ********************************************
  */
+$ih += 20;
 $ergebnis = $data{"verein_h"} . "  " . $data{"ergebnis"} . "  " . $data{"verein_a"};
-//Anpassung der Schriftgrößen
+//Anpassung der SchriftgrÃ¶ÃŸen
 if (strlen($ergebnis) >= 40) {
     $pdf->SetFont('Arial', 'B', 15);
 }
@@ -401,51 +482,28 @@ $pdf->SetTextColor(0, 0, 0);
 $pdf->Cell($w, 0, $ergebnis, 0, 0, 'C', false);
 
 /*
- * **************************** SPIELDATEN **********************************************
+ * **************************** SPIEL-INFOS **********************************************
  */
-$datum = $data{"sp_datum"};
-$uhrzeit = $data{"zeit"} . " Uhr";
-$wochentag = $data{"wochentag"};
-$wettbewerb = ($data{"wettbewerb"}) . " (" . ($data{"wettbewerb_zusatz"}) . ")";
+
 $zuschauer = $data{"zusch_anzahl"} . " (" . $data{"gaestefans"} . ")";
-$stadion = "Spielstätte: " . $data{"stadionname"};
+$stadion = utf8_decode("SpielstÃ¤tte: ") . $data{"stadionname"};
 $schiri = "Schiedsrichter: " . $data{"schiri"};
-$spielNr = $data{"nummer"};
-$spielZeit = $wochentag . ", " . $datum . " " . $uhrzeit;
 
-
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->SetTextColor(0, 50, 50);
-
-$w = $pdf->GetStringWidth($spielNr);
-$pdf->SetXY((210 - $w) / 2, $ih - 20);
-$pdf->Cell($w, 0, $spielNr, 0, 0, 'C', false);
-
-$pdf->SetFont('Arial', '', 11);
-$w = $pdf->GetStringWidth($spielZeit);
-$pdf->SetXY((210 - $w) / 2, $ih - 15);
-$pdf->Cell($w, 0, $spielZeit, 0, 0, 'C', false);
-
-
-// Wettbewerb
-$w = $pdf->GetStringWidth($wettbewerb);
-$pdf->SetXY((210 - $w) / 2, $ih - 10);
-$pdf->Cell($w, 0, $wettbewerb, 0, 0, 'C', false);
 // Zuschauer
 $pdf->SetFont('Arial', '', 13);
 $w1 = 21;
 $pdf->Text($w1, $ih + 20, "Zuschauer: " . $data{"zusch_anzahl"});
-//Gästee
-$pdf->Text($w1, $ih + 25, ("Gäste: " . $data{"gaestefans"}));
+//GÃ¤stee
+$pdf->Text($w1, $ih + 25, utf8_decode("GÃ¤ste: ") . $data{"gaestefans"});
 //Stadion
 $pdf->Text($w1, $ih + 33, ($stadion));
 //Schiri
 $pdf->Text($w1, $ih + 43, ($schiri));
 
 //Logos
-$pdf->Image($imagesDir."supporter.png", 5, $ih + 16);
-$pdf->Image($imagesDir."stadium.png", 7, $ih + 29);
-$pdf->Image($imagesDir."whistle.png", 7, $ih + 40);
+$pdf->Image($imagesDir . "supporter.png", 5, $ih + 16);
+$pdf->Image($imagesDir . "stadium.png", 7, $ih + 29);
+$pdf->Image($imagesDir . "whistle.png", 7, $ih + 40);
 
 
 /*
@@ -479,7 +537,7 @@ if (!$rs) {
 $fontSize = 11;
 $pdf->SetFont('Arial', 'B', $fontSize);
 $i = 0;
-$ii = 60;
+$ii = $h_start;
 $pdf->Text($w1, $ih + 55, ($data{"verein_h"}));
 $pdf->SetFont('Arial', '', $fontSize - 2);
 while (!$rs->EOF) {
@@ -487,15 +545,67 @@ while (!$rs->EOF) {
     if (trim($rs->fields{'aw_minute'}) > 0) {
         $data{$i}{"name"} = cs($rs->fields{'name'}) . " (" . trim($rs->fields{'aw_minute'}) . ".)";
         $pdf->Text($w1, $ih + $ii, ($data{$i}{"name"}));
-        $pdf->Image($imagesDir."ic_wechsel_rot.png", $w1 - 5, $ih + $ii - 2.5);
+        $pdf->Image($imagesDir . "ic_wechsel_rot.png", $w1 - 5, $ih + $ii - 2.5);
     } else {
-		
+
         $data{$i}{"name"} = cs($rs->fields{'name'});
         $pdf->Text($w1, $ih + $ii, ($data{$i}{"name"}));
     }
 
     $i++;
-    $ii+=5;
+    $ii += 5;
+
+    $rs->MoveNext();
+}
+
+$rs->Close();
+
+/*
+ * **************************** AUFSTELLUNG-GAST-TEAM **********************************************
+ */
+
+$querySQL = "SELECT Distinct "
+        . " concat(ifnull(s.vorname,''),' ',s.name) as name "
+        . ", v.aw "
+        . ", v.aw_minute "
+        . "  From sp_spieler_spiel_tabelle v join spieler s on v.spieler_id = s.spieler_id	"
+        . " and spiel_id = " . $data{"spiel_id"} . " and v.status = 'sa' and v.status2 = 'a' "
+        . "     order by v.lfd_nr";
+
+
+// $fp = fopen("spielerSpielAddDS.txt", "w"); 
+// fputs($fp, $querySQL);             
+// fclose($fp); 
+
+
+$rs = $dbSyb->Execute($querySQL);
+
+if (!$rs) {
+
+    $out{'response'}{'status'} = -4;
+    $out{'response'}{'errors'} = array('errors' => "Es ist ein Fehler aufgetreten.");
+
+    print json_encode($out);
+    return;
+}
+$pdf->SetFont('Arial', 'B', $fontSize);
+$i = 0;
+$ii = $h_start;
+$w = $w_rechts;
+$pdf->Text($w, $ih + 55, ($data{"verein_a"}));
+$pdf->SetFont('Arial', '', $fontSize - 2);
+while (!$rs->EOF) {
+    if (trim($rs->fields{'aw_minute'}) > 0) {
+        $data{$i}{"name"} = cs($rs->fields{'name'}) . " (" . trim($rs->fields{'aw_minute'}) . ".)";
+        $pdf->Text($w, $ih + $ii, ($data{$i}{"name"}));
+        $pdf->Image($imagesDir . "ic_wechsel_rot.png", $w - 5, $ih + $ii - 2.5);
+    } else {
+        $data{$i}{"name"} = cs($rs->fields{'name'});
+        $pdf->Text($w, $ih + $ii, ($data{$i}{"name"}));
+    }
+
+    $i++;
+    $ii += 5;
 
     $rs->MoveNext();
 }
@@ -532,26 +642,77 @@ if (!$rs) {
 }
 $pdf->SetFont('Arial', 'B', $fontSize);
 $i = 0;
-$ii = 125;
-$pdf->Text($w1, $ih + 120, 'Bank');
+$ii = 123;
+$pdf->Text($w1, $ih + 118, 'Bank');
 $pdf->SetFont('Arial', '', $fontSize - 2);
 while (!$rs->EOF) {
-
     if (trim($rs->fields{'aw_minute'}) > 0) {
         $data{$i}{"name"} = cs($rs->fields{'name'}) . " (" . trim($rs->fields{'aw_minute'}) . ".)";
         $pdf->Text($w1, $ih + $ii, ($data{$i}{"name"}));
-        $pdf->Image($imagesDir."ic_wechsel_gruen.png", $w1 - 5, $ih + $ii - 2.5);
+        $pdf->Image($imagesDir . "ic_wechsel_gruen.png", $w1 - 5, $ih + $ii - 2.5);
     } else {
         $data{$i}{"name"} = cs($rs->fields{'name'});
         $pdf->Text($w1, $ih + $ii, ($data{$i}{"name"}));
     }
 
     $i++;
-    $ii+=5;
+    $ii += 5;
 
     $rs->MoveNext();
 }
+$trH_h =$ii;
+$rs->Close();
 
+/*
+ * **************************** AUSWECHSELBANK-GAST-TEAM **********************************************
+ */
+
+$querySQL = "SELECT Distinct "
+        . " concat(ifnull(s.vorname,''),' ',s.name) as name "
+        . ", v.aw "
+        . ", v.aw_minute "
+        . "  From sp_spieler_spiel_tabelle v join spieler s on v.spieler_id = s.spieler_id	"
+        . " and spiel_id = " . $data{"spiel_id"} . " and v.status = 'ew' and v.status2 = 'a' "
+        . "     order by v.lfd_nr";
+
+
+// $fp = fopen("spielerSpielAddDS.txt", "w"); 
+// fputs($fp, $querySQL);             
+// fclose($fp); 
+
+
+$rs = $dbSyb->Execute($querySQL);
+
+if (!$rs) {
+
+    $out{'response'}{'status'} = -4;
+    $out{'response'}{'errors'} = array('errors' => "Es ist ein Fehler aufgetreten.");
+
+    print json_encode($out);
+    return;
+}
+$pdf->SetFont('Arial', 'B', $fontSize);
+$i = 0;
+$ii = 123;
+$w = $w_rechts;
+$pdf->Text($w, $ih + 118, 'Bank');
+$pdf->SetFont('Arial', '', $fontSize - 2);
+while (!$rs->EOF) {
+    if (trim($rs->fields{'aw_minute'}) > 0) {
+        $data{$i}{"name"} = cs($rs->fields{'name'}) . " (" . trim($rs->fields{'aw_minute'}) . ".)";
+        $pdf->Text($w, $ih + $ii, ($data{$i}{"name"}));
+        $pdf->Image($imagesDir . "ic_wechsel_gruen.png", $w - 5, $ih + $ii - 2.5);
+    } else {
+        $data{$i}{"name"} = cs($rs->fields{'name'});
+        $pdf->Text($w, $ih + $ii, cs($data{$i}{"name"}));
+    }
+
+    $i++;
+    $ii += 5;
+
+    $rs->MoveNext();
+}
+$trH_a = $ii;
 $rs->Close();
 
 /*
@@ -560,10 +721,171 @@ $rs->Close();
 
 $pdf->SetFont('Arial', 'B', $fontSize);
 $i = 0;
-$ii += 10;
+$ii = $trH_h+8;
 $pdf->Text($w1, $ih + $ii - 5, ('Trainer'));
 $pdf->SetFont('Arial', '', $fontSize - 2);
 $pdf->Text($w1, $ih + $ii, ($data{"trainer_h"}));
+
+$reise_h = $ii;
+
+/*
+ * **************************** Trainer-Gast-TEAM **********************************************
+ */
+
+$pdf->SetFont('Arial', 'B', $fontSize);
+$i = 0;
+$ii = $trH_a+8;
+$pdf->Text($w, $ih + $ii - 5, ('Trainer'));
+$pdf->SetFont('Arial', '', $fontSize - 2);
+$pdf->Text($w, $ih + $ii, ($data{"trainer_a"}));
+$anr_h = $ii;
+
+/*
+ * **************************** TORSCHï¿½TZEN **********************************************
+ */
+
+$querySQL = "SELECT Distinct "
+        . "	 sp.lfd_nr "
+        . ", sp.spiel_id "
+        . ", sp.spieler_id_h "
+        . ", sp.spieler_id_a "
+        . ", sp.elfer "
+        . ", concat(ifnull(s.vorname,''),' ',s.name) as spieler_h "
+        . ", concat(ifnull(ss.vorname,''),' ',ss.name) as spieler_a "
+        . ", sp.sp_minute "
+        . ", sp.besonderheit "
+        . ", sp.team "
+        . ", sp.spielstand "
+        . "  From sp_tore_spiel_tabelle sp Left join spieler s on sp.spieler_id_h = s.spieler_id	"
+        . "  Left join spieler ss on sp.spieler_id_a = ss.spieler_id	"
+        . " Where sp.spiel_id = " . $spiel_id . " and elfer = 0"
+        . "     order by sp.sp_minute ";
+
+$rs = $dbSyb->Execute($querySQL);
+
+if (!$rs) {
+
+    $out{'response'}{'status'} = -4;
+    $out{'response'}{'errors'} = array('errors' => "Es ist ein Fehler aufgetreten.");
+
+    print json_encode($out);
+    return;
+}
+$pdf->SetFont('Arial', 'B', $fontSize);
+$i = 0;
+$ii = $h_start;
+$w = $w_mitte;
+$pdf->Text($w + 10, $ih + 55, 'Tore');
+$pdf->SetFont('Arial', '', $fontSize - 2);
+
+while (!$rs->EOF) {
+
+    if (trim($rs->fields{'team'}) == 'h') {
+        if (strlen(trim($rs->fields{'besonderheit'})) > 0) {
+            $data{$i}{"spielstand"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_h'}) . "  " . trim($rs->fields{'sp_minute'}) . ".  " . trim($rs->fields{'besonderheit'});
+            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand"}));
+        } else {
+            $data{$i}{"spielstand"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_h'}) . "  " . trim($rs->fields{'sp_minute'}) . ".";
+            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand"}));
+        }
+    }
+    if (trim($rs->fields{'team'}) == 'a') {
+
+        if (strlen(trim($rs->fields{'besonderheit'})) > 0) {
+            $data{$i}{"spielstand_a"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_a'}) . "  " . trim($rs->fields{'sp_minute'}) . ".  " . trim($rs->fields{'besonderheit'});
+            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand_a"}));
+        } else {
+            $data{$i}{"spielstand_a"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_a'}) . "  " . trim($rs->fields{'sp_minute'}) . ".";
+            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand_a"}));
+        }
+    }
+
+    $i++;
+    $ii += 5;
+
+    $rs->MoveNext();
+}
+
+$rs->Close();
+
+
+/*
+ * **************************** ELFMETERSCHIESSEN **********************************************
+ */
+
+$querySQL = "SELECT Distinct "
+        . "	 sp.lfd_nr "
+        . ", sp.spiel_id "
+        . ", sp.spieler_id_h "
+        . ", sp.spieler_id_a "
+        . ", sp.elfer "
+        // . ", s.name as spieler_h"
+        . ", concat(ifnull(s.vorname,''),' ',s.name) as spieler_h "
+        . ", concat(ifnull(ss.vorname,''),' ',ss.name) as spieler_a "
+        // . ", ss.name as spieler_a "
+        . ", sp.sp_minute "
+        . ", sp.besonderheit "
+        . ", sp.team "
+        . ", sp.spielstand "
+        . "  From sp_tore_spiel_tabelle sp Left join spieler s on sp.spieler_id_h = s.spieler_id	"
+        . "  Left join spieler ss on sp.spieler_id_a = ss.spieler_id	"
+        . " Where sp.spiel_id = " . $spiel_id . " and elfer in (1,2)"
+        . "     order by sp.lfd_nr ";
+
+
+
+$rs = $dbSyb->Execute($querySQL);
+
+
+if (!$rs) {
+
+    $out{'response'}{'status'} = -4;
+    $out{'response'}{'errors'} = array('errors' => "Es ist ein Fehler aufgetreten.");
+
+    print json_encode($out);
+    return;
+}
+
+if (trim($data{"erg_zusatz"}) == "i. E." || trim($data{"erg_zusatz"}) == "nvUiE") {
+    $pdf->SetFont('Arial', 'B', $fontSize);
+    $i = 0;
+    $ii += 10;
+    $pdf->Text($w, $ih + $ii - 5, ('Elfmeterschieï¿½en'));
+    $pdf->SetFont('Arial', '', $fontSize - 2);
+
+    while (!$rs->EOF) {
+
+        if (trim($rs->fields{'team'}) == 'h') {
+
+            $data{$i}{"spielstand"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_h'});
+            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand"}));
+            if (trim($rs->fields{'elfer'} == 2)) {
+                $pdf->Image($imagesDir . "missed.png", $w - 5, $ih + $ii - 2.5);
+            } else {
+                $pdf->Image($imagesDir . "scored.png", $w - 5, $ih + $ii - 2.5);
+            }
+        }
+
+        if (trim($rs->fields{'team'}) == 'a') {
+
+            $data{$i}{"spielstand_a"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_a'});
+            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand_a"}));
+            if (trim($rs->fields{'elfer'} == 2)) {
+                $pdf->Image($imagesDir . "missed.png", $w - 5, $ih + $ii - 2.5);
+            } else {
+                $pdf->Image($imagesDir . "scored.png", $w - 5, $ih + $ii - 2.5);
+            }
+        }
+
+        $i++;
+        $ii += 5;
+
+        $rs->MoveNext();
+    }
+
+    $rs->Close();
+}
+
 
 /*
  * **************************** Reisekosten **********************************************
@@ -571,7 +893,7 @@ $pdf->Text($w1, $ih + $ii, ($data{"trainer_h"}));
 if ($data{"ges_kosten"} !== '0,00') {
     $pdf->SetFont('Arial', 'B', $fontSize);
     $i = 0;
-    $ii += 10;
+    $ii = $reise_h + 8;
     $pdf->Text($w1, $ih + $ii, ('Reisekosten'));
     $pdf->SetFont('Arial', '', $fontSize - 2);
     $plus = 35;
@@ -613,7 +935,7 @@ if ($data{"ges_kosten"} !== '0,00') {
     }
     if ($data{"uebernachtung"} !== '0,00') {
         $ii += 5;
-        $pdf->Text($w1, $ih + $ii, ('Übernachtung:'));
+        $pdf->Text($w1, $ih + $ii, utf8_decode('Ãœbernachtung:'));
 //        $pdf->Text($w1 + $plus, $ih + $ii, ($data{"uebernachtung"}));
         $pdf->SetXY($w1 + $plus, $ih + $ii - 1);
         $pdf->Cell(13, 0, ($data{"uebernachtung"}), 0, 0, 'R', false);
@@ -698,10 +1020,10 @@ if (!$rs) {
 if ($rs->fields{'anzahl'} > 0) {
 
     $pdf->SetFont('Arial', 'B', $fontSize);
-   
-    $ii += 15;
+    $w = $w_rechts;
+    $ii = $anr_h + 13;
     $iii = 1;
-    $pdf->Text($w1, $ih + $ii - 5, ('Anreise'));
+    $pdf->Text($w, $ih + $ii - 5, ('Anreise'));
     $pdf->SetFont('Arial', '', $fontSize - 2);
 
     while (!$rs->EOF) {
@@ -711,138 +1033,22 @@ if ($rs->fields{'anzahl'} > 0) {
         $data{"nr"} = $iii;
         $data{"gesamt"} = number_format($rs->fields{'gesamt'}, 2, ",", ".");
 
-        $pdf->Text($w1, $ih + $ii, ($data{"nr"} . ". " . $data{"verkehrsmittel"} . " " . $data{"verkehrsmittel_zus"} . "  " . number_format($data{"entfernung_km"}, 2, ",", ".") . " km"));
+        $pdf->Text($w, $ih + $ii, ($data{"nr"} . ". " . $data{"verkehrsmittel"} . " " . $data{"verkehrsmittel_zus"} . "  " . number_format($data{"entfernung_km"}, 2, ",", ".") . " km"));
 
-        $ii+=5;
+        $ii += 5;
         $iii++;
 
         $rs->MoveNext();
     }
-    $pdf->SetFont('Arial', 'B', $fontSize - 1);
-    $pdf->Text($w1, $ih + $ii, "Gesamt " . $data{"gesamt"} . " km");
 
+    $pdf->SetFont('Arial', 'B', $fontSize - 1);
+    $pdf->Text($w, $ih + $ii, "Gesamt " . $data{"gesamt"} . " km");
+    $anr_h = $ii;
     $rs->Close();
 }
 
 
-/*
- * **************************** AUFSTELLUNG-GAST-TEAM **********************************************
- */
 
-$querySQL = "SELECT Distinct "
-        . " concat(ifnull(s.vorname,''),' ',s.name) as name "
-        . ", v.aw "
-        . ", v.aw_minute "
-        . "  From sp_spieler_spiel_tabelle v join spieler s on v.spieler_id = s.spieler_id	"
-        . " and spiel_id = " . $data{"spiel_id"} . " and v.status = 'sa' and v.status2 = 'a' "
-        . "     order by v.lfd_nr";
-
-
-// $fp = fopen("spielerSpielAddDS.txt", "w"); 
-// fputs($fp, $querySQL);             
-// fclose($fp); 
-
-
-$rs = $dbSyb->Execute($querySQL);
-
-if (!$rs) {
-
-    $out{'response'}{'status'} = -4;
-    $out{'response'}{'errors'} = array('errors' => "Es ist ein Fehler aufgetreten.");
-
-    print json_encode($out);
-    return;
-}
-$pdf->SetFont('Arial', 'B', $fontSize);
-$i = 0;
-$ii = 60;
-$w = 140;
-$pdf->Text($w, $ih + 55, ($data{"verein_a"}));
-$pdf->SetFont('Arial', '', $fontSize - 2);
-while (!$rs->EOF) {
-
-    if (trim($rs->fields{'aw_minute'}) > 0) {
-        $data{$i}{"name"} = cs($rs->fields{'name'}) . " (" . trim($rs->fields{'aw_minute'}) . ".)";
-        $pdf->Text($w, $ih + $ii, ($data{$i}{"name"}));
-        $pdf->Image($imagesDir."ic_wechsel_rot.png", $w - 5, $ih + $ii - 2.5);
-    } else {
-        $data{$i}{"name"} = cs($rs->fields{'name'});
-        $pdf->Text($w, $ih + $ii, ($data{$i}{"name"}));
-    }
-
-    $i++;
-    $ii+=5;
-
-    $rs->MoveNext();
-}
-
-$rs->Close();
-
-/*
- * **************************** AUSWECHSELBANK-GAST-TEAM **********************************************
- */
-
-$querySQL = "SELECT Distinct "
-        . " concat(ifnull(s.vorname,''),' ',s.name) as name "
-        . ", v.aw "
-        . ", v.aw_minute "
-        . "  From sp_spieler_spiel_tabelle v join spieler s on v.spieler_id = s.spieler_id	"
-        . " and spiel_id = " . $data{"spiel_id"} . " and v.status = 'ew' and v.status2 = 'a' "
-        . "     order by v.lfd_nr";
-
-
-// $fp = fopen("spielerSpielAddDS.txt", "w"); 
-// fputs($fp, $querySQL);             
-// fclose($fp); 
-
-
-$rs = $dbSyb->Execute($querySQL);
-
-if (!$rs) {
-
-    $out{'response'}{'status'} = -4;
-    $out{'response'}{'errors'} = array('errors' => "Es ist ein Fehler aufgetreten.");
-
-    print json_encode($out);
-    return;
-}
-$pdf->SetFont('Arial', 'B', $fontSize);
-$i = 0;
-$ii = 125;
-$w = 140;
-$pdf->Text($w, $ih + 120, 'Bank');
-$pdf->SetFont('Arial', '', $fontSize - 2);
-while (!$rs->EOF) {
-
-    if (trim($rs->fields{'aw_minute'}) > 0) {
-        $data{$i}{"name"} = cs($rs->fields{'name'}) . " (" . trim($rs->fields{'aw_minute'}) . ".)";
-        $pdf->Text($w, $ih + $ii, ($data{$i}{"name"}));
-        $pdf->Image($imagesDir."ic_wechsel_gruen.png", $w - 5, $ih + $ii - 2.5);
-    } else {
-        $data{$i}{"name"} = cs($rs->fields{'name'});
-        $pdf->Text($w, $ih + $ii, cs($data{$i}{"name"}));
-    }
-
-    $i++;
-    $ii+=5;
-
-    $rs->MoveNext();
-}
-
-$rs->Close();
-
-
-
-/*
- * **************************** Trainer-Gast-TEAM **********************************************
- */
-
-$pdf->SetFont('Arial', 'B', $fontSize);
-$i = 0;
-$ii += 10;
-$pdf->Text($w, $ih + $ii - 5, ('Trainer'));
-$pdf->SetFont('Arial', '', $fontSize - 2);
-$pdf->Text($w, $ih + $ii, ($data{"trainer_a"}));
 
 
 /*
@@ -868,11 +1074,13 @@ if (!$rs) {
 }
 $pdf->SetFont('Arial', 'B', $fontSize);
 $i = 0;
-$ii += 15;
+$ii = $anr_h + 13;
+$w = $w_rechts;
 $pdf->Text($w, $ih + $ii - 5, ('Begleiter'));
 $pdf->SetFont('Arial', '', $fontSize - 2);
 
 while (!$rs->EOF) {
+
     if (strlen(trim($rs->fields{'spitzname'})) > 0) {
         $data{$i}{"name"} = cs($rs->fields{'name'}) . " (" . cs($rs->fields{'spitzname'}) . ")";
         $pdf->Text($w, $ih + $ii, ($data{$i}{"name"}));
@@ -882,7 +1090,7 @@ while (!$rs->EOF) {
     }
 
     $i++;
-    $ii+=5;
+    $ii += 5;
 
     $rs->MoveNext();
 }
@@ -892,151 +1100,7 @@ $rs->Close();
 
 
 
-/*
- * **************************** TORSCHÜTZEN **********************************************
- */
 
-$querySQL = "SELECT Distinct "
-        . "	 sp.lfd_nr "
-        . ", sp.spiel_id "
-        . ", sp.spieler_id_h "
-        . ", sp.spieler_id_a "
-        . ", sp.elfer "
-        . ", concat(ifnull(s.vorname,''),' ',s.name) as spieler_h "
-        . ", concat(ifnull(ss.vorname,''),' ',ss.name) as spieler_a "
-        . ", sp.sp_minute "
-        . ", sp.besonderheit "
-        . ", sp.team "
-        . ", sp.spielstand "
-        . "  From sp_tore_spiel_tabelle sp Left join spieler s on sp.spieler_id_h = s.spieler_id	"
-        . "  Left join spieler ss on sp.spieler_id_a = ss.spieler_id	"
-        . " Where sp.spiel_id = " . $spiel_id . " and elfer = 0"
-        . "     order by sp.sp_minute ";
-
-$rs = $dbSyb->Execute($querySQL);
-
-if (!$rs) {
-
-    $out{'response'}{'status'} = -4;
-    $out{'response'}{'errors'} = array('errors' => "Es ist ein Fehler aufgetreten.");
-
-    print json_encode($out);
-    return;
-}
-$pdf->SetFont('Arial', 'B', $fontSize);
-$i = 0;
-$ii = 60;
-$w = 76;
-$pdf->Text($w + 10, $ih + 55, 'Tore');
-$pdf->SetFont('Arial', '', $fontSize - 2);
-
-while (!$rs->EOF) {
-
-    if (trim($rs->fields{'team'}) == 'h') {
-        if (strlen(trim($rs->fields{'besonderheit'})) > 0) {
-            $data{$i}{"spielstand"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_h'}) . "  " . trim($rs->fields{'sp_minute'}) . ".  " . trim($rs->fields{'besonderheit'});
-            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand"}));
-        } else {
-            $data{$i}{"spielstand"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_h'}) . "  " . trim($rs->fields{'sp_minute'}) . ".";
-            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand"}));
-        }
-    }
-    if (trim($rs->fields{'team'}) == 'a') {
-
-        if (strlen(trim($rs->fields{'besonderheit'})) > 0) {
-            $data{$i}{"spielstand_a"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_a'}) . "  " . trim($rs->fields{'sp_minute'}) . ".  " . trim($rs->fields{'besonderheit'});
-            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand_a"}));
-        } else {
-            $data{$i}{"spielstand_a"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_a'}) . "  " . trim($rs->fields{'sp_minute'}) . ".";
-            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand_a"}));
-        }
-    }
-
-    $i++;
-    $ii+=5;
-
-    $rs->MoveNext();
-}
-
-$rs->Close();
-
-
-/*
- * **************************** ELFMETERSCHIESSEN **********************************************
- */
-
-$querySQL = "SELECT Distinct "
-        . "	 sp.lfd_nr "
-        . ", sp.spiel_id "
-        . ", sp.spieler_id_h "
-        . ", sp.spieler_id_a "
-        . ", sp.elfer "
-        // . ", s.name as spieler_h"
-        . ", concat(ifnull(s.vorname,''),' ',s.name) as spieler_h "
-        . ", concat(ifnull(ss.vorname,''),' ',ss.name) as spieler_a "
-        // . ", ss.name as spieler_a "
-        . ", sp.sp_minute "
-        . ", sp.besonderheit "
-        . ", sp.team "
-        . ", sp.spielstand "
-        . "  From sp_tore_spiel_tabelle sp Left join spieler s on sp.spieler_id_h = s.spieler_id	"
-        . "  Left join spieler ss on sp.spieler_id_a = ss.spieler_id	"
-        . " Where sp.spiel_id = " . $spiel_id . " and elfer in (1,2)"
-        . "     order by sp.lfd_nr ";
-
-
-
-$rs = $dbSyb->Execute($querySQL);
-
-
-if (!$rs) {
-
-    $out{'response'}{'status'} = -4;
-    $out{'response'}{'errors'} = array('errors' => "Es ist ein Fehler aufgetreten.");
-
-    print json_encode($out);
-    return;
-}
-
-if (trim($data{"erg_zusatz"}) == "i. E." || trim($data{"erg_zusatz"}) == "nvUiE") {
-    $pdf->SetFont('Arial', 'B', $fontSize);
-    $i = 0;
-    $ii += 10;
-    $pdf->Text($w, $ih + $ii - 5, ('Elfmeterschießen'));
-    $pdf->SetFont('Arial', '', $fontSize - 2);
-
-    while (!$rs->EOF) {
-
-        if (trim($rs->fields{'team'}) == 'h') {
-
-            $data{$i}{"spielstand"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_h'});
-            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand"}));
-            if (trim($rs->fields{'elfer'} == 2)) {
-                $pdf->Image($imagesDir."missed.png", $w - 5, $ih + $ii - 2.5);
-            } else {
-                $pdf->Image($imagesDir."scored.png", $w - 5, $ih + $ii - 2.5);
-            }
-        }
-
-        if (trim($rs->fields{'team'}) == 'a') {
-
-            $data{$i}{"spielstand_a"} = trim($rs->fields{'spielstand'}) . "  " . cs($rs->fields{'spieler_a'});
-            $pdf->Text($w, $ih + $ii, ($data{$i}{"spielstand_a"}));
-            if (trim($rs->fields{'elfer'} == 2)) {
-                $pdf->Image($imagesDir."missed.png", $w - 5, $ih + $ii - 2.5);
-            } else {
-                $pdf->Image($imagesDir."scored.png", $w - 5, $ih + $ii - 2.5);
-            }
-        }
-
-        $i++;
-        $ii+=5;
-
-        $rs->MoveNext();
-    }
-
-    $rs->Close();
-}
 
 
 /*
@@ -1072,9 +1136,9 @@ if ($rs->fields{'anzahl'} > 0) {
 
     while (!$rs->EOF) {
         if ($rs->fields{'art'} == "ga") {
-            $images = $mediaDir."pdf\\";
+            $images = $mediaDir . "pdf\\";
         } else {
-            $images = $mediaDir."thumbnails\\";
+            $images = $mediaDir . "thumbnails\\";
         }
 
         if (isset($rs->fields{'dateiname'})) {
@@ -1089,13 +1153,13 @@ if ($rs->fields{'anzahl'} > 0) {
 
         if ($seitenHoehe > $picHeight) {
             $pdf->Image($images . $data{$i}{"dateiname"}, $w, $h, 'jpg');
-            $h+=$picHeight + 3;
+            $h += $picHeight + 3;
         } else {
             $pdf->AddPage();
             $h = 5;
             $seitenHoehe = $pdf->GetPageHeight();
             $pdf->Image($images . $data{$i}{"dateiname"}, $w, $h, 'jpg');
-            $h+=$picHeight + 3;
+            $h += $picHeight + 3;
         }
         $seitenHoehe -= $picHeight;
         $i++;
