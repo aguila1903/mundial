@@ -135,12 +135,12 @@ if (isset($_REQUEST["geb_datum"])) {
 
 $sqlQuery = "call editBegleiter("
         . $dbSyb->Quote(($begleiter_id)) .
-        ", " . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE",$name));
+        ", " . $dbSyb->quote($name);
         // ", " . $dbSyb->quote(($land));
 if ($spitzname == null) {
     $sqlQuery .= " ,NULL ";
 } else {
-    $sqlQuery .= ", " . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE",$spitzname));
+    $sqlQuery .= ", " . $dbSyb->quote($spitzname);
 }		
 if ($geb_datum == null) {
     $sqlQuery .= " ,NULL);";

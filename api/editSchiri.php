@@ -181,7 +181,7 @@ if (isset($_REQUEST["geb_datum"])) {
 
 $sqlQuery = "call editSchiri("
         . $dbSyb->Quote(($schiri_id)) .
-        ", " . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE",$name)) .
+        ", " . $dbSyb->quote($name) .
         ", " . $dbSyb->quote(($land));
 
 if ($ort == null) {

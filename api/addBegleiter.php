@@ -70,7 +70,7 @@ if (isset($_REQUEST["name"])) {
 
 
 $sqlQuery = "call addBegleiter("
-        . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE",$name)) .");";
+        . $dbSyb->quote($name) .");";
 
 
 // file_put_contents("addBegleiter.txt", $sqlQuery);

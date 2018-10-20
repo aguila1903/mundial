@@ -145,8 +145,8 @@ if (isset($_REQUEST["land"])) {
 
 
 $sqlQuery = "call addVerein("
-			 . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE",$vereinsname)) .
-		", " . $dbSyb->quote(iconv("UTF-8", "CP1252//IGNORE",$gaengiger_name)) .
+			 . $dbSyb->quote($vereinsname)) .
+		", " . $dbSyb->quote($gaengiger_name) .
         ", " . $dbSyb->Quote(($ort)).
         ", " . $dbSyb->Quote(($land)).");";
 
