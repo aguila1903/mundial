@@ -266,7 +266,7 @@ if (!$rs) {
         } else {
             $data{"ergebnis"} = trim($rs->fields{'ergebnis'}) . ' (' . trim($rs->fields{'erg_halb'}) . ")";
         }
-        $data{"nummer"} = $rs->fields{'anzahl'};
+        $data{"nummer"} = "Spielbesuch: ".$rs->fields{'anzahl'};
 
 
 //        $i++;
@@ -490,15 +490,15 @@ $stadion = utf8_decode("Spielstätte: ") . $data{"stadionname"};
 $schiri = "Schiedsrichter: " . $data{"schiri"};
 
 // Zuschauer
-$pdf->SetFont('Arial', '', 13);
+$pdf->SetFont('Arial', 'B', 12);
 $w1 = 21;
 $pdf->Text($w1, $ih + 20, "Zuschauer: " . $data{"zusch_anzahl"});
 //Gästee
 $pdf->Text($w1, $ih + 25, utf8_decode("Gäste: ") . $data{"gaestefans"});
 //Stadion
-$pdf->Text($w1, $ih + 33, ($stadion));
+$pdf->Text($w1, $ih + 34, ($stadion));
 //Schiri
-$pdf->Text($w1, $ih + 43, ($schiri));
+$pdf->Text($w1, $ih + 45, ($schiri));
 
 //Logos
 $pdf->Image($imagesDir . "supporter.png", 5, $ih + 16);
@@ -535,7 +535,7 @@ if (!$rs) {
     return;
 }
 $fontSize = 11;
-$pdf->SetFont('Arial', 'B', $fontSize);
+$pdf->SetFont('Arial', 'BU', $fontSize);
 $i = 0;
 $ii = $h_start;
 $pdf->Text($w1, $ih + 55, ($data{"verein_h"}));
@@ -588,7 +588,7 @@ if (!$rs) {
     print json_encode($out);
     return;
 }
-$pdf->SetFont('Arial', 'B', $fontSize);
+$pdf->SetFont('Arial', 'BU', $fontSize);
 $i = 0;
 $ii = $h_start;
 $w = $w_rechts;
@@ -643,7 +643,7 @@ if (!$rs) {
 $pdf->SetFont('Arial', 'B', $fontSize);
 $i = 0;
 $ii = 123;
-$pdf->Text($w1, $ih + 118, 'Bank');
+$pdf->Text($w1, $ih + 118, 'Spielerwechsel');
 $pdf->SetFont('Arial', '', $fontSize - 2);
 while (!$rs->EOF) {
     if (trim($rs->fields{'aw_minute'}) > 0) {
@@ -695,7 +695,7 @@ $pdf->SetFont('Arial', 'B', $fontSize);
 $i = 0;
 $ii = 123;
 $w = $w_rechts;
-$pdf->Text($w, $ih + 118, 'Bank');
+$pdf->Text($w, $ih + 118, 'Spielerwechsel');
 $pdf->SetFont('Arial', '', $fontSize - 2);
 while (!$rs->EOF) {
     if (trim($rs->fields{'aw_minute'}) > 0) {
