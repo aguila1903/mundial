@@ -2,15 +2,27 @@
 var jetzt = new Date();
 var Jahr = jetzt.getFullYear();
 var Monat = jetzt.getMonth() + 1;
+  var Tag = jetzt.getDate();
+  var _tag = "";
 var _Monat = "";
-if (Monat.toString().length <= 1)
-{
+  var monat = "";
+  if(Monat.toString().length <= 1){
     _Monat = '0' + Monat + Jahr;
-} else
-{
+      monat = '0' + Monat;
+  } else{
     _Monat = Monat + '' + Jahr;
+      monat = Monat;
 }
+  if(Tag.toString().length <= 1){
+      _tag = '0' + Tag;
+  } else{
+      _tag = Tag;
+  }
+
 var _Time = jetzt.getTime();
+  var _Heute = Jahr + "-" + monat + "-" + _tag; //2018-09-03
+  var _heute_ = Jahr + "" + monat + "" + _tag; //20180903
+  var _Heute_ger = Tag + "." + Monat + "." + Jahr; //3.9.2018
 
 
 function openNode(_admin, _id)
@@ -35,6 +47,7 @@ function openNode(_admin, _id)
     VLayoutMapsMundial.hide();
     VLayoutMapsFlights.hide();
     VLayoutMapsGroups.hide();
+    VLayoutKalender.hide();
     if (_admin == admin)
     {
         _id.show();
@@ -546,7 +559,29 @@ onRefreshSpieleSpielerQuellListe2 = function (_listgrid, _param1, _param2, _para
     dataSource.fetchData(Canvas.getById(_listgrid).getCriteria(), callback, request);
 };
 
+  //Datum für den Kalender konvertieren
+  function convertCalDate(_date){
+      var year = _date.getFullYear();
+      var day = _date.getDate();
+      var month = _date.getMonth() + 1;
 
+      var _day = "";
+      var _month = "";
+      if(month.toString().length <= 1){
+          _month = '0' + month;
+      } else{
+          _month = month;
+      }
+
+      if(day.toString().length <= 1){
+          _day = '0' + day;
+      } else{
+          _day = day;
+      }
+
+      return year + '-' + _month + '-' + _day;
+  }
+  ;
 
 
 
