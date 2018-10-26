@@ -3,7 +3,7 @@
 session_start();
 
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Datum in der Vergangenheit
+//header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Datum in der Vergangenheit
 $host = (htmlspecialchars($_SERVER["HTTP_HOST"]));
 $uri = rtrim(dirname(htmlspecialchars($_SERVER["PHP_SELF"])), "/\\");
 
