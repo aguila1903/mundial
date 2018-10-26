@@ -258,7 +258,7 @@ if (isset($_REQUEST["stadtteil"])) {
 
 
 $sqlQuery = "call editVerein("
-        . $dbSyb->Quote(($verein_id)) .
+        . $dbSyb->Quote($verein_id) .
         ", " . $dbSyb->quote($vereinsname) .
 		", " . $dbSyb->quote($gaengiger_name) .
         ", " . $dbSyb->quote(($ort)) .

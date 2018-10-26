@@ -1,7 +1,5 @@
 <?php
 
-
-
 session_start();
 
 require_once('adodb5/adodb.inc.php');
@@ -127,11 +125,11 @@ if (isset($_REQUEST["land"])) {
         }
     } else {
         $out{'response'}{'status'} = -1;
-    $out{'response'}{'errors'} = array('land' => "Land fehlt!");
+        $out{'response'}{'errors'} = array('land' => "Land fehlt!");
 
-    print json_encode($out);
+        print json_encode($out);
 
-    return;
+        return;
     }
 } else {
     $out{'response'}{'status'} = -1;
@@ -145,10 +143,10 @@ if (isset($_REQUEST["land"])) {
 
 
 $sqlQuery = "call addVerein("
-			 . $dbSyb->quote($vereinsname)) .
-		", " . $dbSyb->quote($gaengiger_name) .
-        ", " . $dbSyb->Quote(($ort)).
-        ", " . $dbSyb->Quote(($land)).");";
+        . $dbSyb->quote($vereinsname) .
+        ", " . $dbSyb->quote($gaengiger_name) .
+        ", " . $dbSyb->Quote(($ort)) .
+        ", " . $dbSyb->Quote(($land)) . ");";
 
 
 // file_put_contents("addStadion.txt", $sqlQuery);
@@ -169,41 +167,42 @@ If (isset($rs->fields{'ergebnis'})) {
     if ($rs->fields{'ergebnis'} == 1) {
         $i = 0;
 
-while (!$rs->EOF) {
+        while (!$rs->EOF) {
 
-    $value{$i}{"verein_id"} = $rs->fields{'verein_id'};
-    $value{$i}{"ergebnis"} = $rs->fields{'ergebnis'};
+            $value{$i}{"verein_id"} = $rs->fields{'verein_id'};
+            $value{$i}{"ergebnis"} = $rs->fields{'ergebnis'};
 
-    $i++;
+            $i++;
 
-    // den n�chsten Datensatz lesen
-    $rs->MoveNext();
-}
+            // den n�chsten Datensatz lesen
+            $rs->MoveNext();
+        }
 
-$rs->Close();
+        $rs->Close();
 
-$out{'response'}{'status'} = 0;
-$out{'response'}{'errors'} = array();
-$out{'response'}{'data'} = $value;
+        $out{'response'}{'status'} = 0;
+        $out{'response'}{'errors'} = array();
+        $out{'response'}{'data'} = $value;
 
-print json_encode($out);
-    }else if($rs->fields{'ergebnis'} == 0){
-	$out{'response'}{'status'} = -4;
+        print json_encode($out);
+    } else if ($rs->fields{'ergebnis'} == 0) {
+        $out{'response'}{'status'} = -4;
         $out{'response'}{'errors'} = array('vereinsname' => "Es wurden keine Änderungen vorgenommen. Entweder gab es keine Änderungen oder es ist ein Fehler aufgetreten. </br>" . ($dbSyb->ErrorMsg()));
 
         print json_encode($out);
-        return;}
-	else if($rs->fields{'ergebnis'} == 99){
-	$out{'response'}{'errors'} = array('vereinsname' => "Das von Ihnen eingegebene Land ist ungültig. Bitte prüfen Sie es erneut </br>" . ($dbSyb->ErrorMsg()));
+        return;
+    } else if ($rs->fields{'ergebnis'} == 99) {
+        $out{'response'}{'errors'} = array('vereinsname' => "Das von Ihnen eingegebene Land ist ungültig. Bitte prüfen Sie es erneut </br>" . ($dbSyb->ErrorMsg()));
 
         print json_encode($out);
-        return;}
-		
-	else{$out{'response'}{'status'} = -4;
+        return;
+    } else {
+        $out{'response'}{'status'} = -4;
         $out{'response'}{'errors'} = array('vereinsname' => "Es gab ein Problem beim Speichern in die Datenbank! </br>" . ($dbSyb->ErrorMsg()));
 
         print json_encode($out);
-        return;}
+        return;
+    }
 } else {
     $out{'response'}{'status'} = -4;
     $out{'response'}{'errors'} = array('vereinsname' => "Keine Ergebnis-Rückmeldung erhalten </br>" . ($dbSyb->ErrorMsg()));
