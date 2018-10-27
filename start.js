@@ -24167,6 +24167,7 @@ ID: "logoutGroup",
 
 
   iHTML_Ausw = isc.Canvas.imgHTML("famfam/ic_wechsel_rot.png") + " ";
+  iHTML_Einw = isc.Canvas.imgHTML("famfam/ic_wechsel_gruen.png") + " ";
   var hiliteArrayAusw =
 [
 {fieldName: "name",
@@ -24179,13 +24180,7 @@ ID: "logoutGroup",
   // htmlBefore: iHTML,
   htmlAfter: iHTML_Ausw,
   id: 0
-}
-]
-  ;
-  iHTML_Einw = isc.Canvas.imgHTML("famfam/ic_wechsel_gruen.png") + " ";
-  var hiliteArrayEinw =
-[
-{fieldName: "name",
+},{fieldName: "name",
   criteria: {
   fieldName: "aw",
     operator: "equals",
@@ -24194,9 +24189,25 @@ ID: "logoutGroup",
   cssText: "color:#000000;",
   // htmlBefore: iHTML,
   htmlAfter: iHTML_Einw,
-  id: 0
+  id: 1
 }
 ];
+
+//  iHTML_Einw = isc.Canvas.imgHTML("famfam/ic_wechsel_gruen.png") + " ";
+//  var hiliteArrayAusw =
+//[
+//{fieldName: "name",
+//  criteria: {
+//  fieldName: "aw",
+//    operator: "equals",
+//    value: "2"
+//  },
+//  cssText: "color:#000000;",
+//  // htmlBefore: iHTML,
+//  htmlAfter: iHTML_Einw,
+//  id: 0
+//}
+//];
   iHTML_Tore = isc.Canvas.imgHTML("famfam/sport_soccer.png") + "  ";
   var hiliteArrayTore =
 [
@@ -24428,7 +24439,7 @@ fieldName: [
     leaveScrollbarGap: false,
     emptyMessage: "<br>Keine Einwechslungen",
     margin: 0,
-    hilites: hiliteArrayEinw,
+    hilites: hiliteArrayAusw,
     fields: [
     {
     name: "lfd_nr",
@@ -24545,7 +24556,7 @@ fieldName: [
     leaveScrollbarGap: false,
     emptyMessage: "<br>Keine Einwechslungen",
     margin: 0,
-    hilites: hiliteArrayEinw,
+    hilites: hiliteArrayAusw,
     fields: [
     {
     name: "lfd_nr",
@@ -25787,7 +25798,7 @@ fieldName: [
             dragDataAction: "copy",
             emptyMessage: "<br>Noch keine Einwechslungen",
             margin: 10,
-            hilites: hiliteArrayEinw,
+            hilites: hiliteArrayAusw,
             fields: [
             {
             name: "lfd_nr",
@@ -26470,7 +26481,7 @@ fieldName: [
             dragDataAction: "copy",
             emptyMessage: "<br>Noch keine Einwechslungen",
             margin: 10,
-            hilites: hiliteArrayEinw,
+            hilites: hiliteArrayAusw,
             fields: [
             {
             name: "lfd_nr",
