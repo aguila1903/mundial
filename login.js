@@ -63,8 +63,10 @@ function handleResponse()
 
 function init()
 {
-    var login = document.getElementById("btnLogin");
-    var register = document.getElementById("btnRegister");
+    const login = document.getElementById("btnLogin");
+    const register = document.getElementById("btnRegister");
+    const passwd = document.getElementById("passwort");
+    const user = document.getElementById("benutzername");
 
     login.onclick = sendLogin;
     register.onclick = function ()
@@ -84,6 +86,25 @@ function init()
     {
         document.getElementById("passwort").style = "background-color: " + normColor;
         document.getElementById("benutzername").style = "background-color: " + normColor;
+    });
+
+
+    passwd.addEventListener("keydown", function (event)
+    {
+        if (event.key === "Enter")
+        {
+            event.preventDefault();
+            sendLogin();
+        }
+    });
+    
+        user.addEventListener("keydown", function (event)
+    {
+        if (event.key === "Enter")
+        {
+            event.preventDefault();
+            sendLogin();
+        }
     });
 }
 
