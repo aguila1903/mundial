@@ -1,4 +1,6 @@
 var xhr = new XMLHttpRequest();
+var errColor = '#EE2C2C';
+var normColor = '#F0F0F0';
 function sendLogin() {
 
     var user = document.forms[0][0].value;
@@ -25,20 +27,20 @@ function handleResponse() {
             document.getElementById("antwort").innerHTML = rueckmeldung["text"];
             switch (rueckmeldung["ergebnis"]) {
                 case 4: // Kein Benutzername
-                    document.getElementById("benutzername").style = "background-color: red";
+                    document.getElementById("benutzername").style = "background-color: " + errColor;
                     break;
                 case 5: // Kein Passwort
-                    document.getElementById("passwort").style = "background-color: red";
+                    document.getElementById("passwort").style = "background-color: " + errColor;
                     break;
                 case 6: // Keine Passwort-Übereinstimmung
-                    document.getElementById("passwort2").style = "background-color: red";
-                    document.getElementById("passwort").style = "background-color: red";
+                    document.getElementById("passwort2").style = "background-color: " + errColor;
+                    document.getElementById("passwort").style = "background-color: " + errColor;
                     break;
                 case 7: // Keine Passwort-Bestätigung
-                    document.getElementById("passwort2").style = "background-color: red";
+                    document.getElementById("passwort2").style = "background-color: " + errColor;
                     break;
                 case 8: // Keine Passwort-Bestätigung
-                    document.getElementById("email").style = "background-color: red";
+                    document.getElementById("email").style = "background-color: " + errColor;
                     break;
             }
         }
@@ -63,15 +65,15 @@ function init() {
     document.images[0].src = "bilder/Panel1_nm.gif";
 
     document.addEventListener("keypress", function () {
-        document.getElementById("passwort").style = "background-color: white";
-        document.getElementById("passwort2").style = "background-color: white";
-        document.getElementById("benutzername").style = "background-color: white";
+        document.getElementById("passwort").style = "background-color: " + normColor;
+        document.getElementById("passwort2").style = "background-color: " + normColor;
+        document.getElementById("benutzername").style = "background-color: " + normColor;
         // document.getElementById("email").style = "background-color: white";
     });
     document.addEventListener("change", function () {
-        document.getElementById("passwort").style = "background-color: white";
-        document.getElementById("passwort2").style = "background-color: white";
-        document.getElementById("benutzername").style = "background-color: white";
+        document.getElementById("passwort").style = "background-color: " + normColor;
+        document.getElementById("passwort2").style = "background-color: " + normColor;
+        document.getElementById("benutzername").style = "background-color: " + normColor;
         // document.getElementById("email").style = "background-color: white";
     });
 }
