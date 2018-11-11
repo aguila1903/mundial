@@ -33,6 +33,127 @@ if (!$dbSyb->IsConnected()) {
 
 $dbSyb->debug = false;
 // Toplevel
+$feiertag = "feiertag.txt";
+$url_feiertag = 'https://calendar.google.com/calendar/ical/de.german%23holiday%40group.v.calendar.google.com/public/basic.ics'; //Feiertage
+// Define the helper function that retrieved the data and decodes the content.
+function get_url($url, $calendar) {
+    /*
+     * @array
+     * Prepare the options that we need for our GZip request.
+     */
+    $opts = array(
+        "http" => array(
+            "method" => "GET",
+            "header" => "Accept-Language: de-DE,de;q=0.8rn" . "Accept-Encoding: gzip,deflate,sdchrn" . "Accept-Charset:UTF-8,*;q=0.5rn" . "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0 FirePHP/0.4rn",
+            "ignore_errors" => true
+        ),
+        /*
+         * @array
+         * Put a Band-Aid over some SSL issues.
+         */
+        "ssl" => array(
+            "verify_peer" => false,
+            "verify_peer_name" => false
+        )
+    );
+    $context = stream_context_create($opts);
+    $content = file_get_contents($url, false, $context);
+
+    /*
+     * @note If http response header mentions that content is gzipped, then uncompress it.
+     */
+    foreach ($http_response_header as $c => $h) {
+        if (stristr($h, "content-encoding") and stristr($h, "gzip")) {
+            /*
+             * @note Now, let's begin the actual purpose of this function:
+             */
+            $content = gzinflate(substr($content, 10, -8));
+        }
+//                file_put_contents("calendar.txt", $content, FILE_APPEND);
+    }
+    file_put_contents($calendar, $content);
+//	    return $content;
+}
+
+function convertTime($event, $pattern) {
+    $time = "";
+    $date_ = str_replace($pattern, "", $event);
+    $date = substr($date_, 0, 8);
+    $year = substr($date_, 0, 4);
+    $month = substr($date_, 4, 2);
+    $day = substr($date_, 6, 2);
+    $date = "$year-$month-$day";
+    if (strlen(trim($date_)) > 8) {
+        $h = substr($date_, 9, 2);
+        $m = substr($date_, 11, 2);
+        $s = substr($date_, 13, 2);
+        $time = "$h:$m:$s";
+        //wegen Zeitunterschied. Kann u.U. weg
+        $zeit = new DateTime($time);
+        $zeit->add(new DateInterval('PT2H'));
+        $time = $zeit->format('H:i:s');
+    }
+    return trim("$date $time");
+}
+
+get_url($url_feiertag, $feiertag);
+
+$suchmuster1 = "/\bBEGIN:/i";
+$calendarArr = array();
+//$termine = file_get_contents($calendar);
+$feiertage = file_get_contents($feiertag);
+$kalender = /* $termine. */$feiertage;
+//file_put_contents("kalender.txt", $kalender);
+$termine = str_replace("\r", "", $kalender);
+$termine = str_replace("\n", "+~*", $termine);
+$termine = str_replace("BEGIN", "\nBEGIN", $termine);
+$termineArr = explode("\n", $termine);
+$sucheArr = array("DTSTART", "DTEND", "VALUE=DATE", ":", ";", "TZID=Europe/Berlin");
+//$ersetzArr = array("","","","","","");
+
+
+foreach ($termineArr as $termin) {
+    if (preg_match($suchmuster1, $termin)) {
+        $calendarArr[] = explode("+~*", $termin);
+    }
+}
+
+$data = array();
+$out = array();
+$i = 0;
+$ii = 0;
+while ($ii < count($calendarArr)) {
+    $start = "";
+    $end = "";
+    $title = "k. A.";
+    foreach ($calendarArr[$ii] as $event) {
+        if ($event != "") {
+            switch ($event) {
+                case preg_match("/SUMMARY:/", trim($event)) == 1:
+                    $title = str_replace("SUMMARY:", "", $event);
+
+                    break;
+                case preg_match("/DTSTART/", trim($event)) == 1:
+                    $start = $event;
+                    break;
+                case preg_match("/DTEND/", trim($event)) == 1:
+                    $end = $event;
+                    break;
+            }
+        }
+    }
+    if (trim($title) != "" && trim($start) != "" && trim($end) != "") {
+        $data{$i}{"title"} = $title;
+        $data{$i}{"start"} = convertTime($start, $sucheArr);
+        $data{$i}{"end"} = convertTime($end, $sucheArr);
+        $data{$i}{"color"} = '#d50000';
+        $data{$i}{"textColor"} = 'white';
+        $data{$i}{"allDay"} = true;
+        $i++;
+    }
+    $ii++;
+}
+
 
 
 $querySQL = "SELECT Distinct "
@@ -114,9 +235,6 @@ if (!$rs) {
     print $dbSyb->ErrorMsg() . "\n";
     return;
 }
-$i = 0;
-
-$data = array();
 
 while (!$rs->EOF) {
     $data{$i}{"spiel_id"} = trim($rs->fields{'spiel_id'});
@@ -203,18 +321,18 @@ while (!$rs->EOF) {
     $data{$i}{"start"} = ($rs->fields{'start'});
     $data{$i}{"end"} = ($rs->fields{'end'});
     $data{$i}{"description"} = "<b>$ergebnis</b></br>$wettbewerb</br>$ort";
-    if (date('Y-m-d') == substr($rs->fields{'start'}, 0, 10)) {
-        $data{$i}{"color"} = 'green';
+//    if (date('Y-m-d') == substr($rs->fields{'start'}, 0, 10)) {
+        $data{$i}{"color"} = '#89bb81';
         $data{$i}{"textColor"} = 'white';
-    } else {
-        if (str_replace("-", "", substr($rs->fields{'start'}, 0, 10)) > date('Ymd')) {
-            $data{$i}{"color"} = 'orange';
-            $data{$i}{"textColor"} = 'black';
-        } else {
-            $data{$i}{"color"} = 'grey';
-            $data{$i}{"textColor"} = 'white';
-        }
-    }
+//    } else {
+//        if (str_replace("-", "", substr($rs->fields{'start'}, 0, 10)) > date('Ymd')) {
+//            $data{$i}{"color"} = 'orange';
+//            $data{$i}{"textColor"} = 'black';
+//        } else {
+//            $data{$i}{"color"} = 'grey';
+//            $data{$i}{"textColor"} = 'white';
+//        }
+//    }
 //    file_put_contents("datum.txt", str_replace("-", "", substr($rs->fields{'start'}, 0, 10))."\n", FILE_APPEND);
 //       $data{$i}{"canEdit"} = "false";
     // $data{$i}{"eventWindowStyle"} = "testStyle";
@@ -226,8 +344,6 @@ while (!$rs->EOF) {
 }
 
 $rs->Close();
-
-$out = array();
 
 
 

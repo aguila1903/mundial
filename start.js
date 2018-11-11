@@ -497,7 +497,7 @@ ID: "logoutGroup",
       getIconButton("Laden", {icon: "famfam/folder.png", click: function () {
       tsbLoadDB.click();
       }}),
-      getIconButton("Update starten", {icon: "famfam/page_refresh.png", click: function () {
+      getIconButton("Updates suchen", {icon: "famfam/page_refresh.png", click: function () {
       doUpdate("menu");
       }})
     ],
