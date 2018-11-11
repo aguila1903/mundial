@@ -909,7 +909,7 @@ ID: "logoutGroup",
               defaultDate: datum_,
               locale: 'de',
               navLinks: true, // can click day/week names to navigate views
-              selectable: false,
+              selectable: true,
               selectHelper: true,
               editable: false,
               windowResizeDelay: 500,
@@ -24306,9 +24306,7 @@ fieldName: [
       operator: "equals",
       value: "1"
 
-    }
-
-    ]
+    }]
   },
   cssText: "color:#000000;",
   htmlBefore: iHTML_Elfer_Scored,
@@ -24331,9 +24329,7 @@ fieldName: [
       operator: "equals",
       value: "2"
 
-    }
-
-    ]
+    }]
   },
   cssText: "color:#000000;",
   htmlBefore: iHTML_Elfer_Missed,
@@ -32011,7 +32007,7 @@ fieldName: [
     }
   });
   /*
-   ***************** Edit Meda-Daten Button Spiele *************************** 
+   ***************** Edit Meta-Daten Button Spiele *************************** 
    */
   isc.ToolStripButton.create({
   ID: "tsbEditMetaDataSpiele",

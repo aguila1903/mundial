@@ -121,10 +121,17 @@ $PDF_info = pathinfo($PDFFile);
 //Pfad und neuer Name des gedrehten Bildes PDF
 $PDFFileR = ($PDF_info['dirname'] ."/".$PDF_info['filename']."_r.".$PDF_info['extension']);
 
+//Pfad des zu drehenden Bildes Original
+$OrigFile = 'images/media/' . ($dateiname);
+$Orig_info = pathinfo($OrigFile);
+//Pfad und neuer Name des gedrehten Bildes PDF
+$OrigFileR = ($Orig_info['dirname'] ."/".$Orig_info['filename']."_r.".$Orig_info['extension']);
+
 
 //Bilder werden verschoben
-rename(($thumbFile), ($thumbFileR));
-rename(($PDFFile),  ($PDFFileR));
+rename($thumbFile, $thumbFileR);
+rename($PDFFile,  $PDFFileR);
+rename($OrigFile,  $OrigFileR);
 
 //Alte Bilder werden aus der Datenbank entfernt
 $sqlQuery = "call deleteStadBild(" . $id . ", " . $media_id . ");";
@@ -160,6 +167,7 @@ $rs->Close();
 //Längen und Breiten der Bilder werden ausgelesen
 list($width, $height, $type, $attr) = getimagesize($PDFFileR);
 list($widthTh, $heightTh, $typeTh, $attrTh) = getimagesize($thumbFileR);
+list($widthOrg, $heightOrg, $typeOrg, $attrOrg) = getimagesize($OrigFileR);
 
 
 //Der Grad der Drehung
@@ -168,14 +176,17 @@ $degrees = 90;
 
 $source = imagecreatefromjpeg($PDFFileR);
 $sourceTh = imagecreatefromjpeg($thumbFileR);
+$sourceOrg = imagecreatefromjpeg($OrigFileR);
 
 // Rotate
 $rotate = imagerotate($source, $degrees, 0);
 $rotateTh = imagerotate($sourceTh, $degrees, 0);
+$rotateOrg = imagerotate($sourceOrg, $degrees, 0);
 
 // Output
 if (imagejpeg($rotate, $PDFFileR, 100)) {
     imagejpeg($rotateTh, $thumbFileR, 100);
+    imagejpeg($rotateOrg, $OrigFileR, 100);
 
 
     // Free the memory
@@ -183,6 +194,8 @@ if (imagejpeg($rotate, $PDFFileR, 100)) {
     imagedestroy($rotate);
     imagedestroy($sourceTh);
     imagedestroy($rotateTh);
+    imagedestroy($sourceOrg);
+    imagedestroy($rotateOrg);
 } else {
     $out{'response'}{'status'} = -4;
     $out{'response'}{'errors'} = array('errors' => "Fehler bei der Rotation. </br>");

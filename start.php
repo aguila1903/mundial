@@ -57,6 +57,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login /* && $_SESSION["ad
             <script src='calendar/lib/jquery.min.js'></script>
             <script src='calendar/lib/moment.min.js'></script>
             <script src='calendar/fullcalendar.js'></script> 
+            <script src='calendar/gcal.js'></script> 
             <script src='calendar/locale-all.js'></script>
         </HEAD>
         <BODY>
