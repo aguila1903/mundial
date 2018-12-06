@@ -41,7 +41,7 @@ function handleResponse()
 
     if (xhr.readyState == 4)
     {
-        if (rueckmeldung["ergebnis"] == 1 && rueckmeldung["status"] == "B")
+        if (rueckmeldung["ergebnis"] == erg && rueckmeldung["status"] == stat)
         {
             document.getElementById("antwort").innerHTML = rueckmeldung["text"];
             window.open(path + 'start.php', '_self', false);

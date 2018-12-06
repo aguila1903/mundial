@@ -9,6 +9,7 @@
 	<script src="login.js"></script> 
         <!--<script src="..\login\md5.js" type="text/javascript"></script>--> 
         <script src="..\login\sha512.js" type="text/javascript"></script> 
+        <script src="crd\crd.js" type="text/javascript"></script> 
     </head>
     <body>
         <img id="bg_img" alt="Login" class="center">
