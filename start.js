@@ -941,7 +941,8 @@ ID: "logoutGroup",
                   spielID_ = calEvent.id; 
                   description = calEvent.description;
 //                  isc.say(description);
-                  tsbShowSpiele.getSpielDetails(spielID_, calEvent, "calendar");
+                    tsbPDF_ExportSpiele.openPDF(spielID_);
+//                  tsbShowSpiele.getSpielDetails(spielID_, calEvent, "calendar");
               }
           });
 
@@ -32188,7 +32189,9 @@ fieldName: [
     hoverWidth: 100,
     hoverDelay: 700,
     action: function () {
-    var _spiel_id = spieleListe.getSelectedRecord().spiel_id;
+        this.openPDF(spieleListe.getSelectedRecord().spiel_id);
+    },
+    openPDF: function(_spiel_id){           
       var domain = location.host;
       window.open(prot + domain + '/' + appFolder + '/api/ds/spielePDF.php?spiel_id=' + _spiel_id, + '_self', false);
     }
