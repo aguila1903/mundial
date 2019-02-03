@@ -62,14 +62,14 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login /* && $_SESSION["ad
         </HEAD>
         <BODY>
             <SCRIPT type="text/javascript">
-                  sidAdmin = "<?php echo $_SESSION['admin'] ?>";
-			admin = "<?php echo admin ?>";
-			user = "<?php echo $_SESSION['benutzer'] ?>";
-		</script>
+                sidAdmin = "<?php echo $_SESSION['admin'] ?>";
+                admin = "<?php echo admin ?>";
+                user = "<?php echo $_SESSION['benutzer'] ?>";
+            </script>
             <noscript>Bitte aktivieren Sie JavaScript in Ihrem Browser, ansonsten kann diese Seite nicht korrekt angezeigt werden.</noscript><!--Info-Meldung falls JavaScript nicht aktiviert ist-->
             <script src="functions.js" type="text/javascript"></script>      
             <script src="start.js" type="text/javascript"></script>
-                
+
         </BODY>
     </HTML>
     <?php
