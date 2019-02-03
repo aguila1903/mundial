@@ -195,9 +195,9 @@ Page.setTitle("FUTBOL MUNDIAL");
       }, {
       Id: "1415",
         parentId: "14",
-        Name: "Grounds",
+        Name: "Landkarte mit Grounds",
         isFolder: false,
-        icon: "famfam/map2.png"
+        icon: "famfam/map3.png"
       },
       {
       Id: "15",
@@ -31030,6 +31030,10 @@ fieldName: [
    *********************************** ENDE GROUP MAP ****************************************************
    */
 
+  /*
+   * ***************** ANFANG Groundskarte ***********************
+   * -------------------------------------------------------------
+   */
 // Geheimer Bearbeitungslink: https://umap.openstreetmap.de/de/map/anonymous-edit/30:_7Wa5hQ0vlxVQN7lLzV793j3AiA
   isc.HTMLPane.create({
   width: "100%",
@@ -31038,6 +31042,8 @@ fieldName: [
     styleName: "exampleTextBlock",
     contents: '<iframe width="100%" height="100%" frameBorder="0" allowfullscreen src="https://umap.openstreetmap.de/de/map/mundial_30?scaleControl=false&miniMap=false&scrollWheelZoom=false&zoomControl=true&allowEdit=false&moreControl=true&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=true&onLoadPanel=undefined&captionBar=false">\n\
 </iframe><p><a href="https://umap.openstreetmap.de/de/map/mundial_30">Vollbildanzeige</a></p>'});
+  
+
   /*
    * ********* ANFANG TOOLSTRIPS AND TOOLSTRIP BUTTONS ***********************
    * -------------------------------------------------------------
