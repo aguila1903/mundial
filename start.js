@@ -31040,7 +31040,7 @@ fieldName: [
     height: "100%",
     ID: "Pane_GroundsKarte",
     styleName: "exampleTextBlock",
-    contents: '<iframe width="100%" height="100%" frameBorder="0" allowfullscreen src="https://umap.openstreetmap.de/de/map/mundial_30?scaleControl=false&miniMap=false&scrollWheelZoom=false&zoomControl=true&allowEdit=false&moreControl=true&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=true&onLoadPanel=undefined&captionBar=false">\n\
+    contents: '<iframe width="100%" height="100%" frameBorder="0" allowfullscreen src="https://umap.openstreetmap.de/de/map/mundial_30?scaleControl=true&miniMap=false&scrollWheelZoom=true&zoomControl=true&allowEdit=false&moreControl=true&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=true&onLoadPanel=undefined&captionBar=false">\n\
 </iframe><p><a href="https://umap.openstreetmap.de/de/map/mundial_30">Vollbildanzeige</a></p>'});
   
 
