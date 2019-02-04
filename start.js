@@ -270,7 +270,7 @@ Page.setTitle("FUTBOL MUNDIAL");
     openNode(sidAdmin, VLayoutMapsGroups);
       CategoryTree.GroupMapCnt++;
       CategoryTree.Load_Function_GroupMap(dfGroupsMapsGrafik, CategoryTree.GroupMapCnt, Jahr);
-    } else if (_node.Id == "1415") { // Statistiken - Mundial Maps Flights
+    } else if (_node.Id == "1415") { // Statistiken - Groundkarte
     openNode(sidAdmin, VLayoutGroundsKarte);
     } else if (_node.Id == "1510") { // Kalender
     openNode(sidAdmin, VLayoutKalender);
@@ -31031,7 +31031,7 @@ fieldName: [
    */
 
   /*
-   * ***************** ANFANG Groundskarte ***********************
+   * *****************GoTo: ANFANG Groundskarte ******************
    * -------------------------------------------------------------
    */
 // Geheimer Bearbeitungslink: https://umap.openstreetmap.de/de/map/anonymous-edit/30:_7Wa5hQ0vlxVQN7lLzV793j3AiA
@@ -32653,8 +32653,48 @@ fieldName: [
     width: "100%",
     backgroundImage: "../bilder/" + guiColor,
     height: 40,
-    members: [dfGroupsMapsGrafik, isc.LayoutSpacer.create({width: 50}), lblMapsGroups,
+    members: [dfGroupsMapsGrafik, isc.LayoutSpacer.create({width: 50}), lblMapsGroups
     ]});
+  /*
+   ***************** GoTo: Toolstrip Groundkarte  ************************** 
+   */
+  
+   /*
+   ***************** CSV-Export Button Stadien ************************** 
+   */
+  isc.ToolStripButton.create({
+  ID: "tsbCSV_GeoDaten",
+    title: "",
+    count: 0,
+    showDisabledIcon: false,
+    icon: "famfam/excel.png",
+    iconWidth: 32,
+    iconHeight: 32,
+    prompt: "Exportiert eine Liste mit den Geo-Daten für die Groundkarte.\n\
+https://umap.openstreetmap.de/de/map/anonymous-edit/30:_7Wa5hQ0vlxVQN7lLzV793j3AiA",
+    hoverWidth: 300,
+    hoverDelay: 700,
+    action: function () {    
+        var domain = location.host;
+        window.open(prot + domain + '/' + appFolder + '/api/ds/csv_export_geodaten.php', '_self', false);
+    }
+
+  });
+  
+  isc.Label.create({
+  padding: 0,
+    ID: "lblGroundKarte",
+    width: 300,
+    height: "100%",
+    align: "center",
+    contents: '<text style="color:' + titleLableColor + '; font-size:' + titleLableFontSize + '; font-family:' + titleLableFontFamily + '; text-decoration:none;">Groundkarte</text>'
+  });
+  isc.ToolStrip.create({
+  ID: "tslblGroundKarte",
+    width: "100%",
+    backgroundImage: "../bilder/" + guiColor,
+    height: 40,
+    members: [isc.LayoutSpacer.create({width: 30}),tsbCSV_GeoDaten,isc.LayoutSpacer.create({width: "*"}), lblGroundKarte,isc.LayoutSpacer.create({width: "*"})]});
   /*
    * ******************** Ende Toolstrip *************************
    * -------------------------------------------------------------
@@ -32936,7 +32976,7 @@ fieldName: [
   ID: "VLayoutGroundsKarte",
     width: "100%",
     height: "100%",
-    members: [Pane_GroundsKarte]
+    members: [tslblGroundKarte, Pane_GroundsKarte]
   });
   /*
    * ******************** ENDE VLayouts **************************

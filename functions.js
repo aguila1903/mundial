@@ -52,6 +52,7 @@ function openNode(_admin, _id)
     VLayoutMapsFlights.hide();
     VLayoutMapsGroups.hide();
     VLayoutKalender.hide();
+    VLayoutGroundsKarte.hide();
     if (_admin == admin)
     {
         _id.show();
