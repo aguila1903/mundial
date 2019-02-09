@@ -38,7 +38,7 @@ if (!$dbSyb->IsConnected()) {
 $dbSyb->debug = false;
 
 $path1 = __DIR__;
-$dateiname = "\\geodaten_de.csv";
+$dateiname = "\\worldcities.csv";
 
 $path_parts = pathinfo($path1 . $dateiname);
 $extension = $path_parts['extension'];
@@ -58,21 +58,28 @@ $file = file_get_contents($path1 . $dateiname, true);
 $file_repl = str_replace("\r", "", $file);
 $split = explode("\n", $file_repl);
 
-$ii = 0;
+$ii = 1;
 while ($ii < count($split)) {
     $zeile = $split[$ii];
 
 
     $spalte = explode(";", $zeile);
 
-  
-    $querySQL = " insert into geo_data_ger "
+    if ($spalte[4] == "Germany") {
+        $ii++;
+        continue;
+    }
+    $querySQL = " insert into geo_data_world "
             . " values "
             . "("
-            . $dbSyb->Quote(utf8_encode($spalte[1]))
-            . "," . $dbSyb->Quote(($spalte[2]))    
-            . "," . $dbSyb->Quote(($spalte[3]))  
-            . "," . $dbSyb->Quote(($spalte[0]))
+            // . $dbSyb->Quote(utf8_encode($spalte[1]))
+            . $dbSyb->Quote(($spalte[0]))
+            . "," . $dbSyb->Quote(($spalte[1]))
+            . "," . $dbSyb->Quote(($spalte[2]))
+            . "," . $dbSyb->Quote(($spalte[3]))
+            . "," . $dbSyb->Quote(($spalte[4]))
+            . "," . $dbSyb->Quote(($spalte[5]))
+            . "," . $dbSyb->Quote(($spalte[6]))
             . ")";
 
     // file_put_contents("query.sql", $querySQL);

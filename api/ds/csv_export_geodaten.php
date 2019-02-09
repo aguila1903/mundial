@@ -42,21 +42,21 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin
 
 
 
-    $sqlQuery = "SELECT DISTINCT
-    c.latitude AS lat, c.longitude AS lon, b.ort AS name
-FROM
-    stadionliste a
-        JOIN
-    orte b ON a.ort = b.ort_id
-        JOIN
-    geo_data_ger c ON b.ort = c.ort
-GROUP BY b.ort
-UNION SELECT 
-    b.latitude AS lat, b.longitude AS lon, b.de AS name
-FROM
-    stadionliste a
-        JOIN
-    laender b ON a.land = b.code;";
+    $sqlQuery = "SELECT DISTINCT ger.latitude AS lat, ger.longitude AS lon, 
+                    concat(o.ort,' (', (SELECT COUNT(*)FROM stadionliste WHERE ort = st.ort),')') AS name
+                    FROM stadionliste st
+                    JOIN laender l ON st.land=l.CODE
+                    JOIN orte o ON st.ort=o.ort_id
+                    JOIN geo_data_ger ger ON o.ort = ger.Ort
+                    WHERE o.CODE = 'DE'
+                    GROUP BY o.ort UNION
+                SELECT DISTINCT w.latitude AS lat, w.longitude AS lon, 
+                   concat(o.ort,' (',(SELECT COUNT(*) FROM stadionliste WHERE ort = st.ort),')') AS name
+                    FROM stadionliste st
+                    JOIN orte o ON st.ort=o.ort_id
+                    JOIN geo_data_world w ON o.ort = w.ort_ascii
+                    WHERE o.CODE != 'DE' AND w.iso2=st.land
+                    GROUP BY o.ort;";
 
 
 // file_put_contents('stadienDS.txt', $sqlQuery);
@@ -69,11 +69,11 @@ FROM
         return;
     }
     $export = "lat;lon;name\r\n";
-  
+
     while (!$rs->EOF) {
 
         $export .= $rs->fields{'lat'} . ";" . $rs->fields{'lon'} . ";" . utf8_decode($rs->fields{'name'}) . "\r\n";
-   
+
         $rs->MoveNext();
     }
 
