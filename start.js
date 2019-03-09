@@ -29239,7 +29239,7 @@ fieldName: [
 
 
     // Wenn Datei schon existiert
-    else if (_data.response.status === - 66) {
+    else if (_data.response.status === -66) {
     isc.ask("Eine Sicherung mit dem heutigen Datum existiert bereits. Wollen Sie diese überschriben?", function (value) {
     if (value) {
 
