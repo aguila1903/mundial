@@ -22,3 +22,4 @@ api/ds/scr/
 api/*.bk*
 api/ds/*.bk*
 update.cmd
+push.cmd

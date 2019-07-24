@@ -27,7 +27,7 @@ $dbSyb = ADONewConnection("mysqli");
 $dbSyb->memCache = false;
 $dbSyb->memCacheHost = array('localhost'); /// $db->memCacheHost = $ip1; will work too
 $dbSyb->memCacheCompress = false; /// Use 'true' arbeitet unter Windows nicht
-$dbSyb->Connect('localhost', user, psw, db);//$dsn = "'localhost','root',psw,'vitaldb'";
+$dbSyb->Connect(link, user, psw, db);//$dsn = "'localhost','root',psw,'vitaldb'";
 
 
 

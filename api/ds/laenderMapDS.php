@@ -27,7 +27,7 @@ $dbSyb->memCache = false;
 $dbSyb->memCacheHost = array('localhost'); /// $db->memCacheHost = $ip1; will work too
 $dbSyb->memCacheCompress = false; /// Use 'true' arbeitet unter Windows nicht
 //$dsn = "'localhost','root',psw,'vitaldb'";
-$dbSyb->Connect('localhost', user, psw, db); //=>>> Verbindungsaufbau mit der DB
+$dbSyb->Connect(link, user, psw, db); //=>>> Verbindungsaufbau mit der DB
 
 $out = array();
 if (!$dbSyb->IsConnected()) {
@@ -44,7 +44,7 @@ $dbSyb->debug = false;
 
 $nine = 0;
 
-$link = new mysqli('localhost', 'root', psw, db);
+$link = new mysqli(link, 'root', psw, db);
 
 
 $result = $link->query("SELECT distinct codeMap as code from stadionliste s join laender l on land = code and (l.codeMap != '' or l.codeMap !=NULL) ");

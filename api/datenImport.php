@@ -23,7 +23,7 @@ $dbSyb->memCacheCompress = false; /// Use 'true' arbeitet unter Windows nicht
 
 
 
-$dbSyb->Connect('localhost', user, psw, 'mundialdb');  //=>>> Verbindungsaufbau mit der DB
+$dbSyb->Connect(link, user, psw, 'mundialdb');  //=>>> Verbindungsaufbau mit der DB
 
 if (!$dbSyb->IsConnected()) {
 

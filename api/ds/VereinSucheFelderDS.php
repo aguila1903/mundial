@@ -27,7 +27,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
     $dbSyb->memCacheHost = array('localhost'); /// $db->memCacheHost = $ip1; will work too
     $dbSyb->memCacheCompress = false; /// Use 'true' arbeitet unter Windows nicht
 //$dsn = "'localhost','root',psw,'vitaldb'";
-    $dbSyb->Connect('localhost', user, psw, db); //=>>> Verbindungsaufbau mit der DB
+    $dbSyb->Connect(link, user, psw, db); //=>>> Verbindungsaufbau mit der DB
 
 
     if (!$dbSyb->IsConnected()) {

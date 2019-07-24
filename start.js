@@ -449,9 +449,9 @@ title: title,
   icon: "pieces/16/piece_blue.png",
   largeIcon: "pieces/48/piece_blue.png",
   click: "isc.say(this.title + ' button clicked');"
-}, props)
+  }, props)
   );
-}
+  }
 
 isc.RibbonGroup.create({
 ID: "logoutGroup",
@@ -465,7 +465,7 @@ ID: "logoutGroup",
 
   ],
   autoDraw: false
-});
+  });
   isc.RibbonGroup.create({
   ID: "userGroup",
     title: "User",
@@ -3296,7 +3296,7 @@ ID: "logoutGroup",
     }]
   });
   isc.DataSource.create({
-  ID: "spieleSpielerQuellListe",
+  ID: "spieleSpielerQuellListeDS",
     allowAdvancedCriteria: true,
     //serverType:"sql",
     dataFormat: "json",
@@ -24172,29 +24172,29 @@ ID: "logoutGroup",
   iHTML_Ausw = isc.Canvas.imgHTML("famfam/ic_wechsel_rot.png") + " ";
   iHTML_Einw = isc.Canvas.imgHTML("famfam/ic_wechsel_gruen.png") + " ";
   var hiliteArrayAusw =
-[
-{fieldName: "name",
-  criteria: {
-  fieldName: "aw",
-    operator: "equals",
-    value: "1"
-  },
-  cssText: "color:#000000;",
-  // htmlBefore: iHTML,
-  htmlAfter: iHTML_Ausw,
-  id: 0
-}, {fieldName: "name",
-  criteria: {
-  fieldName: "aw",
-    operator: "equals",
-    value: "2"
-  },
-  cssText: "color:#000000;",
-  // htmlBefore: iHTML,
-  htmlAfter: iHTML_Einw,
-  id: 1
-}
-];
+  [
+    {fieldName: "name",
+      criteria: {
+      fieldName: "aw",
+        operator: "equals",
+        value: "1"
+      },
+      cssText: "color:#000000;",
+      // htmlBefore: iHTML,
+      htmlAfter: iHTML_Ausw,
+      id: 0
+      }, {fieldName: "name",
+    criteria: {
+    fieldName: "aw",
+      operator: "equals",
+      value: "2"
+    },
+    cssText: "color:#000000;",
+    // htmlBefore: iHTML,
+    htmlAfter: iHTML_Einw,
+    id: 1
+    }
+  ];
 //  iHTML_Einw = isc.Canvas.imgHTML("famfam/ic_wechsel_gruen.png") + " ";
 //  var hiliteArrayAusw =
 //[
@@ -24212,29 +24212,29 @@ ID: "logoutGroup",
 //];
   iHTML_Tore = isc.Canvas.imgHTML("famfam/sport_soccer.png") + "  ";
   var hiliteArrayTore =
-[
-{fieldName: "spielstand_a",
-  criteria: {
-  fieldName: "team",
-    operator: "equals",
-    value: "a"
-  },
-  cssText: "color:#000000;",
-  htmlBefore: iHTML_Tore,
-  // htmlAfter: iHTML_Ausw,
-  id: 0
-}, {fieldName: "spielstand",
-  criteria: {
-  fieldName: "team",
-    operator: "equals",
-    value: "h"
-  },
-  cssText: "color:#000000;",
-  htmlBefore: iHTML_Tore,
-  // htmlAfter: iHTML_Ausw,
-  id: 1
-}
-]
+  [
+    {fieldName: "spielstand_a",
+      criteria: {
+      fieldName: "team",
+        operator: "equals",
+        value: "a"
+      },
+      cssText: "color:#000000;",
+      htmlBefore: iHTML_Tore,
+      // htmlAfter: iHTML_Ausw,
+      id: 0
+      }, {fieldName: "spielstand",
+    criteria: {
+    fieldName: "team",
+      operator: "equals",
+      value: "h"
+    },
+    cssText: "color:#000000;",
+    htmlBefore: iHTML_Tore,
+    // htmlAfter: iHTML_Ausw,
+    id: 1
+    }
+  ]
   ;
   iHTML_Elfer_Scored = isc.Canvas.imgHTML("famfam/scored.png") + "  ";
   iHTML_Elfer_Missed = isc.Canvas.imgHTML("famfam/missed.png") + "  ";
@@ -24242,7 +24242,7 @@ ID: "logoutGroup",
 [{// Gast-Team trifft
 fieldName: [
   "spielstand_a"
-],
+  ],
   criteria: {
   _constructor: "AdvancedCriteria",
     operator: "and",
@@ -24264,10 +24264,10 @@ fieldName: [
   cssText: "color:#000000;",
   htmlBefore: iHTML_Elfer_Scored,
   id: 0
-}, {// Gast-Team verschießst
+  }, {// Gast-Team verschießst
 fieldName: [
   "spielstand_a"
-],
+  ],
   criteria: {
   _constructor: "AdvancedCriteria",
     operator: "and",
@@ -24289,34 +24289,34 @@ fieldName: [
   cssText: "color:#000000;",
   htmlBefore: iHTML_Elfer_Missed,
   id: 1
-},
-{// Heim-Team trifft
-fieldName: [
-  "spielstand"
-],
-  criteria: {
-  _constructor: "AdvancedCriteria",
-    operator: "and",
-    criteria: [
-    {
-    fieldName: "team",
-      operator: "equals",
-      value: "h"
-    },
-    {
-    fieldName: "elfer",
-      operator: "equals",
-      value: "1"
-
-    }]
   },
-  cssText: "color:#000000;",
-  htmlBefore: iHTML_Elfer_Scored,
-  id: 2
-}, {// Heim-Team verschießst
+  {// Heim-Team trifft
+  fieldName: [
+    "spielstand"
+    ],
+    criteria: {
+    _constructor: "AdvancedCriteria",
+      operator: "and",
+      criteria: [
+      {
+      fieldName: "team",
+        operator: "equals",
+        value: "h"
+      },
+      {
+      fieldName: "elfer",
+        operator: "equals",
+        value: "1"
+
+      }]
+    },
+    cssText: "color:#000000;",
+    htmlBefore: iHTML_Elfer_Scored,
+    id: 2
+    }, {// Heim-Team verschießst
 fieldName: [
   "spielstand"
-],
+  ],
   criteria: {
   _constructor: "AdvancedCriteria",
     operator: "and",
@@ -24338,28 +24338,28 @@ fieldName: [
   id: 3
 }];
   var hiliteArrayTeam =
-[
-{fieldName: "name",
-  criteria: {
-  fieldName: "team",
-    operator: "equals",
-    value: "a"
-  },
-  textColor: "#000000",
-  cssText: "color:#000000;background-color:#FFDC73;",
-  id: 0
-},
-{fieldName: "name",
-  criteria: {
-  fieldName: "team",
-    operator: "equals",
-    value: "h"
-  },
-  textColor: "#000000",
-  cssText: "color:#000000;background-color:#96FF73;",
-  id: 1
-}
-]
+  [
+    {fieldName: "name",
+      criteria: {
+      fieldName: "team",
+        operator: "equals",
+        value: "a"
+      },
+      textColor: "#000000",
+      cssText: "color:#000000;background-color:#FFDC73;",
+      id: 0
+      },
+    {fieldName: "name",
+      criteria: {
+      fieldName: "team",
+        operator: "equals",
+        value: "h"
+      },
+      textColor: "#000000",
+      cssText: "color:#000000;background-color:#96FF73;",
+      id: 1
+      }
+  ]
   ;
   /*
    ************************** ListGrid spieleSpielerHeimListe **********************************
@@ -25340,7 +25340,7 @@ fieldName: [
             //   header: "Daten bearbeiten",
             width: 250, height: 450,
             alternateRecordStyles: true,
-            dataSource: "spieleSpielerQuellListe",
+            dataSource: "spieleSpielerQuellListeDS",
             autoFetchData: false,
             showFilterEditor: true,
             filterOnKeypress: true,
@@ -25662,7 +25662,7 @@ fieldName: [
             //   header: "Daten bearbeiten",
             width: 250, height: 450,
             alternateRecordStyles: true,
-            dataSource: "spieleSpielerQuellListe",
+            dataSource: "spieleSpielerQuellListeDS",
             autoFetchData: false,
             showFilterEditor: true,
             filterOnKeypress: true,
@@ -26024,7 +26024,7 @@ fieldName: [
             //   header: "Daten bearbeiten",
             width: 250, height: 450,
             alternateRecordStyles: true,
-            dataSource: "spieleSpielerQuellListe",
+            dataSource: "spieleSpielerQuellListeDS",
             autoFetchData: false,
             showFilterEditor: true,
             filterOnKeypress: true,
@@ -26344,7 +26344,7 @@ fieldName: [
             //   header: "Daten bearbeiten",
             width: 250, height: 450,
             alternateRecordStyles: true,
-            dataSource: "spieleSpielerQuellListe",
+            dataSource: "spieleSpielerQuellListeDS",
             autoFetchData: false,
             showFilterEditor: true,
             filterOnKeypress: true,
@@ -29217,6 +29217,12 @@ fieldName: [
     fields: [{
     name: "dateiname",
       type: "text"
+    },{
+    name: "dateigroesse",
+      type: "text"
+    },{
+    name: "dateizeit",
+      type: "text"
     }]
   });
   isc.ToolStripButton.create({
@@ -29239,7 +29245,7 @@ fieldName: [
 
 
     // Wenn Datei schon existiert
-    else if (_data.response.status === -66) {
+    else if (_data.response.status === - 66) {
     isc.ask("Eine Sicherung mit dem heutigen Datum existiert bereits. Wollen Sie diese überschriben?", function (value) {
     if (value) {
 
@@ -29380,7 +29386,7 @@ fieldName: [
     //   header: "Daten bearbeiten",
     width: "100%", height: "100%",
     alternateRecordStyles: false,
-    showHeader: false,
+    showHeader: true,
     dataSource: backupDataDS,
     autoFetchData: false,
     showFilterEditor: false,
@@ -29393,7 +29399,11 @@ fieldName: [
     margin: 3,
     fields: [
     {name: "dateiname",
-      width: "*"}
+      width: "*", title: "Dateiname"},
+  {name: "dateigroesse",
+      width: "*", title: "Bytes"},
+  {name: "dateizeit",
+      width: "*", title: "Datum"}
     ], showSelectionCanvas: true,
     animateSelectionUnder: true,
     selectionUnderCanvasProperties: {
@@ -29559,8 +29569,8 @@ fieldName: [
   ID: "wdLoadBackup",
     title: "Datenbank Wiederherstellen",
     // autoSize: true,
-    width: 300,
-    height: 300,
+    width: 500,
+    height: 400,
     autoCenter: true,
     showFooter: false,
     headerIconDefaults: {width: 16, height: 16, src: currentIcon},
@@ -31042,8 +31052,6 @@ fieldName: [
     styleName: "exampleTextBlock",
     contents: '<iframe width="100%" height="100%" frameBorder="0" allowfullscreen src="https://umap.openstreetmap.de/de/map/mundial_30?scaleControl=true&miniMap=true&scrollWheelZoom=true&zoomControl=true&allowEdit=false&moreControl=true&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=true&onLoadPanel=undefined&captionBar=false">\n\
 </iframe><p><a href="https://umap.openstreetmap.de/de/map/mundial_30">Vollbildanzeige</a></p>'});
-  
-
   /*
    * ********* ANFANG TOOLSTRIPS AND TOOLSTRIP BUTTONS ***********************
    * -------------------------------------------------------------
@@ -32658,8 +32666,8 @@ fieldName: [
   /*
    ***************** GoTo: Toolstrip Groundkarte  ************************** 
    */
-  
-   /*
+
+  /*
    ***************** CSV-Export Button Stadien ************************** 
    */
   isc.ToolStripButton.create({
@@ -32674,13 +32682,12 @@ fieldName: [
 https://umap.openstreetmap.de/de/map/anonymous-edit/30:_7Wa5hQ0vlxVQN7lLzV793j3AiA",
     hoverWidth: 300,
     hoverDelay: 700,
-    action: function () {    
-        var domain = location.host;
-        window.open(prot + domain + '/' + appFolder + '/api/ds/csv_export_geodaten.php', '_self', false);
+    action: function () {
+    var domain = location.host;
+      window.open(prot + domain + '/' + appFolder + '/api/ds/csv_export_geodaten.php', '_self', false);
     }
 
   });
-  
   isc.Label.create({
   padding: 0,
     ID: "lblGroundKarte",
@@ -32694,7 +32701,7 @@ https://umap.openstreetmap.de/de/map/anonymous-edit/30:_7Wa5hQ0vlxVQN7lLzV793j3A
     width: "100%",
     backgroundImage: "../bilder/" + guiColor,
     height: 40,
-    members: [isc.LayoutSpacer.create({width: 30}),tsbCSV_GeoDaten,isc.LayoutSpacer.create({width: "*"}), lblGroundKarte,isc.LayoutSpacer.create({width: "*"})]});
+    members: [isc.LayoutSpacer.create({width: 30}), tsbCSV_GeoDaten, isc.LayoutSpacer.create({width: "*"}), lblGroundKarte, isc.LayoutSpacer.create({width: "*"})]});
   /*
    * ******************** Ende Toolstrip *************************
    * -------------------------------------------------------------

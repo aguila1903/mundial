@@ -19,7 +19,7 @@ $db->memCache = false;
 $db->memCacheHost = array('localhost'); /// $db->memCacheHost = $ip1; will work too
 $db->memCacheCompress = false; /// Use 'true' arbeitet unter Windows nicht
 //$dsn = "'localhost','root',psw,'vitaldb'";
-$db->Connect('localhost', 'root', psw, db); //=>>> Verbindungsaufbau mit der DB
+$db->Connect(link, 'root', psw, db); //=>>> Verbindungsaufbau mit der DB
 
 
 $out = array();

@@ -38,7 +38,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
     $dbSyb->memCacheHost = array('localhost'); /// $db->memCacheHost = $ip1; will work too
     $dbSyb->memCacheCompress = false; /// Use 'true' arbeitet unter Windows nicht
 //$dsn = "'localhost','root',psw,'vitaldb'";
-    $dbSyb->Connect('localhost', user, psw, db); //=>>> Verbindungsaufbau mit der DB
+    $dbSyb->Connect(link, user, psw, db); //=>>> Verbindungsaufbau mit der DB
 
 
     if (!$dbSyb->IsConnected()) {
@@ -147,7 +147,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
     $sqlQuery = "Select distinct
 (select count(*) from sp_besuche where stadion_id = s.stadion_id) as anzahl,
 DATE_FORMAT(l.erstbesuch,GET_FORMAT(DATE,'EUR')) as erstbesuch,
-l.laenderpunkt_nr, 
+ifnull(l.laenderpunkt_nr,0) as laenderpunkt_nr, 
 s.stadion_id as lfd_nr, 
 stadionname, 
 bl.name as bundesland,
@@ -155,7 +155,8 @@ s.bundesland_id,
 s.ort as ort_id, o.ort as ort, er_jahr, stadtteil, st.name as stadtteil_bez,
 Ifnull(de,s.land) as land, l.code,
 kapazitaet,
-zusch_rek, anschrift, historie, abriss, gr_nr
+zusch_rek, anschrift, historie, abriss, 
+ifnull(gr_nr,0) as gr_nr
 from stadionliste s left join laender l on s.land = l.code 
 left join orte o on s.ort = ort_id  
 left join stadtteile st on s.stadtteil = st.stadtteil_id 
@@ -209,7 +210,6 @@ left join stadionnamen sn on sn.stadion_id = s.stadion_id "
         $value{$i}{"zusch_rek"} = $rs->fields{'zusch_rek'};
         $value{$i}{"er_jahr"} = $rs->fields{'er_jahr'};
         $value{$i}{"abriss"} = $rs->fields{'abriss'};
-        $value{$i}{"erstbesuch"} = $rs->fields{'erstbesuch'};
         $value{$i}{"laenderpunkt_nr"} = $rs->fields{'laenderpunkt_nr'};
         $value{$i}{"anschrift"} = ($rs->fields{'anschrift'});
         $value{$i}{"historie"} = htmlspecialchars_decode(($rs->fields{'historie'}));

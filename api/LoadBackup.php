@@ -19,7 +19,7 @@ $dbSyb->memCache = false;
 $dbSyb->memCacheHost = array('localhost'); /// $db->memCacheHost = $ip1; will work too
 $dbSyb->memCacheCompress = false; /// Use 'true' arbeitet unter Windows nicht
 //$dsn = "'localhost','root',psw,'vitaldb'";
-$dbSyb->Connect('localhost', user, psw, db); //=>>> Verbindungsaufbau mit der DB
+$dbSyb->Connect(link, user, psw, db); //=>>> Verbindungsaufbau mit der DB
 
 
 if (!$dbSyb->IsConnected()) {
@@ -44,7 +44,7 @@ if (isset($_REQUEST["dateiname"])) {
 
     return;
 }
-$path = getcwd() . "\Backups\\";
+$path = __DIR__ . "\\Backups\\";
 
 //file_put_contents("LoadBackup.txt", $path);
 
@@ -65,12 +65,21 @@ if (is_file($path . $dateiname) != 1) {
 //$dateiname = $datum["year"]."-".$datum["mon"]."-".$datum["mday"].".bak";
 
 
+$find_path = explode("\\", __DIR__);
+$sevenZip_path = "{$find_path[0]}\\{$find_path[1]}\\{$find_path[2]}\\include\\7-Zip\\App\\7-Zip";
+$backup_path = __DIR__ . "\\Backups";
+$images_path = __DIR__ . "\\images";
+$mysql_bin_path = $find_path[0] . "\\" . $find_path[1] . "\\mysql\\bin";
+
+/*
+ * ************** BACKUP DATABASE *************************
+ */
 
 $batch = "@echo off\n
-cd c:\\xampp\\mysql\\bin\n
+cd $mysql_bin_path\n
 
 
-c:\\xampp\\mysql\\bin\\mysql -uroot -p" . psw . " " . db . " < $path$dateiname \n
+$mysql_bin_path\\mysql -uroot -p" . psw . " " . db . " < $path$dateiname \n
 
 echo %errorlevel% ";
 
@@ -78,14 +87,32 @@ file_put_contents("$path$dateiname.bat", $batch);
 
 $bathFileRun = "$path$dateiname.bat";
 
-
 $output = exec("C:\\windows\\system32\\cmd.exe /c $bathFileRun");
+
+
 
 
 $data = array();
 
 if ($output == 0) {
-    $data{"rueckmeldung"} = ($path) . $dateiname;
+    $data{"rueckmeldung"} = $path . $dateiname;
+    /*
+     * ************** BACKUP IMAGES *************************
+     */
+    if (!is_dir($images_path)) {
+        mkdir($images_path);
+    }
+    $batch2 = "@echo off\n
+
+$sevenZip_path\\7z.exe x -aoa -y $backup_path\\images.zip -o$images_path";
+
+    if (is_file("$backup_path\\images.zip")) {
+        file_put_contents(__DIR__ . "\\backupLoad.cmd", $batch2);
+
+        $backupImages = __DIR__ . "\\backupLoad.cmd";
+
+        exec("C:\\windows\\system32\\cmd.exe /c $backupImages");
+    }
 } else {
 
     unlink("$path$dateiname.sql");

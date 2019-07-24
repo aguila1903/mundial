@@ -14,7 +14,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin
 $out = array();
 
 
-$link = new mysqli('localhost', 'root', psw, db);
+$link = new mysqli(link, 'root', psw, db);
 
 $result = $link->query("select count(*) as anzahl from stadionliste group by land;");
 $result2 = $link->query("Select count(*) as anzahl from stadionliste");
