@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /kartal
+
+RewriteRule    ^home$                   login.php                    [T=application/x-httpd-cgi,QSA,NC]
+RewriteRule    ^start$              	start.php      				 [T=application/x-httpd-cgi,QSA,NC]
+
+</IfModule>
+Options -Indexes
