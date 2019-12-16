@@ -55,7 +55,7 @@ function regSuc() {
         // getElementsByName("email")[0].value = "";
     }
 
-    window.open('http://' + document.location.host + '/mundial/login.php', '_self', false);
+    window.open('http://' + document.location.host + '/mundial/home', '_self', false);
 
 }
 ;

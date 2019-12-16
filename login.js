@@ -44,7 +44,7 @@ function handleResponse()
         if (rueckmeldung["ergebnis"] == erg && rueckmeldung["status"] == stat)
         {
             document.getElementById("antwort").innerHTML = rueckmeldung["text"];
-            window.open(path + 'start.php', '_self', false);
+            window.open(path + 'start', '_self', false);
         } else
         {
             document.getElementById("antwort").innerHTML = rueckmeldung["text"];
@@ -71,11 +71,9 @@ function init()
     login.onclick = sendLogin;
     register.onclick = function ()
     {
-        window.open(path + 'register.php', '_self', false);
+        window.open(path + 'register', '_self', false);
     };
     document.images[0].src = "bilder/Panel1_nm.gif";
-//    document.images[1].src = "bilder/wappen/wappen_12.jpg";
-
 
     document.addEventListener("keypress", function ()
     {
