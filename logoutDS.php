@@ -42,6 +42,7 @@ if (!$dbSyb->IsConnected()) {
     return;
 }
 
+
 $dbSyb->debug = false;
 
 if(isset($_SESSION['benutzer'])){
