@@ -21,7 +21,7 @@ $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; // Liefert ein assoziatives Array, das de
 
 $ADODB_COUNTRECS = true;
 
-$dbSyb = ADONewConnection("mysqli");
+$dbSyb = ADONewConnection("mysqli"); 
 
 // DB-Abfragen NICHT cachen
 $dbSyb->memCache = false;
