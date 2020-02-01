@@ -52,8 +52,8 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
     }
 
 
-    if (isset($_REQUEST["stadionname"])) {
-        $andStadionName = $_REQUEST["stadionname"];
+    if (isset($_REQUEST["stadion_id"])) {
+        $andStadionName = $_REQUEST["stadion_id"];
         if ($andStadionName == "null" || $andStadionName == "") {
             $andStadionName = "";
         } else {
@@ -106,7 +106,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
             $andTrainer = "";
         } else {
 
-            $andTrainer = " and sp.trainer_id_a  = " . $trainer_id . " or sp.trainer_id_h = " . $trainer_id;
+            $andTrainer = " and (sp.trainer_id_a  = " . $trainer_id . " or sp.trainer_id_h = " . $trainer_id.")";
         }
     } else {
         $andTrainer = "";
@@ -118,7 +118,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
             $andVerein = "";
         } else {
 
-            $andVerein = " and sp.verein_id_a  = " . $verein_id . " or sp.verein_id_h = " . $verein_id;
+            $andVerein = " and (sp.verein_id_a  = " . $verein_id . " or sp.verein_id_h = " . $verein_id.")";
         }
     } else {
         $andVerein = "";
@@ -160,8 +160,8 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
         $andErg_Zusatz = "";
     }
 
-    if (isset($_REQUEST["wettbewerb"])) {
-        $liga_id = $_REQUEST["wettbewerb"];
+    if (isset($_REQUEST["liga_id"])) {
+        $liga_id = $_REQUEST["liga_id"];
         if ($liga_id == "null" || $liga_id == "") {
             $andWettbewerb = "";
         } else {
@@ -230,33 +230,37 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
     } else {
         $andAusverkauft = "";
     }
-
-
+    
+    function getJoinString($leftRight = "LEFT"){
+    $join = " From sp_besuche sp left join laender l on sp.land = l.code "
+            . " left join schiris s on sp.schiri_id = s.schiri_id "
+            . " left join ligen w on w.liga_id = sp.liga_id "
+            . " left join orte o on sp.ort = o.ort_id "
+            . " Left join vereine vh on vh.verein_id = sp.verein_id_h "
+            . " Left join vereine va on va.verein_id = sp.verein_id_a"
+            . " Left join trainer th on th.trainer_id = sp.trainer_id_h "
+            . " Left join trainer ta on ta.trainer_id = sp.trainer_id_a"
+            . " Left Join stadionliste sl on sl.stadion_id = sp.stadion_id "
+            . " $leftRight join stadionnamen sn on sp.stadion_id_alt = sn.lfd_nr"
+            . " LEFT JOIN sp_spieler_spiel_tabelle ss on ss.spiel_id = sp.spiel_id "
+            . " LEFT JOIN spieler spi on spi.spieler_id = ss.spieler_id "
+            . " LEFT JOIN sp_begleiter_spiel_tabelle bs on bs.spiel_id = sp.spiel_id "
+            . " Left Join begleiter b on b.begleiter_id = bs.begleiter_id "
+            . " WHERE  sp.spiel_id > -1 ";
+    return $join;
+    }
     $querySQL = "select distinct ";
 
-    if ($lookFor == "stadionname") {
+    if ($lookFor == "stadion_id") {
+        $join1 = getJoinString("RIGHT"); 
         $querySQL .= " ifnull(sp.stadion_id,'') as stadion_id, ifnull(sl.stadionname,'') as stadionname,"
                 . "(select count(stadion_id) from sp_besuche where (stadion_id = sp.stadion_id) ) as anzahl, "
                 . "(select stadionname from stadionliste where stadion_id = ifnull(sp.stadion_id,'')) as sortStad ";
          $UnionStadion = " Union Select distinct
           ifnull(sn.stadion_id,'') as stadion_id, concat(ifnull(sn.name_vor_ae,''),' (',ifnull(sl.stadionname,''),')') as stadionname,
           (select count(stadion_id) from sp_besuche where (stadion_id = sp.stadion_id)) as anzahl, 
-          (select ifnull(stadionname,'') from stadionliste where stadion_id = ifnull(sn.stadion_id,'')) as sortStad
-          From sp_besuche sp left join laender l on sp.land = l.code "
-          . " left join schiris s on sp.schiri_id = s.schiri_id "
-          . " left join ligen w on w.liga_id = sp.liga_id "
-          . " left join orte o on sp.ort = o.ort_id "
-          . " Left join vereine vh on vh.verein_id = sp.verein_id_h "
-          . " Left join vereine va on va.verein_id = sp.verein_id_a"
-          . " Left join trainer th on th.trainer_id = sp.trainer_id_h "
-          . " Left join trainer ta on ta.trainer_id = sp.trainer_id_a"
-          . " Left Join stadionliste sl on sl.stadion_id = sp.stadion_id "
-          . " RIGHT join stadionnamen sn on sp.stadion_id_alt = sn.lfd_nr"
-          . " LEFT JOIN sp_spieler_spiel_tabelle ss on ss.spiel_id = sp.spiel_id "
-          . " LEFT JOIN spieler spi on spi.spieler_id = ss.spieler_id "
-          . " LEFT JOIN sp_begleiter_spiel_tabelle bs on bs.spiel_id = sp.spiel_id "
-          . " Left Join begleiter b on b.begleiter_id = bs.begleiter_id "
-          . " WHERE  sp.spiel_id > -1 "
+          (select ifnull(stadionname,'') from stadionliste where stadion_id = ifnull(sn.stadion_id,'')) as sortStad ".
+          $join1
           . $andStadionName
           . $andLand
           . $andOrt
@@ -297,6 +301,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
     }
 
     if ($lookFor == "trainer_id") {
+        $join2 = getJoinString("left");
         $querySQL .= " ifnull(sp.trainer_id_a,'') as trainer_id, ifnull(ta.name,'') as trainername, "
                 . "(SELECT COUNT(*) FROM sp_besuche LEFT JOIN trainer v1 ON trainer_id_a = v1.trainer_id
                           LEFT JOIN trainer v2 ON trainer_id_h = v2.trainer_id WHERE v1.trainer_id = sp.trainer_id_a OR v2.trainer_id = sp.trainer_id_a) as anzahl, "
@@ -305,22 +310,8 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
 		ifnull(sp.trainer_id_h,'') as trainer_id, ifnull(th.name,'') as trainername, 
                 (SELECT COUNT(*) FROM sp_besuche LEFT JOIN trainer v1 ON trainer_id_a = v1.trainer_id
                           LEFT JOIN trainer v2 ON trainer_id_h = v2.trainer_id WHERE v1.trainer_id = sp.trainer_id_h OR v2.trainer_id = sp.trainer_id_h) as anzahl,
-                (select name from trainer where trainer_id = ifnull(sp.trainer_id_h,''))   
-		 From sp_besuche sp left join laender l on sp.land = l.code "
-                . " left join schiris s on sp.schiri_id = s.schiri_id "
-                . " left join ligen w on w.liga_id = sp.liga_id "
-                . " left join orte o on sp.ort = o.ort_id "
-                . " Left join vereine vh on vh.verein_id = sp.verein_id_h "
-                . " Left join vereine va on va.verein_id = sp.verein_id_a"
-                . " Left join trainer th on th.trainer_id = sp.trainer_id_h "
-                . " Left join trainer ta on ta.trainer_id = sp.trainer_id_a"
-                . " Left Join stadionliste sl on sl.stadion_id = sp.stadion_id "
-                . " Left join stadionnamen sn on sp.stadion_id_alt = sn.lfd_nr"
-                . " LEFT JOIN sp_spieler_spiel_tabelle ss on ss.spiel_id = sp.spiel_id "
-                . " LEFT JOIN spieler spi on spi.spieler_id = ss.spieler_id "
-                . " LEFT JOIN sp_begleiter_spiel_tabelle bs on bs.spiel_id = sp.spiel_id "
-                . " Left Join begleiter b on b.begleiter_id = bs.begleiter_id "
-                . " WHERE  sp.spiel_id > -1 "
+                (select name from trainer where trainer_id = ifnull(sp.trainer_id_h,'')) as sortTrainer ".
+                $join2
                 . $andStadionName
                 . $andLand
                 . $andOrt
@@ -345,6 +336,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
                 . ", ifnull(s.name, '') ";
     }
     if ($lookFor == "verein_id") {
+        $join3 = getJoinString("left");
         $querySQL .= " ifnull(sp.verein_id_h,'') as verein_id, ifnull(vh.gaengiger_name,'') AS vereinsname,
             (SELECT COUNT(*) FROM sp_besuche LEFT JOIN vereine v1 ON verein_id_a = v1.verein_id
                           LEFT JOIN vereine v2 ON verein_id_h = v2.verein_id WHERE v1.verein_id = sp.verein_id_h OR v2.verein_id = sp.verein_id_h) as anzahl,
@@ -353,22 +345,8 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
 		ifnull(sp.verein_id_a,'') as verein_id, ifnull(va.gaengiger_name,'') AS vereinsname,
                 (SELECT COUNT(*) FROM sp_besuche LEFT JOIN vereine v1 ON verein_id_a = v1.verein_id
                           LEFT JOIN vereine v2 ON verein_id_h = v2.verein_id WHERE v1.verein_id = sp.verein_id_a OR v2.verein_id = sp.verein_id_a) as anzahl, 
-                (select gaengiger_name from vereine WHERE verein_id =  ifnull(sp.verein_id_a,'')) as sortVerein"
-                . " From sp_besuche sp left join laender l on sp.land = l.code "
-                . " left join schiris s on sp.schiri_id = s.schiri_id "
-                . " left join ligen w on w.liga_id = sp.liga_id "
-                . " left join orte o on sp.ort = o.ort_id "
-                . " Left join vereine vh on vh.verein_id = sp.verein_id_h "
-                . " Left join vereine va on va.verein_id = sp.verein_id_a"
-                . " Left join trainer th on th.trainer_id = sp.trainer_id_h "
-                . " Left join trainer ta on ta.trainer_id = sp.trainer_id_a"
-                . " Left Join stadionliste sl on sl.stadion_id = sp.stadion_id "
-                . " Left join stadionnamen sn on sp.stadion_id_alt = sn.lfd_nr"
-                . " LEFT JOIN sp_spieler_spiel_tabelle ss on ss.spiel_id = sp.spiel_id "
-                . " LEFT JOIN spieler spi on spi.spieler_id = ss.spieler_id "
-                . " LEFT JOIN sp_begleiter_spiel_tabelle bs on bs.spiel_id = sp.spiel_id "
-                . " Left Join begleiter b on b.begleiter_id = bs.begleiter_id "
-                . " WHERE  sp.spiel_id > -1 "
+                (select gaengiger_name from vereine WHERE verein_id =  ifnull(sp.verein_id_a,'')) as sortVerein ".
+                $join3
                 . $andStadionName
                 . $andLand
                 . $andOrt
@@ -418,22 +396,10 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
     if ($lookFor == "jahr") {
         $querySQL .= " Year(sp.sp_datum) as jahr, '', (select count(YEAR(sp_datum)) from sp_besuche where YEAR(sp_datum) = YEAR(sp.sp_datum)) as anzahl, Year(sp.sp_datum) as sortJahr ";
     }
+    
+    $join4 = getJoinString("left");
     $querySQL .=
-            " From sp_besuche sp left join laender l on sp.land = l.code "
-            . " left join schiris s on sp.schiri_id = s.schiri_id "
-            . " left join ligen w on w.liga_id = sp.liga_id "
-            . " left join orte o on sp.ort = o.ort_id "
-            . " Left join vereine vh on vh.verein_id = sp.verein_id_h "
-            . " Left join vereine va on va.verein_id = sp.verein_id_a"
-            . " Left join trainer th on th.trainer_id = sp.trainer_id_h "
-            . " Left join trainer ta on ta.trainer_id = sp.trainer_id_a"
-            . " Left Join stadionliste sl on sl.stadion_id = sp.stadion_id "
-            . " Left join stadionnamen sn on sp.stadion_id_alt = sn.lfd_nr"
-            . " LEFT JOIN sp_spieler_spiel_tabelle ss on ss.spiel_id = sp.spiel_id "
-            . " LEFT JOIN spieler spi on spi.spieler_id = ss.spieler_id "
-            . " LEFT JOIN sp_begleiter_spiel_tabelle bs on bs.spiel_id = sp.spiel_id "
-            . " Left Join begleiter b on b.begleiter_id = bs.begleiter_id "
-            . " WHERE  sp.spiel_id > -1 "
+            $join4
             . $andStadionName
             . $andLand
             . $andOrt
@@ -454,7 +420,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login) {
             . $UnionTrainer
             . " Order by 4";
     // . $lookFor ;
-//    file_put_contents('SpieleSucheFelderDS.txt', $querySQL);
+    file_put_contents('SpieleSucheFelderDS.txt', $querySQL);
 
     $rs = $dbSyb->Execute($querySQL); //=>>> Abfrage wird an den Server übermittelt / ausgeführt?
 
