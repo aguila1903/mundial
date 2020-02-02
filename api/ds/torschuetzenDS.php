@@ -111,7 +111,9 @@ if (isset($_SESSION["login"]) && $_SESSION["login"] == login && $_SESSION["admin
                         OR spieler_id_h = s.spieler_id)
                         AND ifnull(besonderheit,'') not in ('ET')
                 GROUP BY spieler_id_a),
-            0) AS gast
+            0) AS gast,
+            (SELECT COUNT(*) FROM sp_spieler_spiel_tabelle WHERE spieler_id = s.spieler_id ) AS spiele,
+            COUNT(*) / (SELECT COUNT(*) FROM sp_spieler_spiel_tabelle WHERE spieler_id = s.spieler_id ) AS quote
 FROM
     sp_tore_spiel_tabelle
         JOIN
@@ -163,6 +165,8 @@ ORDER BY tore DESC"
             $data{$i}{"land"} = (trim($rs->fields{'land'}));
             $data{$i}{"code"} = (trim($rs->fields{'code'}));
             $data{$i}{"tore"} = $rs->fields{'tore'};
+            $data{$i}{"spiele"} = $rs->fields{'spiele'};
+            $data{$i}{"quote"} = number_format($rs->fields{'quote'},2,",","");
 
             $i++;
 

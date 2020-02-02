@@ -1,4 +1,10 @@
+if (window.XMLHttpRequest)
+{// code for IE7+, Firefox, Chrome, Opera, Safari
 var xhr = new XMLHttpRequest();
+} else
+{// code for IE6, IE5
+    var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+}
 var errColor = '#EE2C2C';
 var normColor = '#F0F0F0';
 var path = 'http://' + document.location.host + '/mundial/';
@@ -39,7 +45,7 @@ function handleResponse()
     // rueckmeldung = JSON.parse(xhr.response);
     rueckmeldung = xhr.response;
 
-    if (xhr.readyState == 4)
+    if (xhr.readyState == 4 && xhr.status == 200 )
     {
         if (rueckmeldung["ergebnis"] == erg && rueckmeldung["status"] == stat)
         {
@@ -58,6 +64,8 @@ function handleResponse()
                     break;
             }
         }
+    }else{
+            document.getElementById("antwort").innerHTML = "Anmeldung fehlgeschlagen: <br>"+xhr.statusText+" ("+xhr.status+")";
     }
 }
 

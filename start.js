@@ -2142,6 +2142,14 @@ ID: "logoutGroup",
       type: "text",
       title: "Tore"
     }, {
+    name: "spiele",
+      type: "text",
+      title: "Spiele"
+    }, {
+    name: "quote",
+      type: "text",
+      title: "Quote"
+    }, {
     name: "elfer",
       type: "text",
       title: "Elfer"
@@ -16062,6 +16070,18 @@ ID: "logoutGroup",
           width: 60,
           showIf: "true",
           showGridSummary: true, showGroupSummary: true, summaryFunction: "sum"
+        }, {
+        name: "spiele",
+          type: "text",
+          width: 60,
+          showIf: "true",
+          showGridSummary: true, showGroupSummary: true, summaryFunction: "sum"
+        }, {
+        name: "quote",
+          type: "text",
+          width: 60,
+          showIf: "true",
+          showGridSummary: true, showGroupSummary: true, summaryFunction: "sum"
         }],
         selectionChanged: function (record, state) {
 
@@ -16078,7 +16098,7 @@ ID: "logoutGroup",
         showFooter: false,
         showMinimizeButton: false,
         showCloseButton: true,
-        width: 700,
+        width: 900,
         height: 700,
         headerIconDefaults: {
         width: 16,
